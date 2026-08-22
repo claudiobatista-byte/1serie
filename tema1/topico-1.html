@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1. O que é cultura? — Cultura Material e Imaterial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#1d3c47;
+  --azul-claro:#2f5c6b;
+  --bronze:#a9762f;
+  --bronze-claro:#c99a4d;
+  --sepia:#f7f1e6;
+  --papel:#fffdfa;
+  --tinta:#2c2a27;
+  --tinta-suave:#665f57;
+  --linha:#e6dcc8;
+  --branco:#ffffff;
+  --raio:12px;
+  --sombra:0 3px 14px rgba(29,60,71,.08);
+  --max:900px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Source Serif 4',Georgia,serif;
+  background:var(--papel);color:var(--tinta);
+  line-height:1.75;font-size:17px;
+}
+h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;line-height:1.25;color:var(--azul)}
+a{color:var(--bronze)}
+p{margin-bottom:15px;text-align:justify}
+
+.topo{
+  background:var(--branco);border-bottom:1px solid var(--linha);
+  padding:14px 22px;position:sticky;top:0;z-index:20;
+}
+.topo-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.trilha{font-size:.82rem;color:var(--tinta-suave)}
+.trilha a{color:var(--azul-claro);text-decoration:none;font-weight:600}
+.trilha a:hover{text-decoration:underline}
+.medalhao-mini{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;
+  color:var(--bronze);border:1px solid var(--linha);border-radius:999px;padding:4px 12px;background:var(--sepia)}
+
+header.hero-claro{
+  max-width:var(--max);margin:0 auto;padding:46px 22px 18px;text-align:left;
+}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--bronze);margin-bottom:14px}
+.hero-claro h1{font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:900;margin-bottom:12px}
+.hero-claro .sub{font-size:1.03rem;color:var(--tinta-suave);font-style:italic;max-width:700px}
+.habilidade-box{margin:26px 0 0;background:var(--sepia);
+  border-left:4px solid var(--bronze);border-radius:0 10px 10px 0;padding:16px 20px;
+  font-size:.94rem;color:var(--tinta)}
+.habilidade-box strong{color:var(--azul)}
+
+main{max-width:var(--max);margin:0 auto;padding:6px 22px 80px}
+section{margin-top:42px}
+.sec-titulo{font-size:1.5rem;margin-bottom:6px;padding-bottom:8px;
+  border-bottom:3px solid var(--bronze);display:inline-block}
+.sec-intro{color:var(--tinta-suave);margin:12px 0 20px;font-size:.98rem}
+
+.objetivos{background:var(--branco);border:1px solid var(--linha);border-radius:var(--raio);
+  padding:22px 26px;box-shadow:var(--sombra)}
+.objetivos ul{list-style:none}
+.objetivos li{padding-left:30px;position:relative;margin-bottom:11px;font-size:.98rem}
+.objetivos li::before{content:"";position:absolute;left:0;top:11px;width:14px;height:3px;
+  background:var(--bronze);border-radius:2px}
+
+/* SUMARIO */
+.sumario-lista{display:grid;gap:12px;margin-top:6px}
+.sumario-item{display:flex;align-items:flex-start;gap:16px;background:var(--branco);
+  border:1px solid var(--linha);border-radius:var(--raio);padding:16px 20px;
+  text-decoration:none;color:var(--tinta);box-shadow:var(--sombra);transition:transform .15s,box-shadow .15s}
+.sumario-item:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(29,60,71,.14)}
+.sumario-num{font-family:'JetBrains Mono',monospace;font-size:.95rem;color:#fff;background:var(--azul);
+  min-width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-weight:700}
+.sumario-texto h3{font-size:1.08rem;margin-bottom:4px;color:var(--azul)}
+.sumario-texto p{font-size:.9rem;color:var(--tinta-suave);margin:0;text-align:left}
+
+/* CAIXAS DE CONTEUDO */
+.definicao{background:var(--sepia);border-left:5px solid var(--bronze);border-radius:0 10px 10px 0;
+  padding:16px 20px;margin:18px 0;font-size:.97rem}
+.definicao strong{color:var(--azul)}
+.definicao .ref{font-size:.78rem;color:#8b7f74;border-top:1px dashed var(--linha);
+  padding-top:8px;margin:11px 0 0;text-align:left}
+.apoio{background:var(--branco);border:1px solid var(--linha);border-top:4px solid var(--azul-claro);
+  border-radius:var(--raio);padding:18px 22px;margin:20px 0;box-shadow:var(--sombra)}
+.apoio .rotulo{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:6px}
+.apoio h4{font-size:1.02rem;margin-bottom:8px}
+.apoio p{font-size:.95rem}
+.apoio p:last-child{margin-bottom:0}
+.apoio .ref{font-size:.78rem;color:#8b7f74;border-top:1px dashed var(--linha);padding-top:8px;margin-top:4px;text-align:left}
+.citacao{border-left:3px solid var(--linha);padding:4px 0 4px 18px;margin:18px 0;
+  font-style:italic;color:var(--tinta-suave);font-size:.96rem}
+.citacao cite{display:block;font-style:normal;font-size:.78rem;margin-top:8px;color:#8b7f74}
+.pesquise{background:var(--azul);color:#e7eef0;border-radius:var(--raio);padding:20px 22px;margin:22px 0}
+.pesquise h4{color:var(--bronze-claro);font-size:1rem;margin-bottom:8px}
+.pesquise p{font-size:.93rem;color:#dbe4e7;margin-bottom:12px;text-align:left}
+.pesquise a{display:inline-block;background:var(--bronze);color:#1d1a16;text-decoration:none;
+  border-radius:999px;padding:8px 20px;font-weight:600;font-size:.88rem}
+
+.tabela-wrap{overflow-x:auto;margin:20px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem;background:var(--branco);min-width:480px}
+th,td{border:1px solid var(--linha);padding:11px 13px;text-align:left;vertical-align:top}
+th{background:var(--azul);color:#f2ece2;font-family:'Playfair Display',serif;font-weight:600}
+tbody tr:nth-child(even){background:var(--sepia)}
+
+.roteiro{counter-reset:passo;display:grid;gap:12px;margin-top:6px}
+.passo{background:var(--branco);border:1px solid var(--linha);border-radius:var(--raio);
+  padding:18px 22px 18px 64px;position:relative;box-shadow:var(--sombra)}
+.passo::before{counter-increment:passo;content:counter(passo);position:absolute;left:20px;top:18px;
+  width:30px;height:30px;border-radius:50%;background:var(--azul);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.85rem}
+.passo h4{font-size:1rem;margin-bottom:4px}
+.passo p{font-size:.93rem;color:var(--tinta-suave)}
+
+/* NAV DE RODAPE ENTRE TOPICOS */
+.nav-topicos{display:flex;justify-content:space-between;gap:14px;margin-top:52px;flex-wrap:wrap}
+.nav-topicos a{flex:1;min-width:200px;background:var(--branco);border:1px solid var(--linha);
+  border-radius:var(--raio);padding:16px 20px;text-decoration:none;color:var(--tinta);box-shadow:var(--sombra)}
+.nav-topicos a:hover{background:var(--sepia)}
+.nav-topicos .rotulo-nav{display:block;font-family:'JetBrains Mono',monospace;font-size:.66rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--bronze);margin-bottom:6px}
+.nav-topicos .prox{text-align:right}
+
+footer{background:var(--sepia);border-top:1px solid var(--linha);color:var(--tinta-suave);
+  padding:30px 22px;text-align:center;font-size:.85rem;margin-top:40px}
+footer a{color:var(--azul-claro)}
+
+/* COLUNA LATERAL DE BOXES (abrem em popup) */
+.lateral{float:right;width:250px;margin:6px 0 18px 26px;display:grid;gap:12px}
+.mini-card{width:100%;text-align:left;cursor:pointer;font-family:inherit;
+  background:var(--branco);border:1px solid var(--linha);border-top:4px solid var(--azul-claro);
+  border-radius:var(--raio);padding:14px 16px;box-shadow:var(--sombra);
+  transition:transform .15s,box-shadow .15s}
+.mini-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(29,60,71,.14)}
+.mini-card .rotulo{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:6px}
+.mini-card h4{font-size:.95rem;margin-bottom:6px;line-height:1.3}
+.mini-card .chamada{font-size:.8rem;color:var(--tinta-suave);line-height:1.5;display:block}
+.mini-card .abrir{display:block;margin-top:9px;font-size:.76rem;font-weight:600;color:var(--bronze)}
+
+/* MODAL */
+.modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  background:rgba(29,60,71,.55);padding:22px}
+.modal.aberto{display:flex}
+.modal-caixa{background:var(--papel);border-radius:var(--raio);max-width:620px;width:100%;
+  max-height:86vh;overflow-y:auto;padding:26px 30px 24px;box-shadow:0 18px 50px rgba(0,0,0,.3);
+  border-top:5px solid var(--bronze);position:relative}
+.modal-caixa .rotulo{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:6px}
+.modal-caixa h3{font-size:1.2rem;margin-bottom:12px;padding-right:34px}
+.modal-caixa p{font-size:.95rem}
+.modal-caixa .ref{font-size:.78rem;color:#8b7f74;border-top:1px dashed var(--linha);
+  padding-top:9px;margin-top:6px;text-align:left}
+.fechar{position:absolute;top:14px;right:16px;background:none;border:none;cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:1.35rem;line-height:1;color:var(--tinta-suave);padding:4px 8px}
+.fechar:hover{color:var(--bronze)}
+
+/* CARD DE DOWNLOAD DA AULA (na coluna lateral) */
+a.mini-card{display:block;text-decoration:none;color:var(--tinta)}
+.mini-card.card-aula{border-top-color:var(--bronze);background:var(--sepia)}
+.mini-card.card-aula .abrir{color:var(--azul-claro)}
+
+/* BOX DE ATIVIDADE (padrão tema1) */
+.atividades-box{
+  background:linear-gradient(135deg,var(--branco),var(--sepia));
+  border:1px solid var(--linha);border-left:4px solid var(--bronze);
+  border-radius:12px;padding:20px 22px;margin:34px 0 0;
+  box-shadow:var(--sombra);clear:both}
+.atividades-box > .eyebrow{display:block;font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--bronze);margin-bottom:4px}
+.atividades-box > h4{margin:0 0 6px;font-family:'Playfair Display',Georgia,serif;
+  font-size:1.08rem;color:var(--azul)}
+.atividades-box > p{margin:0 0 16px;color:var(--tinta-suave);font-size:.94rem;text-align:left}
+.atividades-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.atividade-card{background:var(--branco);border:1px solid var(--linha);border-radius:10px;padding:14px 16px}
+.atividade-card .atividade-titulo{display:flex;align-items:center;gap:8px;
+  font-family:'Playfair Display',Georgia,serif;font-size:.98rem;color:var(--azul);margin-bottom:4px}
+.atividade-card .atividade-desc{font-size:.86rem;color:var(--tinta-suave);margin:0 0 12px;text-align:left}
+.atividade-card .atividade-botoes{display:flex;gap:8px;flex-wrap:wrap}
+.atividade-card a.link-btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;
+  font-size:.82rem;font-weight:600;padding:8px 14px;border-radius:8px;transition:filter .15s ease}
+.atividade-card a.link-btn.abrir{background:var(--azul);color:#fff}
+.atividade-card a.link-btn.pdf{background:transparent;color:var(--bronze);border:1px solid var(--bronze)}
+.atividade-card a.link-btn:hover{filter:brightness(1.15)}
+
+@media (max-width:760px){
+  /* no celular a coluna deixa de flutuar e vai para o fim do texto */
+  main section{display:flex;flex-direction:column}
+  .lateral{float:none;width:auto;margin:30px 0 0;order:99}
+  .lateral::before{content:"Textos de apoio";font-family:'Playfair Display',Georgia,serif;
+    font-size:1.05rem;color:var(--azul);border-bottom:3px solid var(--bronze);
+    display:inline-block;justify-self:start;padding-bottom:6px;margin-bottom:2px}
+  .mini-card .chamada{font-size:.85rem}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  main{padding:0 16px 60px}
+  .hero-claro{padding:34px 16px 14px}
+  .passo{padding:16px 16px 16px 56px}
+  .nav-topicos .prox{text-align:left}
+}
+
+</style>
+</head>
+<body>
+<nav class="topo">
+  <div class="topo-inner">
+    <div class="trilha"><a href="index.html">&larr; Início</a> &nbsp;/&nbsp; Tópico 1: O que é cultura?</div>
+    <div class="medalhao-mini">EM13CHS104</div>
+  </div>
+</nav>
+<main>
+  <header class="hero-claro" style="padding-top:26px">
+    <p class="eyebrow">Tópico 1 de 9</p>
+    <h1>O que é cultura?</h1>
+  </header>
+  <section>
+
+<aside class="lateral">
+  <button class="mini-card" type="button" data-modal="modal-kuikuro">
+    <span class="rotulo">Texto de apoio</span>
+    <h4>O mito do fogo entre os Kuikuro do Alto Xingu</h4>
+    <span class="chamada">Como uma narrativa indígena guarda, ao mesmo tempo, uma técnica e uma visão de mundo.</span>
+    <span class="abrir">Ler o texto &rarr;</span>
+  </button>
+  <button class="mini-card" type="button" data-modal="modal-laraia">
+    <span class="rotulo">Texto de apoio &middot; Laraia</span>
+    <h4>Esquimós e lapões: o mesmo frio, casas diferentes</h4>
+    <span class="chamada">Por que nem o corpo nem o clima explicam as diferenças entre os povos.</span>
+    <span class="abrir">Ler o texto &rarr;</span>
+  </button>
+  <button class="mini-card" type="button" data-modal="modal-santos">
+    <span class="rotulo">Texto de apoio &middot; Santos</span>
+    <h4>De <em>colere</em> à “alta cultura”: a palavra e o poder</h4>
+    <span class="chamada">A trajetória do termo e o que ela revela sobre desigualdade.</span>
+    <span class="abrir">Ler o texto &rarr;</span>
+  </button>
+  <a class="mini-card card-aula" href="https://drive.google.com/file/d/1nRWUrFVrJ2D6iCsafVhsZNmtGmNn41TJ/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+    <span class="rotulo">Material da aula</span>
+    <h4>Baixar a aula em PDF</h4>
+    <span class="chamada">Slides da aula.</span>
+    <span class="abrir">Abrir PDF &#8599;</span>
+  </a>
+</aside>
+
+<p>Quando assistimos a um filme de outro país ou vemos uma notícia sobre um costume distante, é comum sentirmos estranhamento. Larvas, aranhas, escorpiões, formigas, gafanhotos e grilos, por exemplo, fazem parte da culinária de vários países — o consumo é tão recorrente e importante nesses lugares que a Organização das Nações Unidas para a Alimentação e a Agricultura chegou a lançar, em 2013, uma campanha incentivando a criação desses animais como meio de combate à fome. O estranhamento diante desse hábito não significa que o outro esteja errado: significa que estamos diante de uma cultura diferente da nossa.</p>
+
+<div class="definicao">
+  <strong>Conceito &middot; Cultura.</strong> O antropólogo britânico Edward Tylor (1832-1917) definiu cultura como o conjunto de conhecimentos, crenças, expressões artísticas, regras morais, leis, costumes e qualquer outra capacidade e hábito adquirido pelo ser humano como membro de uma coletividade. É a cultura que nos localiza no mundo, como uma bússola, dando as direções e as informações necessárias sobre como devemos agir, pensar e interagir com nossa sociedade.
+</div>
+
+<p>Cultura, portanto, diz respeito a tudo aquilo que o ser humano cria para garantir a existência do seu grupo social. Esse conjunto inclui uma enorme variedade de elementos materiais e simbólicos, que nos permitem construir, agir e interpretar o mundo ao nosso redor.</p>
+
+<h4>A cultura é uma construção social</h4>
+<p>A cultura é um dos principais elementos que unem o ser humano ao seu grupo social. É pela intervenção no mundo natural e pela construção de um mundo simbólico que os indivíduos constroem as histórias dos seus povos e criam suas regras e seus modos de ser e de pensar. Esses elementos fundamentam as relações sociais do grupo e conferem à cultura um aspecto dinâmico, social e histórico: ela muda no tempo e varia no espaço.</p>
+
+<p>O processo de transmissão dos valores, das práticas e dos conhecimentos ocorre ao longo de toda a vida, por meio de uma série de interações que estabelecemos uns com os outros e com outros grupos sociais. Nesse processo, os mais velhos desempenham papel fundamental na transmissão do conhecimento acumulado para as gerações mais jovens. Podemos nos considerar parte de um grupo social a partir do momento em que somos capazes de entender seu funcionamento e de compartilhar com os demais membros os hábitos e costumes que o caracterizam.</p>
+
+<p>Duas consequências importam para a análise histórica. A primeira: nenhuma cultura é "mais evoluída" do que outra — culturas são respostas diferentes a problemas de existência. A segunda: como a cultura se transmite e se transforma, todo objeto e toda prática carregam a marca de um tempo e de um lugar determinados. É exatamente isso que permite ao historiador usá-los como fonte.</p>
+
+<h4>Duas definições, dois caminhos</h4>
+<p>Dois antropólogos brasileiros escreveram obras de referência sobre o tema, e cada um deles ilumina um lado do conceito.</p>
+
+<div class="definicao">
+  <strong>Roque de Barros Laraia.</strong> Retomando a definição de Tylor, Laraia entende a cultura como o conjunto <em>aprendido</em> e compartilhado de conhecimentos, crenças, valores, normas e práticas de um grupo social. A palavra-chave é <em>adquirido</em>: nenhum traço cultural viaja no sangue. Esse aprendizado tem nome — <strong>endoculturação</strong>, o processo pelo qual cada um absorve, desde criança, a língua, os gestos, os valores e as regras do grupo em que nasceu. Daí a conclusão que interessa ao historiador: as diferenças entre os povos não se explicam pela hereditariedade nem pelo ambiente natural, mas pela história de cada grupo.
+  <p class="ref">LARAIA, Roque de Barros. <em>Cultura: um conceito antropológico</em>. 14. ed. Rio de Janeiro: Jorge Zahar, 2001.</p>
+</div>
+
+<div class="definicao">
+  <strong>José Luiz dos Santos.</strong> Santos define a cultura como uma <strong>construção histórica</strong> e uma <strong>dimensão do processo social</strong>: ela não decorre de leis físicas ou biológicas, é um produto coletivo da vida humana e atravessa todos os aspectos da vida social — não é uma parte separada dela, como seriam a arte ou a religião. O autor distingue ainda duas concepções: uma que abrange todos os aspectos de uma realidade social (a cultura xavante, a cultura camponesa) e outra, mais restrita, voltada ao conhecimento, às ideias e às crenças. E acrescenta um alerta: numa sociedade dividida em classes, a cultura carrega as marcas dessa desigualdade.
+  <p class="ref">SANTOS, José Luiz dos. <em>O que é cultura</em>. São Paulo: Brasiliense, 1987. (Coleção Primeiros Passos, 110).</p>
+</div>
+
+<p>As duas leituras não se opõem: Laraia insiste em <em>como</em> a cultura se transmite e se acumula; Santos, em <em>quem</em> tem acesso a ela e em como o poder atravessa o plano cultural. Juntas, elas sustentam o trabalho com fontes que faremos nos próximos tópicos.</p>
+
+<div class="atividades-box">
+  <span class="eyebrow">Pratique</span>
+  <h4>&#128221; Atividade de fixação</h4>
+  <p>Reforce o que você acabou de estudar com os textos de apoio e as questões dissertativas abaixo.</p>
+  <div class="atividades-grid">
+    <div class="atividade-card">
+      <div class="atividade-titulo">&#128196; Atividade 1 — O que é cultura?</div>
+      <p class="atividade-desc">Dois textos de apoio (Laraia e Santos) e 6 questões dissertativas.</p>
+      <div class="atividade-botoes">
+        <a class="link-btn abrir" href="topico-1/atv1.html" target="_blank" rel="noopener noreferrer">Abrir atividade &#8599;</a>
+        <a class="link-btn pdf" href="https://drive.google.com/file/d/1jrnj5my7YNoUCrzADEGmA2nGymDW3vR7/view?usp=sharing" target="_blank" rel="noopener noreferrer">Abrir em PDF &#8599;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </section>
+  <div class="nav-topicos">
+  <a href="index.html"><span class="rotulo-nav">&larr; Voltar</span>Índice e objetivos</a>
+  <a href="topico-2.html" class="prox"><span class="rotulo-nav">Próximo tópico &rarr;</span>2. Etnocentrismo e relativismo cultural</a>
+</div>
+
+</main>
+<div class="modal" id="modal-kuikuro" role="dialog" aria-modal="true" aria-labelledby="t-kuikuro">
+  <div class="modal-caixa">
+    <button class="fechar" type="button" aria-label="Fechar">&times;</button>
+    <span class="rotulo">Texto de apoio</span>
+    <h3 id="t-kuikuro">O mito do fogo entre os Kuikuro do Alto Xingu</h3>
+    <p>Segundo os Kuikuro, o dono do fogo era originalmente o urubu-rei. Havia um herói, Kanassa, que andava sempre com um vaga-lume na mão fechada — essa era a única luz que existia e, como ficava dentro da mão dele, havia muita escuridão. Kanassa desenhou no barro uma arraia, mas com o escuro não viu o que ele próprio tinha criado e foi ferrado por ela.</p>
+    <p>Pediu então o fogo à saracura, para poder enxergar, e esta lhe disse que não havia fogo, só o urubu-rei é que tinha. Kanassa desenhou um veado morto, escondeu-se na carniça e ficou esperando o urubu se aproximar. Quando este começou a comer, agarrou-o pelo pé e só o soltou quando o urubu-rei lhe trouxe o fogo — e ainda ensinou os Kuikuro a fazer fogo por fricção, com pedaços de flecha e uma varinha de urucum.</p>
+    <p>A narrativa transmite, ao mesmo tempo, um conhecimento técnico e uma visão de mundo: a ordem entre humanos e animais, o valor da astúcia e a origem de um bem coletivo.</p>
+    <p class="ref">Resumido de MINDLIN, Betty. O fogo e as chamas dos mitos. <em>Estudos Avançados</em>, v. 16, n. 44, 2002.</p>
+  </div>
+</div>
+
+<div class="modal" id="modal-laraia" role="dialog" aria-modal="true" aria-labelledby="t-laraia">
+  <div class="modal-caixa">
+    <button class="fechar" type="button" aria-label="Fechar">&times;</button>
+    <span class="rotulo">Texto de apoio &middot; Roque de Barros Laraia</span>
+    <h3 id="t-laraia">Esquimós e lapões: o mesmo frio, casas diferentes</h3>
+    <p>Durante muito tempo, duas respostas fáceis circularam para explicar as diferenças entre os povos. O <em>determinismo biológico</em> supunha que elas viriam da herança genética — ideia que serviu de base ao racismo científico e que a Antropologia refutou. O <em>determinismo geográfico</em>, por sua vez, imaginava o ambiente agindo mecanicamente sobre uma humanidade passiva.</p>
+    <p>O caso dos esquimós e dos lapões desmonta esse raciocínio. Ambos habitam a calota polar, sob invernos igualmente rigorosos, e respondem de maneiras distintas: os esquimós erguem iglus com blocos de neve e abandonam a casa quando mudam de lugar; os lapões vivem em tendas de peles de rena, que precisam ser desmontadas, descongeladas e secadas a cada deslocamento — em compensação, tornaram-se criadores de renas. Mesmo ambiente, soluções diferentes.</p>
+    <p>A cultura não é ditada pela natureza: ela seleciona possibilidades dentro do meio, e as forças decisivas dessa escolha estão na própria história do grupo. Some-se a isso o caráter <strong>acumulativo</strong> da herança cultural: conserva-se o antigo mesmo depois de adquirido o novo. Não trocamos os braços por nadadeiras para atravessar o oceano; construímos um barco e mantivemos o corpo intacto.</p>
+    <p class="ref">Adaptado de LARAIA, Roque de Barros. <em>Cultura: um conceito antropológico</em>. 14. ed. Rio de Janeiro: Jorge Zahar, 2001.</p>
+  </div>
+</div>
+
+<div class="modal" id="modal-santos" role="dialog" aria-modal="true" aria-labelledby="t-santos">
+  <div class="modal-caixa">
+    <button class="fechar" type="button" aria-label="Fechar">&times;</button>
+    <span class="rotulo">Texto de apoio &middot; José Luiz dos Santos</span>
+    <h3 id="t-santos">De <em>colere</em> à “alta cultura”: a palavra e o poder</h3>
+    <p>“Cultura” vem do latim <em>colere</em>, cultivar — a princípio ligada ao trabalho na terra. Pensadores romanos ampliaram o sentido para o refinamento pessoal, na expressão <em>cultura da alma</em>, e é desse uso que sobrevive o hábito de chamar de “culta” a pessoa de educação elaborada. O sentido moderno nasce no século XVIII, na Alemanha: fragmentada em várias unidades políticas, a nação encontrou na ideia de cultura um modo de afirmar uma unidade que a política ainda não lhe dava. No século XIX, com a expansão industrial e colonial europeia, a questão se generalizou e passou a ser tratada cientificamente pelas ciências humanas.</p>
+    <p>Dessa história vem uma tensão que persiste. Num sentido, cultura designa a <em>alta cultura</em> — a das camadas dominantes, apresentada como marca da civilização em oposição à barbárie. Noutro, designa qualquer modo de existência humana; é assim que as ciências sociais a empregam.</p>
+    <p>Numa sociedade dividida em classes, há controle e apropriação também no plano cultural. Reconhecer a diversidade não significa, porém, concluir que tudo é relativo — relativizar tudo acabaria por justificar as próprias relações de dominação. Num sentido mais amplo, a cultura é o legado comum de toda a humanidade.</p>
+    <p class="ref">Adaptado de SANTOS, José Luiz dos. <em>O que é cultura</em>. São Paulo: Brasiliense, 1987. (Coleção Primeiros Passos, 110).</p>
+  </div>
+</div>
+
+<footer>
+  Colégio Estadual Rodolfo de Oliveira &middot; Ciências Humanas e Sociais Aplicadas &middot; 1ª série do Ensino Médio<br>
+  <a href="index.html">Voltar ao índice</a>
+</footer>
+<script>
+(function(){
+  var aberto = null;
+  function abrir(id){
+    var m = document.getElementById(id);
+    if(!m) return;
+    m.classList.add('aberto');
+    document.body.style.overflow = 'hidden';
+    aberto = m;
+    var b = m.querySelector('.fechar');
+    if(b) b.focus();
+  }
+  function fechar(){
+    if(!aberto) return;
+    aberto.classList.remove('aberto');
+    document.body.style.overflow = '';
+    aberto = null;
+  }
+  document.querySelectorAll('button.mini-card').forEach(function(c){
+    c.addEventListener('click', function(){ abrir(c.getAttribute('data-modal')); });
+  });
+  document.querySelectorAll('.fechar').forEach(function(b){
+    b.addEventListener('click', fechar);
+  });
+  document.querySelectorAll('.modal').forEach(function(m){
+    m.addEventListener('click', function(e){ if(e.target === m) fechar(); });
+  });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') fechar(); });
+})();
+</script>
+</body>
+</html>

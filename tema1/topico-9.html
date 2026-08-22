@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9. Roteiro de análise de um objeto ou vestígio — Cultura Material e Imaterial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#1d3c47;
+  --azul-claro:#2f5c6b;
+  --bronze:#a9762f;
+  --bronze-claro:#c99a4d;
+  --sepia:#f7f1e6;
+  --papel:#fffdfa;
+  --tinta:#2c2a27;
+  --tinta-suave:#665f57;
+  --linha:#e6dcc8;
+  --branco:#ffffff;
+  --raio:12px;
+  --sombra:0 3px 14px rgba(29,60,71,.08);
+  --max:900px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Source Serif 4',Georgia,serif;
+  background:var(--papel);color:var(--tinta);
+  line-height:1.75;font-size:17px;
+}
+h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;line-height:1.25;color:var(--azul)}
+a{color:var(--bronze)}
+p{margin-bottom:15px;text-align:justify}
+
+.topo{
+  background:var(--branco);border-bottom:1px solid var(--linha);
+  padding:14px 22px;position:sticky;top:0;z-index:20;
+}
+.topo-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.trilha{font-size:.82rem;color:var(--tinta-suave)}
+.trilha a{color:var(--azul-claro);text-decoration:none;font-weight:600}
+.trilha a:hover{text-decoration:underline}
+.medalhao-mini{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;
+  color:var(--bronze);border:1px solid var(--linha);border-radius:999px;padding:4px 12px;background:var(--sepia)}
+
+header.hero-claro{
+  max-width:var(--max);margin:0 auto;padding:46px 22px 18px;text-align:left;
+}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--bronze);margin-bottom:14px}
+.hero-claro h1{font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:900;margin-bottom:12px}
+.hero-claro .sub{font-size:1.03rem;color:var(--tinta-suave);font-style:italic;max-width:700px}
+.habilidade-box{margin:26px 0 0;background:var(--sepia);
+  border-left:4px solid var(--bronze);border-radius:0 10px 10px 0;padding:16px 20px;
+  font-size:.94rem;color:var(--tinta)}
+.habilidade-box strong{color:var(--azul)}
+
+main{max-width:var(--max);margin:0 auto;padding:6px 22px 80px}
+section{margin-top:20px}
+.sec-titulo{font-size:1.5rem;margin-bottom:6px;padding-bottom:8px;
+  border-bottom:3px solid var(--bronze);display:inline-block}
+.sec-intro{color:var(--tinta-suave);margin:12px 0 20px;font-size:.98rem}
+
+/* COLUNA LATERAL DIREITA DE BOXES */
+.lateral{float:right;width:250px;margin:0 0 18px 26px;display:grid;gap:12px}
+.mini-card{width:100%;text-align:left;cursor:pointer;font-family:inherit;
+  background:var(--branco);border:1px solid var(--linha);border-top:4px solid var(--azul-claro);
+  border-radius:var(--raio);padding:14px 16px;box-shadow:var(--sombra);
+  transition:transform .15s,box-shadow .15s}
+.mini-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(29,60,71,.14)}
+.mini-card .rotulo{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:6px}
+.mini-card h4{font-size:.95rem;margin-bottom:6px;line-height:1.3}
+.mini-card .chamada{font-size:.8rem;color:var(--tinta-suave);line-height:1.5;display:block}
+.mini-card .abrir{display:block;margin-top:9px;font-size:.76rem;font-weight:600;color:var(--bronze)}
+.mini-card.card-slides{border-top-color:var(--bronze)}
+a.mini-card{display:block;text-decoration:none;color:var(--tinta)}
+
+/* BOX PRATIQUE COM LARGURA RESTRITA PARA NÃO SOBREPOR A COLUNA LATERAL */
+.box-pratique-inline {
+  max-width: 100%;
+  clear: both;
+  background: #f9f6f0;
+  border: 1px solid #e2d9cc;
+  border-left: 4px solid var(--bronze);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.03);
+}
+.box-pratique-inline .rotulo-pratique{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--bronze);
+  display:block;
+  margin-bottom:4px;
+  font-weight:600;
+}
+.box-pratique-inline h3{
+  font-size:1.02rem;
+  color:var(--azul);
+  margin-bottom:4px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.box-pratique-inline .desc-pratique{
+  font-size:.82rem;
+  color:var(--tinta-suave);
+  margin-bottom:10px;
+  text-align:left;
+  line-height:1.35;
+}
+.card-inner-atividade{
+  background:var(--branco);
+  border:1px solid #eae5da;
+  border-radius:8px;
+  padding:10px 12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.02);
+}
+.card-inner-atividade h4{
+  font-size:.88rem;
+  color:var(--azul);
+  margin-bottom:4px;
+}
+.card-inner-atividade p{
+  font-size:.8rem;
+  color:var(--tinta-suave);
+  margin-bottom:10px;
+  text-align:left;
+  line-height:1.3;
+}
+.botoes-grupo{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.btn-atv-solido{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--azul);
+  color:#ffffff !important;
+  text-decoration:none;
+  border-radius:6px;
+  padding:6px 10px;
+  font-size:.78rem;
+  font-weight:600;
+  transition:background .15s ease;
+}
+.btn-atv-solido:hover{
+  background:var(--azul-claro);
+}
+.btn-atv-contorno{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+  color:var(--bronze) !important;
+  border:1px solid var(--bronze);
+  text-decoration:none;
+  border-radius:6px;
+  padding:6px 10px;
+  font-size:.78rem;
+  font-weight:600;
+  transition:background .15s ease;
+}
+.btn-atv-contorno:hover{
+  background:var(--sepia);
+}
+
+/* CAIXAS DE CONTEUDO */
+.definicao{background:var(--sepia);border-left:5px solid var(--bronze);border-radius:0 10px 10px 0;
+  padding:16px 20px;margin:18px 0;font-size:.97rem}
+.definicao strong{color:var(--azul)}
+.apoio{background:var(--branco);border:1px solid var(--linha);border-top:4px solid var(--azul-claro);
+  border-radius:var(--raio);padding:18px 22px;margin:20px 0;box-shadow:var(--sombra)}
+.apoio .rotulo{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:6px}
+.apoio h4{font-size:1.02rem;margin-bottom:8px}
+.apoio p{font-size:.95rem}
+.apoio p:last-child{margin-bottom:0}
+.apoio .ref{font-size:.78rem;color:#8b7f74;border-top:1px dashed var(--linha);padding-top:8px;margin-top:4px;text-align:left}
+.pesquise{background:var(--azul);color:#e7eef0;border-radius:var(--raio);padding:20px 22px;margin:22px 0}
+.pesquise h4{color:var(--bronze-claro);font-size:1rem;margin-bottom:8px}
+.pesquise p{font-size:.93rem;color:#dbe4e7;margin-bottom:12px;text-align:left}
+.pesquise a{display:inline-block;background:var(--bronze);color:#1d1a16;text-decoration:none;
+  border-radius:999px;padding:8px 20px;font-weight:600;font-size:.88rem}
+
+.tabela-wrap{overflow-x:auto;margin:20px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem;background:var(--branco);min-width:480px}
+th,td{border:1px solid var(--linha);padding:11px 13px;text-align:left;vertical-align:top}
+th{background:var(--azul);color:#f2ece2;font-family:'Playfair Display',serif;font-weight:600}
+tbody tr:nth-child(even){background:var(--sepia)}
+
+/* GALERIA DO OBJETO */
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin:22px 0}
+figure.peca{background:var(--branco);border:1px solid var(--linha);border-radius:var(--raio);
+  overflow:hidden;box-shadow:var(--sombra);margin:0}
+figure.peca img{display:block;width:100%;height:230px;object-fit:cover;background:var(--sepia)}
+figure.peca figcaption{font-size:.8rem;color:var(--tinta-suave);padding:10px 14px;line-height:1.5}
+figure.peca figcaption b{display:block;color:var(--azul);font-family:'Playfair Display',serif;font-size:.9rem;margin-bottom:3px}
+.credito{font-size:.76rem;color:#8b7f74;text-align:left;margin-top:-6px}
+
+/* ROTEIRO */
+.roteiro{counter-reset:passo;display:grid;gap:14px;margin-top:6px}
+.passo{background:var(--branco);border:1px solid var(--linha);border-radius:var(--raio);
+  padding:18px 22px 18px 64px;position:relative;box-shadow:var(--sombra)}
+.passo::before{counter-increment:passo;content:counter(passo);position:absolute;left:20px;top:18px;
+  width:30px;height:30px;border-radius:50%;background:var(--azul);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.85rem}
+.passo h4{font-size:1rem;margin-bottom:4px}
+.passo p{font-size:.93rem;color:var(--tinta-suave)}
+.passo .aplicacao{background:var(--sepia);border-left:3px solid var(--bronze);border-radius:0 8px 8px 0;
+  padding:10px 14px;margin:10px 0 12px;font-size:.9rem;color:var(--tinta);text-align:left}
+.passo .aplicacao b{color:var(--azul)}
+.links-pesquisa{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.links-pesquisa span.rotulo-links{font-family:'JetBrains Mono',monospace;font-size:.62rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--bronze);width:100%;margin-bottom:-2px}
+.links-pesquisa a{display:inline-block;background:var(--sepia);border:1px solid var(--linha);
+  color:var(--azul-claro);text-decoration:none;border-radius:999px;padding:5px 13px;
+  font-size:.79rem;font-weight:600;transition:background .15s,border-color .15s}
+.links-pesquisa a:hover{background:var(--bronze);border-color:var(--bronze);color:#1d1a16}
+
+/* NAV DE RODAPE ENTRE TOPICOS */
+.nav-topicos{display:flex;justify-content:space-between;gap:14px;margin-top:28px;flex-wrap:wrap;clear:both}
+.nav-topicos a{flex:1;min-width:200px;background:var(--branco);border:1px solid var(--linha);
+  border-radius:var(--raio);padding:16px 20px;text-decoration:none;color:var(--tinta);box-shadow:var(--sombra)}
+.nav-topicos a:hover{background:var(--sepia)}
+.nav-topicos .rotulo-nav{display:block;font-family:'JetBrains Mono',monospace;font-size:.66rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--bronze);margin-bottom:6px}
+.nav-topicos .prox{text-align:right}
+
+footer{background:var(--sepia);border-top:1px solid var(--linha);color:var(--tinta-suave);
+  padding:30px 22px;text-align:center;font-size:.85rem;margin-top:40px}
+footer a{color:var(--azul-claro)}
+
+@media (max-width:760px){
+  main section{display:flex;flex-direction:column}
+  .lateral{float:none;width:auto;margin:18px 0 0;order:99}
+  .box-pratique-inline{max-width:100%;}
+  .lateral::before{content:"Recursos de aula";font-family:'Playfair Display',Georgia,serif;
+    font-size:1.05rem;color:var(--azul);border-bottom:3px solid var(--bronze);
+    display:inline-block;justify-self:start;padding-bottom:6px;margin-bottom:2px}
+  .mini-card .chamada{font-size:.85rem}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  main{padding:0 16px 60px}
+  .hero-claro{padding:34px 16px 14px}
+  .passo{padding:16px 16px 16px 56px}
+  .nav-topicos .prox{text-align:left}
+  figure.peca img{height:200px}
+  .botoes-grupo{flex-direction:column;width:100%}
+  .btn-atv-solido, .btn-atv-contorno{width:100%}
+}
+</style>
+</head>
+<body>
+<nav class="topo">
+  <div class="topo-inner">
+    <div class="trilha"><a href="index.html">&larr; Início</a> &nbsp;/&nbsp; Tópico 9: Roteiro de análise de um objeto ou vestígio</div>
+    <div class="medalhao-mini">EM13CHS104</div>
+  </div>
+</nav>
+<main>
+  <header class="hero-claro" style="padding-top:26px">
+    <p class="eyebrow">Tópico 9 de 9</p>
+    <h1>Roteiro de análise de um objeto ou vestígio</h1>
+    <p class="sub">Sete perguntas que transformam um objeto em fonte histórica — aplicadas, aqui, a uma urna funerária marajoara.</p>
+    <div class="habilidade-box">
+      <strong>EM13CHS104</strong> — Analisar objetos e vestígios da cultura material e imaterial de modo a identificar conhecimentos, valores, crenças e práticas que caracterizam a identidade e a diversidade cultural de sociedades inseridas no tempo e no espaço.
+    </div>
+  </header>
+
+  <!-- ===== 9.1 O OBJETO ===== -->
+  <section>
+    <aside class="lateral">
+      <a class="mini-card card-slides" href="https://drive.google.com/file/d/1pHbPY_EPSHa9Tci8kvcyTXKrz-rDg30x/view?usp=sharing" target="_blank" rel="noopener">
+        <span class="rotulo">Slides da aula</span>
+        <h4>Apresentação em PDF</h4>
+        <span class="chamada">Acesse os slides com o conteúdo explicativo e visual da aula.</span>
+        <span class="abrir">Abrir PDF &rarr;</span>
+      </a>
+    </aside>
+
+    <h2 class="sec-titulo">9.1 O objeto de estudo</h2>
+    <p class="sec-intro">Antes do roteiro, é preciso ter um objeto diante dos olhos. Trabalharemos com a urna funerária marajoara — uma peça que responde bem às sete perguntas e que reúne, em um único vestígio, quase tudo o que foi visto nos tópicos anteriores.</p>
+
+    <div class="galeria">
+      <figure class="peca">
+        <img src="topico-1/urna-marajoara-01.jpg" alt="Urna funerária marajoara de cerâmica, com decoração antropomorfa">
+        <figcaption><b>Vista frontal</b>Urna de cerâmica da fase Marajoara, ilha de Marajó (PA). Observe a forma antropomorfa e a divisão do corpo em faixas decoradas.</figcaption>
+      </figure>
+      <figure class="peca">
+        <img src="topico-1/urna-marajoara-02.jpg" alt="Detalhe da decoração pintada e incisa de uma urna marajoara">
+        <figcaption><b>Detalhe da decoração</b>Pintura em vermelho e preto sobre engobo branco, combinada com incisões e excisões feitas antes da queima.</figcaption>
+      </figure>
+      <figure class="peca">
+        <img src="topico-1/urna-marajoara-03.jpg" alt="Urnas marajoaras expostas em vitrine de museu">
+        <figcaption><b>Em exposição</b>Peças em vitrine de museu — retiradas do território de origem, hoje distantes das comunidades amazônicas.</figcaption>
+      </figure>
+    </div>
+    <p class="credito">Imagens de acervos museológicos (Museu Paraense Emílio Goeldi, Museu Nacional/UFRJ e coleções congêneres). Ao usar as fotografias, indique sempre o acervo e o autor da imagem.</p>
+
+    <div class="apoio">
+      <span class="rotulo">Ficha do objeto</span>
+      <h4>Urna funerária marajoara</h4>
+      <p><b>O que é:</b> vasilha cerâmica de grande porte — exemplares conhecidos ultrapassam 80 cm de altura — usada para guardar ossos humanos.</p>
+      <p><b>Onde:</b> ilha de Marajó, foz do rio Amazonas, estado do Pará. Encontradas sobretudo em <b>tesos</b>, montículos artificiais de terra erguidos acima do nível das cheias.</p>
+      <p><b>Quando:</b> fase Marajoara, situada aproximadamente entre os séculos V e XIV d.C. As balizas variam conforme o pesquisador e o sítio datado.</p>
+      <p><b>Por que ela serve ao roteiro:</b> é objeto arqueológico, funerário, decorado, de técnica sofisticada, com interpretação disputada e com uma história de coleta e exposição carregada de conflitos. Cada passo do roteiro encontra nela material de sobra.</p>
+    </div>
+
+    <div class="definicao">
+      <strong>Atenção ao vocabulário.</strong> <b>Sepultamento secundário</b> é a prática de recolher os ossos do morto algum tempo depois da decomposição do corpo e depositá-los em outro lugar — no caso marajoara, dentro da urna. O funeral, portanto, não é um evento único: é um processo que se estende no tempo e envolve o grupo mais de uma vez.
+    </div>
+  </section>
+
+  <!-- ===== 9.2 O ROTEIRO ===== -->
+  <section>
+    <h2 class="sec-titulo">9.2 O roteiro em sete passos</h2>
+    <p class="sec-intro">Este é o procedimento central da habilidade EM13CHS104. Cada passo traz a pergunta geral, a sua aplicação à urna marajoara e links de pesquisa para você conferir, ampliar ou contestar o que está escrito aqui.</p>
+
+    <div class="roteiro">
+
+      <div class="passo">
+        <h4>Descrever antes de interpretar</h4>
+        <p>O que é, exatamente? Forma, tamanho, material, estado de conservação, marcas de uso, decoração. Descreva o que você vê, sem ainda atribuir função ou significado.</p>
+        <div class="aplicacao"><b>Na urna:</b> recipiente de barro queimado, de corpo arredondado e gargalo estreito, com traços de rosto e membros modelados. Superfície coberta por engobo claro, sobre o qual há pintura vermelha e preta, além de sulcos e áreas rebaixadas. Nada disso, ainda, diz para que servia.</div>
+        <div class="links-pesquisa">
+          <span class="rotulo-links">Pesquise</span>
+          <a href="https://www.google.com/search?q=urna+funer%C3%A1ria+marajoara+descri%C3%A7%C3%A3o+cer%C3%A2mica" target="_blank" rel="noopener">Descrição da peça</a>
+          <a href="https://www.google.com/search?q=cer%C3%A2mica+marajoara+urna+funer%C3%A1ria&amp;tbm=isch" target="_blank" rel="noopener">Banco de imagens</a>
+          <a href="https://www.google.com/search?q=%22fase+Marajoara%22+estilos+cer%C3%A2micos+Joanes+Pintado+Aruan" target="_blank" rel="noopener">Estilos cerâmicos</a>
+        </div>
+      </div>
+
+      <div class="passo">
+        <h4>Situar no tempo e no espaço</h4>
+        <p>Onde foi encontrado ou produzido? De quando é? Que sociedade o produziu? Se a datação é incerta ou disputada, registre a controvérsia em vez de escolher um número.</p>
+        <div class="aplicacao"><b>Na urna:</b> ilha de Marajó, sociedade marajoara, aproximadamente entre os séculos V e XIV. A cronologia e a duração da fase são objeto de debate entre arqueólogos — registre o intervalo e a divergência, não uma data isolada.</div>
+        <div class="links-pesquisa">
+          <span class="rotulo-links">Pesquise</span>
+          <a href="https://www.google.com/search?q=cultura+marajoara+data%C3%A7%C3%A3o+cronologia+arqueologia+Maraj%C3%B3" target="_blank" rel="noopener">Datação e cronologia</a>
+          <a href="https://www.google.com/search?q=tesos+Maraj%C3%B3+mont%C3%ADculos+artificiais+arqueologia" target="_blank" rel="noopener">Tesos de Marajó</a>
+          <a href="https://scholar.google.com/scholar?q=arqueologia+marajoara+cronologia" target="_blank" rel="noopener">Artigos acadêmicos</a>
+        </div>
+      </div>
+
+      <div class="passo">
+        <h4>Reconstituir a técnica</h4>
+        <p>Que matérias-primas foram usadas e de onde vieram? Que conhecimento foi necessário para produzir o objeto? Quem, dentro do grupo, dominava esse saber e como ele era transmitido?</p>
+        <div class="aplicacao"><b>Na urna:</b> argila local misturada a antiplásticos como o <b>cauixi</b> (esponja de água doce) e o <b>caraipé</b> (casca de árvore queimada), que reduzem trincas na secagem e na queima. Some-se a isso o domínio da pintura em camadas e da queima controlada: é conhecimento técnico acumulado, transmitido entre gerações de ceramistas.</div>
+        <div class="links-pesquisa">
+          <span class="rotulo-links">Pesquise</span>
+          <a href="https://www.google.com/search?q=cauixi+caraip%C3%A9+antipl%C3%A1stico+cer%C3%A2mica+arqueol%C3%B3gica+amaz%C3%B4nica" target="_blank" rel="noopener">Cauixi e caraipé</a>
+          <a href="https://www.google.com/search?q=t%C3%A9cnica+de+produ%C3%A7%C3%A3o+cer%C3%A2mica+marajoara+queima+engobo" target="_blank" rel="noopener">Modelagem e queima</a>
+          <a href="https://www.google.com/search?q=incis%C3%A3o+excis%C3%A3o+pintura+cer%C3%A2mica+marajoara+decora%C3%A7%C3%A3o" target="_blank" rel="noopener">Técnicas decorativas</a>
+        </div>
+      </div>
+
+      <div class="passo">
+        <h4>Identificar o uso</h4>
+        <p>Era objeto cotidiano, ritual, funerário ou de prestígio? De uso individual ou coletivo? O contexto em que foi encontrado — uma sepultura, uma cozinha, um templo — é decisivo para responder.</p>
+        <div class="aplicacao"><b>Na urna:</b> uso funerário, em sepultamentos secundários dentro dos tesos. O que sustenta essa afirmação não é a beleza da peça, e sim o <b>contexto de deposição</b>: ossos humanos no interior, associação com outras urnas, posição no montículo. Peça sem contexto registrado perde boa parte do que poderia informar.</div>
+        <div class="links-pesquisa">
+          <span class="rotulo-links">Pesquise</span>
+          <a href="https://www.google.com/search?q=sepultamento+secund%C3%A1rio+urna+funer%C3%A1ria+marajoara" target="_blank" rel="noopener">Sepultamento secundário</a>
+          <a href="https://www.google.com/search?q=contexto+arqueol%C3%B3gico+deposi%C3%A7%C3%A3o+import%C3%A2ncia+interpreta%C3%A7%C3%A3o" target="_blank" rel="noopener">Contexto de deposição</a>
+          <a href="https://www.google.com/search?q=rituais+funer%C3%A1rios+Maraj%C3%B3+arqueologia+amaz%C3%B4nica" target="_blank" rel="noopener">Rituais funerários</a>
+        </div>
+      </div>
+
+      <div class="passo">
+        <h4>Ler os valores e as crenças</h4>
+        <p>Que visão de mundo o objeto expressa? O que ele revela sobre hierarquias sociais, sobre papéis de gênero, sobre a relação do grupo com a natureza, com os mortos e com o sagrado?</p>
+        <div class="aplicacao"><b>Na urna:</b> a recorrência de figuras femininas e de motivos ligados a animais amazônicos levou pesquisadoras como <b>Anna Roosevelt</b> a sustentar a hipótese de linhagens matrilineares e de uma sociedade complexa e numerosa na Amazônia — o oposto da velha imagem de "floresta vazia". É interpretação, não certeza: apresente-a como hipótese sustentada por indícios.</div>
+        <div class="links-pesquisa">
+          <span class="rotulo-links">Pesquise</span>
+          <a href="https://www.google.com/search?q=Anna+Roosevelt+Moundbuilders+Maraj%C3%B3+matrilinear+sociedade+complexa" target="_blank" rel="noopener">Hipótese de Roosevelt</a>
+          <a href="https://www.google.com/search?q=iconografia+cer%C3%A2mica+marajoara+figuras+femininas+significado" target="_blank" rel="noopener">Iconografia</a>
+          <a href="https://www.google.com/search?q=%22floresta+vazia%22+Amaz%C3%B4nia+densidade+popula%C3%A7%C3%A3o+pr%C3%A9-colonial+debate" target="_blank" rel="noopener">Debate da "floresta vazia"</a>
+        </div>
+      </div>
+
+      <div class="passo">
+        <h4>Confrontar com outras fontes</h4>
+        <p>O que os textos, os mapas, a tradição oral e outros objetos confirmam ou contradizem? Uma interpretação isolada é hipótese; sustentada por várias fontes, torna-se argumento.</p>
+        <div class="aplicacao"><b>Na urna:</b> cruze-a com os relatos de cronistas que desceram o Amazonas no século XVI, com a distribuição das <b>terras pretas de índio</b> (solos antrópicos que indicam ocupação longa e densa), com o mapeamento dos tesos e com a tradição oral de povos amazônicos atuais. Fontes independentes que apontam na mesma direção transformam suspeita em argumento.</div>
+        <div class="links-pesquisa">
+          <span class="rotulo-links">Pesquise</span>
+          <a href="https://www.google.com/search?q=terra+preta+de+%C3%ADndio+solos+antr%C3%B3picos+ocupa%C3%A7%C3%A3o+amaz%C3%B4nica" target="_blank" rel="noopener">Terra preta de índio</a>
+          <a href="https://www.google.com/search?q=cronistas+s%C3%A9culo+XVI+rio+Amazonas+aldeias+populosas+Carvajal" target="_blank" rel="noopener">Relatos de cronistas</a>
+          <a href="https://www.google.com/search?q=tradi%C3%A7%C3%A3o+oral+povos+ind%C3%ADgenas+amaz%C3%B4nicos+mem%C3%B3ria+ancestrais" target="_blank" rel="noopener">Tradição oral</a>
+        </div>
+      </div>
+
+      <div class="passo">
+        <h4>Perguntar quem conta essa história</h4>
+        <p>Quem escavou, colecionou ou expõe esse objeto? Ele permanece no território de origem ou foi levado para outro lugar? Quem hoje se reconhece como herdeiro desse bem e participa das decisões sobre ele?</p>
+        <div class="aplicacao"><b>Na urna:</b> boa parte das peças saiu de Marajó no século XIX por escavações amadoras e pelo comércio de antiguidades. Hoje elas estão em museus brasileiros — parte do acervo do Museu Nacional foi perdida no incêndio de 2018 — e também em coleções no exterior. Quem decide onde a urna fica, como é exposta e o que se diz sobre ela nem sempre é quem descende de quem a produziu.</div>
+        <div class="links-pesquisa">
+          <span class="rotulo-links">Pesquise</span>
+          <a href="https://www.google.com/search?q=cole%C3%A7%C3%A3o+cer%C3%A2mica+marajoara+Museu+Goeldi+acervo" target="_blank" rel="noopener">Acervo do Museu Goeldi</a>
+          <a href="https://www.google.com/search?q=inc%C3%AAndio+Museu+Nacional+2018+perdas+acervo+arqueol%C3%B3gico" target="_blank" rel="noopener">Incêndio do Museu Nacional</a>
+          <a href="https://www.google.com/search?q=repatria%C3%A7%C3%A3o+de+bens+arqueol%C3%B3gicos+ind%C3%ADgenas+museus+debate" target="_blank" rel="noopener">Repatriação e museus</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 9.3 SINTESE ===== -->
+  <section>
+    <h2 class="sec-titulo">9.3 Síntese do procedimento</h2>
+    <p class="sec-intro">O quadro abaixo condensa o percurso: de cada pergunta nasce um tipo diferente de conhecimento sobre a sociedade que produziu o objeto.</p>
+
+    <div class="tabela-wrap">
+      <table>
+        <thead>
+          <tr><th>Passo</th><th>Pergunta-chave</th><th>O que a urna marajoara revela</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>1. Descrever</b></td><td>O que é, exatamente?</td><td>Cerâmica de grande porte, forma antropomorfa, pintura e incisões.</td></tr>
+          <tr><td><b>2. Situar</b></td><td>Onde e quando?</td><td>Marajó (PA), fase Marajoara, séculos V a XIV — com cronologia debatida.</td></tr>
+          <tr><td><b>3. Técnica</b></td><td>Como foi feito e por quem?</td><td>Argila com cauixi ou caraipé, engobo, pintura e queima controlada: saber especializado e transmitido.</td></tr>
+          <tr><td><b>4. Uso</b></td><td>Para que servia?</td><td>Sepultamento secundário em tesos — conclusão sustentada pelo contexto de deposição.</td></tr>
+          <tr><td><b>5. Valores</b></td><td>Que visão de mundo expressa?</td><td>Relação elaborada com os mortos; iconografia que alimenta hipóteses sobre gênero e hierarquia.</td></tr>
+          <tr><td><b>6. Confronto</b></td><td>Outras fontes confirmam?</td><td>Terras pretas, tesos, crônicas do século XVI e tradição oral apontam para ocupação densa.</td></tr>
+          <tr><td><b>7. Quem conta</b></td><td>Quem guarda e narra?</td><td>Museus e coleções, muitas vezes distantes de Marajó; herdeiros nem sempre ouvidos.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pesquise">
+      <h4>Aplique o roteiro por conta própria</h4>
+      <p>Escolha um objeto do seu cotidiano ou do seu bairro — uma peça de artesanato, um monumento de Aparecida de Goiânia, uma fotografia de família, um instrumento de trabalho — e responda às sete perguntas por escrito. Se travar em algum passo, o próprio travamento é informação: significa que falta contexto, e é ele que você precisa procurar.</p>
+      <a href="https://www.google.com/search?q=roteiro+de+an%C3%A1lise+de+cultura+material+fonte+hist%C3%B3rica+objeto" target="_blank" rel="noopener">Ver exemplos de análise</a>
+    </div>
+
+    <div class="definicao" style="margin-top:26px">
+      <strong>Fechamento.</strong> Este roteiro reúne, de forma sistemática, as perguntas que percorreram todo o material: da definição de cultura (tópico 1) à distinção entre etnocentrismo e relativismo (tópico 2), da cultura material e imaterial (tópicos 3 e 4) aos vestígios arqueológicos brasileiros e ao patrimônio (tópicos 5, 6 e 7), até a diversidade cultural brasileira (tópico 8). Aplicá-lo é colocar em prática a habilidade EM13CHS104.
+    </div>
+
+    <!-- BOX PRATIQUE -->
+    <div class="box-pratique-inline">
+      <span class="rotulo-pratique">PRATIQUE</span>
+      <h3>📝 Atividade de fixação</h3>
+      <p class="desc-pratique">Reforce o conteúdo estudado com os textos de apoio e as questões abaixo.</p>
+      
+      <div class="card-inner-atividade">
+        <h4>📄 Atividade 9 — Roteiro de Análise de um Objeto ou Vestígio</h4>
+        <p>Leituras de apoio, questões dissertativas e objetivas.</p>
+        
+        <div class="botoes-grupo">
+          <a class="btn-atv-solido" href="topico-1/atv9.html" target="_blank" rel="noopener">Abrir atividade ↗</a>
+          <a class="btn-atv-contorno" href="https://drive.google.com/file/d/1P4-lZEljtgfqRMcgOg6LspLvGtuuTcgR/view?usp=sharing"_blank" rel="noopener">Abrir em PDF ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="nav-topicos">
+    <a href="topico-8.html"><span class="rotulo-nav">&larr; Tópico anterior</span>8. Identidade e diversidade cultural brasileira</a>
+    <a href="index.html" class="prox"><span class="rotulo-nav">Concluir &rarr;</span>Voltar ao índice</a>
+  </div>
+
+</main>
+<footer>
+  Colégio Estadual Rodolfo de Oliveira &middot; Ciências Humanas e Sociais Aplicadas &middot; 1ª série do Ensino Médio<br>
+  <a href="index.html">Voltar ao índice</a>
+</footer>
+</body>
+</html>

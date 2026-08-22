@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade — Tópico 3: Cultura Material: os objetos como documentos | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f8f4ee;
+    --bg-alt:#efe6d8;
+    --paper:#fffdfa;
+    --ink:#2c2a27;
+    --ink-soft:#665f57;
+    --terracota:#8c4327;
+    --terracota-dark:#5c2914;
+    --terracota-2:#b55d38;
+    --bronze:#a9762f;
+    --bronze-light:#e6dcc8;
+    --line:#e2d7c3;
+    --shadow:0 10px 30px rgba(44,42,39,.12);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+  .campo-resposta{user-select:text;}
+
+  /* ===== CAPA / GATE ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(to bottom, #3b170a, #8c4327, #b55d38);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute;
+    top:0; bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:896px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative;
+    z-index:1;
+    background:var(--paper);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    max-width:480px;
+    width:100%;
+    padding:36px 32px;
+    text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--terracota-dark);
+    background:rgba(140,67,39,.12); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.6rem; margin:0 0 10px; color:var(--terracota-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--terracota); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.08);}
+  .capa-aviso{font-size:.78rem; color:#a33; margin-top:8px; display:none;}
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--terracota-dark); color:#fdf7f2;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px;
+    font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2); border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--bronze); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:28px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--terracota-dark);
+    background:rgba(140,67,39,.12); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--terracota-dark);}
+
+  /* ===== TEXTO DE APOIO ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:24px 28px; margin-bottom:20px;
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.2rem; color:var(--terracota-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:12px; display:block;}
+  .texto-apoio p{margin:0 0 12px; color:var(--ink);}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.2rem; color:var(--terracota-dark);
+    margin:0 0 18px; display:flex; align-items:center; gap:10px;
+  }
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:32px;
+  }
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--terracota);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:12px; display:flex; align-items:flex-start;}
+  .questao textarea{
+    width:100%; min-height:100px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:.96rem; resize:vertical; color:var(--ink);
+  }
+  .questao textarea:focus{outline:2px solid var(--terracota-2); outline-offset:1px;}
+  .contador-chars{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+
+  .comentario-prof{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#fbf3ea; border:1px solid #ebd4c1; border-radius:8px; font-size:.9rem; color:var(--terracota-dark);
+  }
+  .comentario-prof.show{display:block;}
+  .comentario-prof b{display:block; margin-bottom:4px; font-family:var(--font-title); font-size:.92rem;}
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#fdf3e2; border:1px solid #f1d9a6; color:#8a5a10;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn-primario{background:var(--terracota); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--bronze); color:#fff;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  /* ===== POPUP ===== */
+  .popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(36,20,14,.6);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .popup-overlay.show{display:flex;}
+  .popup-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:420px; width:100%; padding:32px 28px; text-align:center;
+  }
+  .popup-card .emoji{font-size:2.4rem; margin-bottom:10px;}
+  .popup-card h3{font-family:var(--font-title); margin:0 0 8px; color:var(--terracota-dark);}
+  .popup-card p{color:var(--ink-soft); font-size:.94rem; margin:0 0 20px;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">1ª série · Ensino Médio · CERO</span>
+    <h1>Cultura Material: os Objetos como Documentos</h1>
+    <p class="desc">Leituras de apoio intercaladas com 5 questões dissertativas sobre cultura material, vestígios arqueológicos e a vida dos sujeitos históricos. Preencha os dados para começar.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 1ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Por favor, digite seu nome para continuar.</div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Respondidas: 0/5</span>
+  </div>
+
+  <div class="wrap">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Ciências Humanas e Sociais Aplicadas / 1ª série do Ensino Médio &nbsp;|&nbsp; (EM13CHS104) – Cultura material: os objetos como documentos</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Atividade do Tópico 3</span>
+      <h1>Cultura Material: os objetos como documentos</h1>
+      <p class="sub">Leia cada trecho de apoio e responda à questão dissertativa correspondente logo em seguida.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+      <h2 class="questoes-titulo">&#9997;&#65039; Leituras e Questões Dissertativas</h2>
+
+      <!-- BLOCO 1 -->
+      <section class="texto-apoio selecionavel">
+        <h2>1. Os elementos materiais e os objetos como documentos</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 1</span>
+        <p>Os elementos materiais de uma sociedade incluem instrumentos e ferramentas, casas e utensílios domésticos, roupas, alimentos consumidos, adornos, meios de transporte, entre outros objetos que ela produz para garantir a existência de seus membros. Ao construir os objetos da cultura material, uma sociedade faz uso dos recursos disponíveis na natureza: metais, madeira, pedras, fibras vegetais, argila.</p>
+        <p>Para o historiador, esses objetos não são apenas coisas: são <b>documentos</b>. Um vaso de cerâmica informa sobre a técnica dominada pelo grupo, sobre os recursos do ambiente, sobre a divisão do trabalho, sobre as trocas com outros povos — e, quando decorado, sobre o que aquela sociedade considerava digno de ser representado.</p>
+      </section>
+
+      <div class="questao" data-questao="1">
+        <div class="enunciado"><span class="num-q">1</span> Por que os objetos materiais são considerados "documentos" para o historiador? Dê exemplos de informações que um artefato, como um vaso de cerâmica, pode revelar sobre uma determinada sociedade.</div>
+        <textarea id="resp-1" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que os objetos não são apenas coisas físicas, mas fontes históricas que carregam marcas das relações humanas. O estudante deve citar exemplos do texto, indicando que um vaso de cerâmica pode revelar: as técnicas de produção dominadas, os recursos naturais do ambiente, a divisão do trabalho, as redes de troca comercial e os valores estéticos/simbólicos representados na decoração.
+        </div>
+      </div>
+
+      <!-- BLOCO 2 -->
+      <section class="texto-apoio selecionavel">
+        <h2>2. A cultura material como fonte privilegiada</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 2</span>
+        <p>Nem toda sociedade produziu registros escritos, e nem todo grupo social teve acesso à escrita mesmo onde ela existia. Camponeses, mulheres, pessoas escravizadas e povos originários aparecem pouco, ou de forma distorcida, na documentação oficial.</p>
+        <p>Os objetos que essas pessoas produziram e usaram no seu dia a dia permitem recuperar vivências, saberes e experiências que os textos históricos tradicionais frequentemente silenciam.</p>
+      </section>
+
+      <div class="questao" data-questao="2">
+        <div class="enunciado"><span class="num-q">2</span> Explique por que a cultura material é considerada uma "fonte privilegiada" para estudar a história de grupos sociais marginalizados ou subalternos.</div>
+        <textarea id="resp-2" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante mencione que nem todas as sociedades ou grupos sociais possuíam acesso à escrita e que os registros oficiais costumavam silenciar ou distorcer a história de camponeses, mulheres, pessoas escravizadas e povos originários. Assim, os objetos do cotidiano fabricados e usados por esses grupos tornam-se fontes essenciais para recuperar suas vivências e experiências históricas.
+        </div>
+      </div>
+
+      <!-- BLOCO 3 -->
+      <section class="texto-apoio selecionavel">
+        <h2>3. Estudo de caso: Vasos gregos e a vida das mulheres</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 3</span>
+        <p>As informações sobre a vida feminina na Grécia antiga chegaram até nós, em grande parte, por textos escritos por homens, que registravam sobretudo o mundo público e as normas ideais de comportamento. Para ampliar esse conhecimento, historiadores e sociólogos passaram a comparar as fontes textuais com evidências da cultura material encontradas por arqueólogos.</p>
+        <p>Entre essas evidências estão vasos decorados com representações da vida cotidiana, incluindo cenas de mulheres em diversas atividades. O confronto entre texto e objeto corrige e complementa a imagem que teríamos com apenas um dos dois tipos de fonte — e mostra que a cultura material pode devolver visibilidade a sujeitos que a documentação escrita deixou nas margens.</p>
+      </section>
+
+      <div class="questao" data-questao="3">
+        <div class="enunciado"><span class="num-q">3</span> Com base no estudo de caso sobre os vasos gregos, de que maneira a comparação entre a cultura material e as fontes textuais escritas permite corrigir ou complementar a visão tradicional sobre a vida das mulheres na Grécia antiga?</div>
+        <textarea id="resp-3" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que os textos escritos na Grécia antiga eram produzidos predominantemente por homens e focavam em normas ideais ou na vida pública. A análise das pinturas nos vasos (cultura material) revelou cenas reais da vida cotidiana feminina e de seus afazeres, permitindo aos historiadores cruzar as duas fontes para corrigir distorções e devolver visibilidade ao papel das mulheres na sociedade grega.
+        </div>
+      </div>
+
+      <!-- BLOCO 4 -->
+      <section class="texto-apoio selecionavel">
+        <h2>4. O objeto como marca da humanização</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 4</span>
+        <p>A relação entre objeto e cultura é tão antiga quanto o próprio gênero humano. A mudança biológica que liberou as mãos foi aproveitada pelos primeiros hominídeos na confecção de artefatos líticos — instrumentos de pedra lascada — e na comunicação entre os membros do grupo, criando uma cultura material e simbólica que os diferenciava dos demais seres vivos.</p>
+        <p>O artefato, nesse caso, não é apenas produto da cultura: é indício do próprio processo de humanização, marcando o momento em que o ser humano passa a interferir e transformar o meio em que vive de forma intencional.</p>
+      </section>
+
+      <div class="questao" data-questao="4">
+        <div class="enunciado"><span class="num-q">4</span> Qual é a relação entre a confecção de artefatos líticos (instrumentos de pedra) pelos primeiros hominídeos e o próprio processo de humanização?</div>
+        <textarea id="resp-4" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante relacione a mudança biológica que liberou as mãos dos hominídeos à capacidade de transformar matérias-primas naturais em ferramentas de pedra lascada. Essa produção de artefatos não foi apenas um resultado cultural, mas um indício do próprio processo de humanização, marcando a transição na qual o ser humano passou a modificar o ambiente intencionalmente e a criar sistemas de comunicação e cultura.
+        </div>
+      </div>
+
+      <!-- BLOCO 5 -->
+      <section class="texto-apoio selecionavel">
+        <h2>5. O que perguntar a um objeto</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 5</span>
+        <p>Um mesmo artefato responde a perguntas de naturezas diferentes: De que material é feito e de onde veio esse material? Que técnica foi necessária para produzi-lo, e quem no grupo dominava essa técnica? Era de uso cotidiano, ritual ou funerário? Era acessível a todos ou marcava posição social? O que sua decoração escolhe representar — e o que escolhe silenciar?</p>
+        <p>Essas perguntas transformam o objeto em um texto legível, permitindo extrair dele significados e visões de mundo da sociedade que o produziu.</p>
+      </section>
+
+      <div class="questao" data-questao="5">
+        <div class="enunciado"><span class="num-q">5</span> Escolha três das perguntas propostas no texto ("O que perguntar a um objeto") e explique como as respostas a essas questões ajudam a transformar um artefato antigo em um "texto legível".</div>
+        <textarea id="resp-5" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante escolha três perguntas do texto (ex.: de qual material é feito, qual técnica foi usada, se era de uso cotidiano/ritual/funerário, se marcava posição social ou o que sua decoração representa/silencia) e demonstre como tais questionamentos extraem significados históricos do objeto, fazendo com que ele conte uma história sobre a sociedade que o produziu.
+        </div>
+      </div>
+
+      <div class="alerta-incompleto" id="alerta-incompleto">
+        &#9888;&#65039; Ainda há questões incompletas (com menos do mínimo de 60 caracteres). Revise suas respostas antes de finalizar.
+      </div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="finalizarAtividade()">Finalizar e enviar</button>
+        <button class="btn btn-secundario" onclick="refazerAtividade()">Refazer</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar em PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <footer class="rodape">Colégio Estadual Rodolfo de Oliveira · CERO · 2026</footer>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <div class="emoji">&#127881;</div>
+    <h3>Atividade concluída!</h3>
+    <p>Suas respostas dissertativas foram registradas com sucesso. Os comentários do professor já estão disponíveis abaixo de cada questão para você analisar seu desempenho.</p>
+    <button class="btn btn-primario" onclick="fecharPopup()">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ===== GATE DE NOME ===== */
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  const turma = document.getElementById('turma-aluno').value.trim();
+  const aviso = document.getElementById('capa-aviso');
+  if(!nome){
+    aviso.style.display = 'block';
+    return;
+  }
+  aviso.style.display = 'none';
+  const hoje = new Date();
+  const dataFormatada = String(hoje.getDate()).padStart(2,'0') + '/' + String(hoje.getMonth()+1).padStart(2,'0') + '/' + hoje.getFullYear();
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-data').textContent = dataFormatada;
+  document.getElementById('ficha-turma').textContent = turma || '—';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+/* ===== CONTADOR DE CARACTERES E PROGRESSO ===== */
+const textareas = document.querySelectorAll('textarea.dissertativa');
+let corrigido = false;
+
+function atualizarProgresso(){
+  let respondidas = 0;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length >= min) respondidas++;
+  });
+  const total = textareas.length;
+  document.getElementById('contador-geral').textContent = 'Respondidas: ' + respondidas + '/' + total;
+  document.getElementById('barra-fill').style.width = (respondidas / total * 100) + '%';
+}
+
+textareas.forEach(function(t){
+  const contadorEl = t.parentElement.querySelector('.contador-chars');
+  const min = parseInt(t.dataset.min, 10);
+  t.addEventListener('input', function(){
+    contadorEl.textContent = t.value.length + ' caracteres (mínimo ' + min + ')';
+    atualizarProgresso();
+  });
+});
+
+/* ===== FINALIZAR ===== */
+function finalizarAtividade(){
+  let completo = true;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length < min) completo = false;
+  });
+
+  const alerta = document.getElementById('alerta-incompleto');
+  if(!completo){
+    alerta.classList.add('show');
+    alerta.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  alerta.classList.remove('show');
+
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.add('show');
+  });
+
+  corrigido = true;
+  document.getElementById('popup-overlay').classList.add('show');
+}
+
+function fecharPopup(){
+  document.getElementById('popup-overlay').classList.remove('show');
+}
+
+function refazerAtividade(){
+  textareas.forEach(function(t){
+    t.value = '';
+    t.parentElement.querySelector('.contador-chars').textContent = '0 caracteres (mínimo ' + t.dataset.min + ')';
+  });
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.remove('show');
+  });
+  corrigido = false;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+async function exportarPDF(){
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(36,20,14,.6);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(92,41,20,.3);font-family:Georgia,serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#5c2914;font-family:Georgia,serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#665f57;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#efe6d8;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#8c4327;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:monospace;font-size:.74rem;color:#665f57;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff', scrollX:0, scrollY:0, windowWidth:860});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        const pxPerPdfPt = canvas.width / imgW;
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML, sliceH_pt = Math.min(availPt, avail);
+          const sliceH_px = Math.round(sliceH_pt * pxPerPdfPt), actualH_px = Math.min(sliceH_px, canvas.height - srcY);
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#8c4327,#5c2914);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b);
+      await sleep(20);
+      await addImg(b);
+      document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('header-nome').textContent || 'Aluno(a)';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    const now = new Date();
+    const dtStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    setP(10, 'Preparando capa…'); await sleep(40);
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;overflow:hidden;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="background:linear-gradient(135deg,#3b170a 0%,#8c4327 60%,#b55d38 100%);padding:32px 48px 28px;color:white">' +
+        '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.7;font-weight:700;margin-bottom:6px">Ciências Humanas e Sociais Aplicadas · 1ª série do Ensino Médio · EM13CHS104</div>' +
+        '<div style="font-size:26px;font-weight:900;line-height:1.2;margin-bottom:5px">Tópico 3 — Cultura Material: os objetos como documentos</div>' +
+        '<div style="font-size:13px;opacity:.8;font-style:italic">Atividade do tópico · 5 questões dissertativas</div>' +
+      '</div>' +
+      '<div style="background:#f8f4ee;padding:22px 48px 26px;border-bottom:3px solid #a9762f">' +
+        '<div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#8c4327;font-weight:700;margin-bottom:5px">Aluno(a)</div>' +
+        '<div style="font-size:20px;font-weight:700;color:#2c2a27;border-bottom:2.5px solid #8c4327;padding-bottom:6px;display:inline-block;margin-bottom:16px">' + esc(nome) + '</div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#8c4327">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#a9762f">5</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Dissertativas</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#bbb;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    // QUESTÕES DISSERTATIVAS
+    setP(30, 'Preparando questões dissertativas…'); await sleep(20);
+    await band('DISSERTATIVAS', 'Questões Dissertativas — Respostas e Orientações');
+
+    const QUESTOES = [
+      { num:'1', enunc:'Por que os objetos materiais são considerados "documentos" para o historiador? Dê exemplos de informações que um artefato, como um vaso de cerâmica, pode revelar sobre uma determinada sociedade.', id:'resp-1',
+        coment:'Espera-se que o estudante explique que os objetos não são apenas coisas físicas, mas fontes históricas que carregam marcas das relações humanas. O estudante deve citar exemplos do texto, indicando que um vaso de cerâmica pode revelar: as técnicas de produção dominadas, os recursos naturais do ambiente, a divisão do trabalho, as redes de troca comercial e os valores estéticos/simbólicos representados na decoração.' },
+      { num:'2', enunc:'Explique por que a cultura material é considerada uma "fonte privilegiada" para estudar a história de grupos sociais marginalizados ou subalternos.', id:'resp-2',
+        coment:'Espera-se que o estudante mencione que nem todas as sociedades ou grupos sociais possuíam acesso à escrita e que os registros oficiais costumavam silenciar ou distorcer a história de camponeses, mulheres, pessoas escravizadas e povos originários. Assim, os objetos do cotidiano fabricados e usados por esses grupos tornam-se fontes essenciais para recuperar suas vivências e experiências históricas.' },
+      { num:'3', enunc:'Com base no estudo de caso sobre os vasos gregos, de que maneira a comparação entre a cultura material e as fontes textuais escritas permite corrigir ou complementar a visão tradicional sobre a vida das mulheres na Grécia antiga?', id:'resp-3',
+        coment:'Espera-se que o estudante explique que os textos escritos na Grécia antiga eram produzidos predominantemente por homens e focavam em normas ideais ou na vida pública. A análise das pinturas nos vasos (cultura material) revelou cenas reais da vida cotidiana feminina e de seus afazeres, permitindo aos historiadores cruzar as duas fontes para corrigir distorções e devolver visibilidade ao papel das mulheres na sociedade grega.' },
+      { num:'4', enunc:'Qual é a relação entre a confecção de artefatos líticos (instrumentos de pedra) pelos primeiros hominídeos e o próprio processo de humanização?', id:'resp-4',
+        coment:'Espera-se que o estudante relacione a mudança biológica que liberou as mãos dos hominídeos à capacidade de transformar matérias-primas naturais em ferramentas de pedra lascada. Essa produção de artefatos não foi apenas um resultado cultural, mas um indício do próprio processo de humanização, marcando a transição na qual o ser humano passou a modificar o ambiente intencionalmente e a criar sistemas de comunicação e cultura.' },
+      { num:'5', enunc:'Escolha três das perguntas propostas no texto ("O que perguntar a um objeto") e explique como as respostas a essas questões ajudam a transformar um artefato antigo em um "texto legível".', id:'resp-5',
+        coment:'Espera-se que o estudante escolha três perguntas do texto (ex.: de qual material é feito, qual técnica foi usada, se era de uso cotidiano/ritual/funerário, se marcava posição social ou o que sua decoração representa/silencia) e demonstre como tais questionamentos extraem significados históricos do objeto, fazendo com que ele conte uma história sobre a sociedade que o produziu.' }
+    ];
+
+    for(let i=0; i<QUESTOES.length; i++){
+      const q = QUESTOES[i];
+      setP(30 + Math.round(i/QUESTOES.length*60), 'Dissertativa ' + q.num + '/5…'); await sleep(10);
+
+      const valor = document.getElementById(q.id) ? document.getElementById(q.id).value : '';
+      const respostaHTML =
+        '<div style="background:#fcf5ef;border:1.5px solid #ebd4c1;border-radius:8px;padding:12px 15px;min-height:40px">' +
+          '<div style="font-size:12px;color:#2c2a27;line-height:1.75;white-space:pre-wrap">' + (esc(valor) || '<span style="color:#aaa">(sem resposta)</span>') + '</div>' +
+        '</div>';
+
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #e2d7c3;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:linear-gradient(90deg,#8c4327,#5c2914);padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + q.num + '</span>' +
+          '<span style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:11px;padding:3px 12px;border-radius:20px;font-weight:600">Dissertativa</span></div>' +
+        '<div style="padding:18px 24px 16px;background:#fffdfa">' +
+          '<div style="font-size:13px;font-weight:700;color:#2c2a27;line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee">' + esc(q.enunc) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:4px;height:15px;background:#8c4327;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#8c4327;text-transform:uppercase;letter-spacing:1.5px">Resposta do Aluno(a)</div></div>' +
+          respostaHTML +
+          '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 7px">' +
+            '<div style="width:4px;height:15px;background:#a9762f;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#8a6f2f;text-transform:uppercase;letter-spacing:1.5px">Comentário do Professor</div></div>' +
+          '<div style="background:#f7f1e6;border:1.5px solid #e6dcc8;border-radius:8px;padding:13px 16px">' +
+            '<div style="font-size:12px;color:#4a3a10;line-height:1.8">' + esc(q.coment) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+    }
+
+    // RODAPÉ EM TODAS AS PÁGINAS
+    setP(95, 'Finalizando PDF…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#f8f4ee;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Atividade — Tópico 3 · ' + esc(nome) + ' · 5 Questões Dissertativas</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#f8f4ee'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(248,244,238); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Atividade_Topico3_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+/* ===== PROTEÇÃO ANTI-COLA ===== */
+(function () {
+  const CAMPOS_PROTEGIDOS = document.querySelectorAll('textarea.dissertativa, .campo-resposta');
+  const LIMITE_BLOCO = 25;
+
+  function bloquear(e) {
+    e.preventDefault();
+    mostrarToast('Colar não permitido nesta atividade.');
+  }
+
+  CAMPOS_PROTEGIDOS.forEach(function (campo) {
+    ['paste', 'copy', 'cut', 'drop', 'dragover', 'contextmenu'].forEach(function (evt) {
+      campo.addEventListener(evt, bloquear);
+    });
+
+    campo.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
+        e.preventDefault();
+        mostrarToast('Colar não permitido nesta atividade.');
+      }
+    });
+
+    let valorAnterior = campo.value;
+    campo.addEventListener('input', function (e) {
+      const diferenca = campo.value.length - valorAnterior.length;
+      if (diferenca >= LIMITE_BLOCO && e.inputType !== 'insertReplacementText') {
+        campo.value = valorAnterior;
+        mostrarToast('Colar não permitido nesta atividade.');
+      } else {
+        valorAnterior = campo.value;
+      }
+    });
+  });
+
+  function mostrarToast(mensagem) {
+    let toast = document.getElementById('anti-cola-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'anti-cola-toast';
+      toast.style.cssText =
+        'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+        'background:#333;color:#fff;padding:10px 20px;border-radius:8px;' +
+        'font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () {
+      toast.style.opacity = '0';
+    }, 2500);
+  }
+})();
+</script>
+
+</body>
+</html>

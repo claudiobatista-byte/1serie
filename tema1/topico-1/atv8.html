@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade — Tópico 8: Identidade e diversidade cultural brasileira | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f3f5fa;
+    --bg-alt:#e3e8f3;
+    --paper:#ffffff;
+    --ink:#1c2130;
+    --ink-soft:#555d73;
+    --indigo:#23386b;
+    --indigo-dark:#131f3d;
+    --indigo-2:#45619d;
+    --vinho:#9c3d5e;
+    --vinho-light:#f4dfe6;
+    --line:#d3daea;
+    --shadow:0 10px 30px rgba(19,31,61,.12);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+  .campo-resposta{user-select:text;}
+
+  /* ===== CAPA / GATE ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(to bottom, #0c1428, #23386b, #45619d);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute;
+    top:0; bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:896px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative;
+    z-index:1;
+    background:var(--paper);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    max-width:480px;
+    width:100%;
+    padding:36px 32px;
+    text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--indigo-dark);
+    background:rgba(35,56,107,.12); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.6rem; margin:0 0 10px; color:var(--indigo-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--indigo); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.08);}
+  .capa-aviso{font-size:.78rem; color:#a33; margin-top:8px; display:none;}
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--indigo-dark); color:#eef1f8;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px;
+    font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2); border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--vinho); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:28px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--indigo-dark);
+    background:rgba(35,56,107,.12); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--indigo-dark);}
+
+  /* ===== TEXTO DE APOIO ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:24px 28px; margin-bottom:20px;
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.2rem; color:var(--indigo-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:12px; display:block;}
+  .texto-apoio p{margin:0 0 12px; color:var(--ink);}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+  .texto-apoio .ref{font-size:.78rem; color:var(--ink-soft); border-top:1px dashed var(--line); padding-top:8px; margin-top:12px;}
+
+  /* CAIXA DE DESTAQUE */
+  .destaque{
+    background:var(--vinho-light); border-left:5px solid var(--vinho);
+    border-radius:0 10px 10px 0; padding:14px 18px; margin:14px 0 0; font-size:.94rem; color:var(--ink);
+  }
+  .destaque b{color:#7a2a46;}
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.2rem; color:var(--indigo-dark);
+    margin:0 0 18px; display:flex; align-items:center; gap:10px;
+  }
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:32px;
+  }
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--indigo);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:12px; display:flex; align-items:flex-start;}
+  .questao textarea{
+    width:100%; min-height:100px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:.96rem; resize:vertical; color:var(--ink);
+  }
+  .questao textarea:focus{outline:2px solid var(--indigo-2); outline-offset:1px;}
+  .contador-chars{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+
+  .comentario-prof{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#eef1f8; border:1px solid #c6d0e6; border-radius:8px; font-size:.9rem; color:var(--indigo-dark);
+  }
+  .comentario-prof.show{display:block;}
+  .comentario-prof b{display:block; margin-bottom:4px; font-family:var(--font-title); font-size:.92rem;}
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#fdf3e2; border:1px solid #f1d9a6; color:#8a5a10;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn-primario{background:var(--indigo); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--vinho); color:#fff;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  /* ===== POPUP ===== */
+  .popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(19,31,61,.6);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .popup-overlay.show{display:flex;}
+  .popup-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:420px; width:100%; padding:32px 28px; text-align:center;
+  }
+  .popup-card .emoji{font-size:2.4rem; margin-bottom:10px;}
+  .popup-card h3{font-family:var(--font-title); margin:0 0 8px; color:var(--indigo-dark);}
+  .popup-card p{color:var(--ink-soft); font-size:.94rem; margin:0 0 20px;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">1ª série · Ensino Médio · CERO</span>
+    <h1>Identidade e diversidade cultural brasileira</h1>
+    <p class="desc">Leituras de apoio intercaladas com 5 questões dissertativas sobre formação cultural, pluralidade dos povos, patrimônio imaterial afro-brasileiro e as leis 10.639/2003 e 11.645/2008. Preencha os dados para começar.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 1ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Por favor, digite seu nome para continuar.</div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Respondidas: 0/5</span>
+  </div>
+
+  <div class="wrap">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Ciências Humanas e Sociais Aplicadas / 1ª série do Ensino Médio &nbsp;|&nbsp; (EM13CHS104) – Identidade e diversidade cultural brasileira</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Atividade do Tópico 8</span>
+      <h1>Identidade e diversidade cultural brasileira</h1>
+      <p class="sub">Leia cada trecho de apoio e responda à questão dissertativa correspondente logo em seguida.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+      <h2 class="questoes-titulo">&#9997;&#65039; Leituras e Questões Dissertativas</h2>
+
+      <!-- BLOCO 1 -->
+      <section class="texto-apoio selecionavel">
+        <h2>1. Uma formação feita de encontros</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 1</span>
+        <p>A formação cultural brasileira é resultado de encontros — muitos deles violentos — entre povos originários, africanos escravizados e seus descendentes, e europeus.</p>
+        <p>Saberes, tecnologias, memórias e tradições orais desses grupos estão diretamente relacionados à nossa vida cotidiana e fazem parte do patrimônio cultural brasileiro.</p>
+      </section>
+
+      <div class="questao" data-questao="1">
+        <div class="enunciado"><span class="num-q">1</span> A formação cultural brasileira é descrita como resultado de encontros, muitos deles violentos. Explique por que reconhecer essa violência é necessário para compreender o patrimônio cultural do país, e cite tipos de contribuição que esses grupos deixaram.</div>
+        <textarea id="resp-1" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que a formação cultural brasileira resultou do encontro entre povos originários, africanos escravizados e seus descendentes e europeus, e que esses encontros foram em grande parte marcados pela violência — omitir isso produziria uma imagem harmoniosa e falsa da formação do país. Deve citar como contribuições os saberes, as tecnologias, as memórias e as tradições orais desses grupos, diretamente relacionados à vida cotidiana e integrantes do patrimônio cultural brasileiro.
+        </div>
+      </div>
+
+      <!-- BLOCO 2 -->
+      <section class="texto-apoio selecionavel">
+        <h2>2. O perigo da história única</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 2</span>
+        <p>Um cuidado é indispensável na análise: falar em "os africanos" ou "os indígenas" no singular apaga uma pluralidade étnica, linguística, política e sociocultural imensa.</p>
+        <p>As pessoas escravizadas na África e submetidas ao tráfico transatlântico vinham de sociedades distintas, com línguas, religiões e formas próprias de organização; o mesmo vale para as centenas de povos originários do território brasileiro. Desconstruir imagens genéricas como "africanos" e "indígenas" é o que nos afasta do perigo de uma história única.</p>
+      </section>
+
+      <div class="questao" data-questao="2">
+        <div class="enunciado"><span class="num-q">2</span> Por que usar expressões como "os africanos" e "os indígenas" no singular é problemático? Explique o que essa generalização apaga e o que significa o risco de uma história única.</div>
+        <textarea id="resp-2" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que essas expressões, usadas no singular, apagam uma pluralidade étnica, linguística, política e sociocultural imensa: as pessoas escravizadas na África e submetidas ao tráfico transatlântico vinham de sociedades distintas, com línguas, religiões e formas próprias de organização, e o mesmo vale para as centenas de povos originários do território brasileiro. Deve concluir que desconstruir essas imagens genéricas é o que afasta o perigo de uma história única — uma versão simplificada que reduz muitos povos a um estereótipo só.
+        </div>
+      </div>
+
+      <!-- BLOCO 3 -->
+      <section class="texto-apoio selecionavel">
+        <h2>3. Os afro-brasileiros e o patrimônio imaterial</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 3</span>
+        <p>Para a Unesco, é importante promover e proteger monumentos, sítios históricos e paisagens culturais. Mas não só de aspectos físicos se constitui a cultura de um povo: as tradições, o folclore, os saberes, as línguas, as festas e diversas outras manifestações também devem ser levadas em consideração.</p>
+        <p>Os afro-brasileiros contribuíram e ainda contribuem fortemente para a formação do patrimônio imaterial do Brasil, país que concentra o segundo maior contingente de população negra do mundo, atrás apenas da Nigéria. O reconhecimento oficial dessas manifestações desloca-as da posição de curiosidade folclórica para a de referência identitária compartilhada — ainda que o registro, por si só, não altere as condições materiais enfrentadas por quem sustenta essas práticas.</p>
+        <p class="ref">Elaborado com base em MENEZES, S. A força da cultura negra: Iphan reconhece manifestações como patrimônio imaterial. Ipea.</p>
+      </section>
+
+      <div class="questao" data-questao="3">
+        <div class="enunciado"><span class="num-q">3</span> Que mudança o reconhecimento oficial das manifestações afro-brasileiras produz na forma como elas são vistas? Explique também por que o texto adverte que esse reconhecimento, sozinho, não é suficiente.</div>
+        <textarea id="resp-3" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que o reconhecimento oficial desloca essas manifestações da posição de curiosidade folclórica para a de referência identitária compartilhada, valorizando a forte contribuição afro-brasileira à formação do patrimônio imaterial de um país que concentra o segundo maior contingente de população negra do mundo, atrás apenas da Nigéria. Deve observar, contudo, que o registro por si só não altera as condições materiais enfrentadas por quem sustenta essas práticas — proteger o bem exige também garantir condições de vida a seus detentores.
+        </div>
+      </div>
+
+      <!-- BLOCO 4 -->
+      <section class="texto-apoio selecionavel">
+        <h2>4. Nunca apenas vítimas: resistência e recriação</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 4</span>
+        <p>Também é preciso reconhecer que esses grupos nunca foram apenas vítimas. Sem excluir a denúncia das diversas formas de opressão a que estiveram e ainda estão submetidos, é fundamental perceber que essa realidade jamais suprimiu sua capacidade de ação, expressa em múltiplas formas de resistência, negociação e recriação cultural.</p>
+        <div class="destaque">
+          <b>Onde essa capacidade de ação se materializa.</b> No jongo, na capoeira, nas congadas, nos terreiros e nas comunidades quilombolas — hoje reconhecidos como patrimônio que constrói e reafirma identidades.
+        </div>
+      </section>
+
+      <div class="questao" data-questao="4">
+        <div class="enunciado"><span class="num-q">4</span> Explique o que significa afirmar que os povos originários e os afrodescendentes nunca foram apenas vítimas. Escolha uma das manifestações citadas e mostre como ela expressa capacidade de ação e recriação cultural.</div>
+        <textarea id="resp-4" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que denunciar a opressão sofrida por esses grupos não implica reduzi-los à condição de vítimas passivas: a opressão jamais suprimiu sua capacidade de ação, expressa em múltiplas formas de resistência, negociação e recriação cultural. Deve escolher uma manifestação entre jongo, capoeira, congadas, terreiros ou comunidades quilombolas e mostrar que ela resulta dessa agência — hoje reconhecida como patrimônio que constrói e reafirma identidades.
+        </div>
+      </div>
+
+      <!-- BLOCO 5 -->
+      <section class="texto-apoio selecionavel">
+        <h2>5. As leis 10.639/2003 e 11.645/2008 e a cultura no cotidiano</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 5</span>
+        <p>As leis nº 10.639/2003 e nº 11.645/2008 estabelecem a obrigatoriedade do ensino de História da África, dos afrodescendentes no Brasil e dos povos originários nas escolas brasileiras. A exigência legal parte de uma constatação: essa presença havia sido sistematicamente apagada dos currículos, o que produzia uma versão empobrecida e distorcida da própria história nacional. Trata-se também de reconhecer homens e mulheres desses povos como sujeitos históricos, cujas ações contribuíram para as transformações sociais e políticas do país.</p>
+        <p>A diversidade cultural brasileira, aliás, não está apenas nas festas e nos rituais: ela aparece no trabalho e nos objetos do dia a dia. As bordadeiras de comunidades quilombolas, os oleiros, os ferreiros, os benzedores, os mestres de ofícios tradicionais produzem, ao mesmo tempo, bens materiais e conhecimento transmitido oralmente. O trabalho é comum a todas as sociedades, pois permite que o ser humano transforme a natureza para garantir sua sobrevivência — mas cada sociedade o faz com técnicas, ritmos e significados próprios, e é aí que a diversidade se torna visível.</p>
+        <p class="ref">Elaborado com base na coleção Interação (Ciências Humanas e Sociais Aplicadas).</p>
+      </section>
+
+      <div class="questao" data-questao="5">
+        <div class="enunciado"><span class="num-q">5</span> Qual constatação justificou a criação das leis 10.639/2003 e 11.645/2008? Relacione a resposta ao fato de a diversidade cultural também se manifestar no trabalho e nos objetos do cotidiano.</div>
+        <textarea id="resp-5" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante indique que as leis tornam obrigatório o ensino de História da África, dos afrodescendentes no Brasil e dos povos originários porque essa presença havia sido sistematicamente apagada dos currículos, produzindo uma versão empobrecida e distorcida da história nacional, e porque é preciso reconhecer homens e mulheres desses povos como sujeitos históricos. Deve relacionar isso ao fato de a diversidade aparecer também no trabalho e nos objetos do dia a dia — bordadeiras quilombolas, oleiros, ferreiros, benzedores e mestres de ofícios produzem bens materiais e conhecimento transmitido oralmente; o trabalho é comum a todas as sociedades, mas cada uma o realiza com técnicas, ritmos e significados próprios.
+        </div>
+      </div>
+
+      <div class="alerta-incompleto" id="alerta-incompleto">
+        &#9888;&#65039; Ainda há questões incompletas (com menos do mínimo de 60 caracteres). Revise suas respostas antes de finalizar.
+      </div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="finalizarAtividade()">Finalizar e enviar</button>
+        <button class="btn btn-secundario" onclick="refazerAtividade()">Refazer</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar em PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <footer class="rodape">Colégio Estadual Rodolfo de Oliveira · CERO · 2026</footer>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <div class="emoji">&#127881;</div>
+    <h3>Atividade concluída!</h3>
+    <p>Suas respostas dissertativas foram registradas com sucesso. Os comentários do professor já estão disponíveis abaixo de cada questão para você analisar seu desempenho.</p>
+    <button class="btn btn-primario" onclick="fecharPopup()">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ===== GATE DE NOME ===== */
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  const turma = document.getElementById('turma-aluno').value.trim();
+  const aviso = document.getElementById('capa-aviso');
+  if(!nome){
+    aviso.style.display = 'block';
+    return;
+  }
+  aviso.style.display = 'none';
+  const hoje = new Date();
+  const dataFormatada = String(hoje.getDate()).padStart(2,'0') + '/' + String(hoje.getMonth()+1).padStart(2,'0') + '/' + hoje.getFullYear();
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-data').textContent = dataFormatada;
+  document.getElementById('ficha-turma').textContent = turma || '—';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+/* ===== CONTADOR DE CARACTERES E PROGRESSO ===== */
+const textareas = document.querySelectorAll('textarea.dissertativa');
+let corrigido = false;
+
+function atualizarProgresso(){
+  let respondidas = 0;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length >= min) respondidas++;
+  });
+  const total = textareas.length;
+  document.getElementById('contador-geral').textContent = 'Respondidas: ' + respondidas + '/' + total;
+  document.getElementById('barra-fill').style.width = (respondidas / total * 100) + '%';
+}
+
+textareas.forEach(function(t){
+  const contadorEl = t.parentElement.querySelector('.contador-chars');
+  const min = parseInt(t.dataset.min, 10);
+  t.addEventListener('input', function(){
+    contadorEl.textContent = t.value.length + ' caracteres (mínimo ' + min + ')';
+    atualizarProgresso();
+  });
+});
+
+/* ===== FINALIZAR ===== */
+function finalizarAtividade(){
+  let completo = true;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length < min) completo = false;
+  });
+
+  const alerta = document.getElementById('alerta-incompleto');
+  if(!completo){
+    alerta.classList.add('show');
+    alerta.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  alerta.classList.remove('show');
+
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.add('show');
+  });
+
+  corrigido = true;
+  document.getElementById('popup-overlay').classList.add('show');
+}
+
+function fecharPopup(){
+  document.getElementById('popup-overlay').classList.remove('show');
+}
+
+function refazerAtividade(){
+  textareas.forEach(function(t){
+    t.value = '';
+    t.parentElement.querySelector('.contador-chars').textContent = '0 caracteres (mínimo ' + t.dataset.min + ')';
+  });
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.remove('show');
+  });
+  corrigido = false;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+async function exportarPDF(){
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(19,31,61,.6);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(19,31,61,.3);font-family:Georgia,serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#131f3d;font-family:Georgia,serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#555d73;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#e3e8f3;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#23386b;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:monospace;font-size:.74rem;color:#555d73;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff', scrollX:0, scrollY:0, windowWidth:860});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        const pxPerPdfPt = canvas.width / imgW;
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML, sliceH_pt = Math.min(availPt, avail);
+          const sliceH_px = Math.round(sliceH_pt * pxPerPdfPt), actualH_px = Math.min(sliceH_px, canvas.height - srcY);
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#23386b,#131f3d);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b);
+      await sleep(20);
+      await addImg(b);
+      document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('header-nome').textContent || 'Aluno(a)';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    const now = new Date();
+    const dtStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    setP(10, 'Preparando capa…'); await sleep(40);
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;overflow:hidden;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="background:linear-gradient(135deg,#0c1428 0%,#23386b 60%,#45619d 100%);padding:32px 48px 28px;color:white">' +
+        '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.7;font-weight:700;margin-bottom:6px">Ciências Humanas e Sociais Aplicadas · 1ª série do Ensino Médio · EM13CHS104</div>' +
+        '<div style="font-size:26px;font-weight:900;line-height:1.2;margin-bottom:5px">Tópico 8 — Identidade e Diversidade Cultural Brasileira</div>' +
+        '<div style="font-size:13px;opacity:.8;font-style:italic">Atividade do tópico · 5 questões dissertativas</div>' +
+      '</div>' +
+      '<div style="background:#f3f5fa;padding:22px 48px 26px;border-bottom:3px solid #9c3d5e">' +
+        '<div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#23386b;font-weight:700;margin-bottom:5px">Aluno(a)</div>' +
+        '<div style="font-size:20px;font-weight:700;color:#1c2130;border-bottom:2.5px solid #23386b;padding-bottom:6px;display:inline-block;margin-bottom:16px">' + esc(nome) + '</div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#23386b">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#9c3d5e">5</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Dissertativas</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#bbb;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    // QUESTÕES DISSERTATIVAS
+    setP(30, 'Preparando questões dissertativas…'); await sleep(20);
+    await band('DISSERTATIVAS', 'Questões Dissertativas — Respostas e Orientações');
+
+    const QUESTOES = [
+      { num:'1', enunc:'A formação cultural brasileira é descrita como resultado de encontros, muitos deles violentos. Explique por que reconhecer essa violência é necessário para compreender o patrimônio cultural do país, e cite tipos de contribuição que esses grupos deixaram.', id:'resp-1',
+        coment:'Espera-se que o estudante explique que a formação cultural brasileira resultou do encontro entre povos originários, africanos escravizados e seus descendentes e europeus, e que esses encontros foram em grande parte marcados pela violência — omitir isso produziria uma imagem harmoniosa e falsa da formação do país. Deve citar como contribuições os saberes, as tecnologias, as memórias e as tradições orais desses grupos, diretamente relacionados à vida cotidiana e integrantes do patrimônio cultural brasileiro.' },
+      { num:'2', enunc:'Por que usar expressões como "os africanos" e "os indígenas" no singular é problemático? Explique o que essa generalização apaga e o que significa o risco de uma história única.', id:'resp-2',
+        coment:'Espera-se que o estudante explique que essas expressões, usadas no singular, apagam uma pluralidade étnica, linguística, política e sociocultural imensa: as pessoas escravizadas na África e submetidas ao tráfico transatlântico vinham de sociedades distintas, com línguas, religiões e formas próprias de organização, e o mesmo vale para as centenas de povos originários do território brasileiro. Deve concluir que desconstruir essas imagens genéricas é o que afasta o perigo de uma história única — uma versão simplificada que reduz muitos povos a um estereótipo só.' },
+      { num:'3', enunc:'Que mudança o reconhecimento oficial das manifestações afro-brasileiras produz na forma como elas são vistas? Explique também por que o texto adverte que esse reconhecimento, sozinho, não é suficiente.', id:'resp-3',
+        coment:'Espera-se que o estudante explique que o reconhecimento oficial desloca essas manifestações da posição de curiosidade folclórica para a de referência identitária compartilhada, valorizando a forte contribuição afro-brasileira à formação do patrimônio imaterial de um país que concentra o segundo maior contingente de população negra do mundo, atrás apenas da Nigéria. Deve observar, contudo, que o registro por si só não altera as condições materiais enfrentadas por quem sustenta essas práticas — proteger o bem exige também garantir condições de vida a seus detentores.' },
+      { num:'4', enunc:'Explique o que significa afirmar que os povos originários e os afrodescendentes nunca foram apenas vítimas. Escolha uma das manifestações citadas e mostre como ela expressa capacidade de ação e recriação cultural.', id:'resp-4',
+        coment:'Espera-se que o estudante explique que denunciar a opressão sofrida por esses grupos não implica reduzi-los à condição de vítimas passivas: a opressão jamais suprimiu sua capacidade de ação, expressa em múltiplas formas de resistência, negociação e recriação cultural. Deve escolher uma manifestação entre jongo, capoeira, congadas, terreiros ou comunidades quilombolas e mostrar que ela resulta dessa agência — hoje reconhecida como patrimônio que constrói e reafirma identidades.' },
+      { num:'5', enunc:'Qual constatação justificou a criação das leis 10.639/2003 e 11.645/2008? Relacione a resposta ao fato de a diversidade cultural também se manifestar no trabalho e nos objetos do cotidiano.', id:'resp-5',
+        coment:'Espera-se que o estudante indique que as leis tornam obrigatório o ensino de História da África, dos afrodescendentes no Brasil e dos povos originários porque essa presença havia sido sistematicamente apagada dos currículos, produzindo uma versão empobrecida e distorcida da história nacional, e porque é preciso reconhecer homens e mulheres desses povos como sujeitos históricos. Deve relacionar isso ao fato de a diversidade aparecer também no trabalho e nos objetos do dia a dia — bordadeiras quilombolas, oleiros, ferreiros, benzedores e mestres de ofícios produzem bens materiais e conhecimento transmitido oralmente; o trabalho é comum a todas as sociedades, mas cada uma o realiza com técnicas, ritmos e significados próprios.' }
+    ];
+
+    for(let i=0; i<QUESTOES.length; i++){
+      const q = QUESTOES[i];
+      setP(30 + Math.round(i/QUESTOES.length*60), 'Dissertativa ' + q.num + '/5…'); await sleep(10);
+
+      const valor = document.getElementById(q.id) ? document.getElementById(q.id).value : '';
+      const respostaHTML =
+        '<div style="background:#f3f5fa;border:1.5px solid #c6d0e6;border-radius:8px;padding:12px 15px;min-height:40px">' +
+          '<div style="font-size:12px;color:#1c2130;line-height:1.75;white-space:pre-wrap">' + (esc(valor) || '<span style="color:#aaa">(sem resposta)</span>') + '</div>' +
+        '</div>';
+
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #d3daea;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:linear-gradient(90deg,#23386b,#131f3d);padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + q.num + '</span>' +
+          '<span style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:11px;padding:3px 12px;border-radius:20px;font-weight:600">Dissertativa</span></div>' +
+        '<div style="padding:18px 24px 16px;background:#ffffff">' +
+          '<div style="font-size:13px;font-weight:700;color:#1c2130;line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee">' + esc(q.enunc) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:4px;height:15px;background:#23386b;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#23386b;text-transform:uppercase;letter-spacing:1.5px">Resposta do Aluno(a)</div></div>' +
+          respostaHTML +
+          '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 7px">' +
+            '<div style="width:4px;height:15px;background:#9c3d5e;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#7a2a46;text-transform:uppercase;letter-spacing:1.5px">Comentário do Professor</div></div>' +
+          '<div style="background:#f3f5fa;border:1.5px solid #e3e8f3;border-radius:8px;padding:13px 16px">' +
+            '<div style="font-size:12px;color:#131f3d;line-height:1.8">' + esc(q.coment) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+    }
+
+    // RODAPÉ EM TODAS AS PÁGINAS
+    setP(95, 'Finalizando PDF…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#f3f5fa;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Atividade — Tópico 8 · ' + esc(nome) + ' · 5 Questões Dissertativas</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#f3f5fa'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(243,245,250); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Atividade_Topico8_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+/* ===== PROTEÇÃO ANTI-COLA ===== */
+(function () {
+  const CAMPOS_PROTEGIDOS = document.querySelectorAll('textarea.dissertativa, .campo-resposta');
+  const LIMITE_BLOCO = 25;
+
+  function bloquear(e) {
+    e.preventDefault();
+    mostrarToast('Colar não permitido nesta atividade.');
+  }
+
+  CAMPOS_PROTEGIDOS.forEach(function (campo) {
+    ['paste', 'copy', 'cut', 'drop', 'dragover', 'contextmenu'].forEach(function (evt) {
+      campo.addEventListener(evt, bloquear);
+    });
+
+    campo.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
+        e.preventDefault();
+        mostrarToast('Colar não permitido nesta atividade.');
+      }
+    });
+
+    let valorAnterior = campo.value;
+    campo.addEventListener('input', function (e) {
+      const diferenca = campo.value.length - valorAnterior.length;
+      if (diferenca >= LIMITE_BLOCO && e.inputType !== 'insertReplacementText') {
+        campo.value = valorAnterior;
+        mostrarToast('Colar não permitido nesta atividade.');
+      } else {
+        valorAnterior = campo.value;
+      }
+    });
+  });
+
+  function mostrarToast(mensagem) {
+    let toast = document.getElementById('anti-cola-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'anti-cola-toast';
+      toast.style.cssText =
+        'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+        'background:#333;color:#fff;padding:10px 20px;border-radius:8px;' +
+        'font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () {
+      toast.style.opacity = '0';
+    }, 2500);
+  }
+})();
+</script>
+
+</body>
+</html>

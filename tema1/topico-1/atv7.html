@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade — Tópico 7: Ameaças ao patrimônio e educação patrimonial | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#fbf4ef;
+    --bg-alt:#f3e4d9;
+    --paper:#ffffff;
+    --ink:#2b1f19;
+    --ink-soft:#6a564a;
+    --tijolo:#8c3b1e;
+    --tijolo-dark:#511e0d;
+    --tijolo-2:#b8552f;
+    --petroleo:#1f6f78;
+    --petroleo-light:#d5e8ea;
+    --line:#e6d3c6;
+    --shadow:0 10px 30px rgba(81,30,13,.12);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+  .campo-resposta{user-select:text;}
+
+  /* ===== CAPA / GATE ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(to bottom, #33130a, #8c3b1e, #b8552f);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute;
+    top:0; bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:896px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative;
+    z-index:1;
+    background:var(--paper);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    max-width:480px;
+    width:100%;
+    padding:36px 32px;
+    text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--tijolo-dark);
+    background:rgba(140,59,30,.12); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.6rem; margin:0 0 10px; color:var(--tijolo-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--tijolo); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.08);}
+  .capa-aviso{font-size:.78rem; color:#a33; margin-top:8px; display:none;}
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--tijolo-dark); color:#faf0ea;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px;
+    font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2); border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--petroleo); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:28px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--tijolo-dark);
+    background:rgba(140,59,30,.12); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--tijolo-dark);}
+
+  /* ===== TEXTO DE APOIO ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:24px 28px; margin-bottom:20px;
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.2rem; color:var(--tijolo-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:12px; display:block;}
+  .texto-apoio p{margin:0 0 12px; color:var(--ink);}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+  .texto-apoio .ref{font-size:.78rem; color:var(--ink-soft); border-top:1px dashed var(--line); padding-top:8px; margin-top:12px;}
+
+  /* CAIXA DE DEFINICAO */
+  .definicao{
+    background:var(--petroleo-light); border-left:5px solid var(--petroleo);
+    border-radius:0 10px 10px 0; padding:14px 18px; margin:14px 0 0; font-size:.94rem; color:var(--ink);
+  }
+  .definicao b{color:#14545c;}
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.2rem; color:var(--tijolo-dark);
+    margin:0 0 18px; display:flex; align-items:center; gap:10px;
+  }
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:32px;
+  }
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--tijolo);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:12px; display:flex; align-items:flex-start;}
+  .questao textarea{
+    width:100%; min-height:100px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:.96rem; resize:vertical; color:var(--ink);
+  }
+  .questao textarea:focus{outline:2px solid var(--tijolo-2); outline-offset:1px;}
+  .contador-chars{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+
+  .comentario-prof{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#fbeee6; border:1px solid #e8cbb8; border-radius:8px; font-size:.9rem; color:var(--tijolo-dark);
+  }
+  .comentario-prof.show{display:block;}
+  .comentario-prof b{display:block; margin-bottom:4px; font-family:var(--font-title); font-size:.92rem;}
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#fdf3e2; border:1px solid #f1d9a6; color:#8a5a10;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn-primario{background:var(--tijolo); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--petroleo); color:#fff;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  /* ===== POPUP ===== */
+  .popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(81,30,13,.6);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .popup-overlay.show{display:flex;}
+  .popup-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:420px; width:100%; padding:32px 28px; text-align:center;
+  }
+  .popup-card .emoji{font-size:2.4rem; margin-bottom:10px;}
+  .popup-card h3{font-family:var(--font-title); margin:0 0 8px; color:var(--tijolo-dark);}
+  .popup-card p{color:var(--ink-soft); font-size:.94rem; margin:0 0 20px;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">1ª série · Ensino Médio · CERO</span>
+    <h1>Ameaças ao patrimônio e educação patrimonial</h1>
+    <p class="desc">Leituras de apoio intercaladas com 5 questões dissertativas sobre destruição de sítios arqueológicos, o caso do geoglifo aterrado no Acre e educação patrimonial. Preencha os dados para começar.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 1ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Por favor, digite seu nome para continuar.</div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Respondidas: 0/5</span>
+  </div>
+
+  <div class="wrap">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Ciências Humanas e Sociais Aplicadas / 1ª série do Ensino Médio &nbsp;|&nbsp; (EM13CHS104) – Ameaças ao patrimônio e educação patrimonial</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Atividade do Tópico 7</span>
+      <h1>Ameaças ao patrimônio e educação patrimonial</h1>
+      <p class="sub">Leia cada trecho de apoio e responda à questão dissertativa correspondente logo em seguida.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+      <h2 class="questoes-titulo">&#9997;&#65039; Leituras e Questões Dissertativas</h2>
+
+      <!-- BLOCO 1 -->
+      <section class="texto-apoio selecionavel">
+        <h2>1. Ameaças permanentes ao patrimônio arqueológico</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 1</span>
+        <p>O patrimônio arqueológico brasileiro convive com ameaças permanentes. O avanço do desmatamento, a abertura de estradas, a expansão de plantações e pastagens têm atingido diretamente sítios milenares — os geoglifos da Amazônia ocidental são um exemplo evidente.</p>
+        <p>A esse risco somam-se propostas legislativas que afrouxam ou excluem leis de proteção ambiental e do patrimônio histórico, favorecendo interesses particulares em detrimento de um acervo que pertence a toda a sociedade.</p>
+      </section>
+
+      <div class="questao" data-questao="1">
+        <div class="enunciado"><span class="num-q">1</span> Quais são as principais ameaças ao patrimônio arqueológico brasileiro apontadas no texto? Explique por que o afrouxamento das leis de proteção representa um risco coletivo, e não apenas uma questão entre proprietários de terra e o Estado.</div>
+        <textarea id="resp-1" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante identifique como ameaças o avanço do desmatamento, a abertura de estradas e a expansão de plantações e pastagens, que atingem diretamente sítios milenares como os geoglifos da Amazônia ocidental, somadas às propostas legislativas que afrouxam ou excluem leis de proteção ambiental e do patrimônio histórico. Deve argumentar que esse afrouxamento favorece interesses particulares em detrimento de um acervo que pertence a toda a sociedade — a perda atinge todos, inclusive as gerações futuras, e não apenas as partes diretamente envolvidas.
+        </div>
+      </div>
+
+      <!-- BLOCO 2 -->
+      <section class="texto-apoio selecionavel">
+        <h2>2. Por que a destruição de um sítio é irreversível</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 2</span>
+        <p>A perda, nesses casos, não é apenas de objetos antigos. Cada vestígio só tem significado pleno em relação ao seu contexto de deposição: a camada em que estava, os objetos associados a ele, sua posição no sítio.</p>
+        <p>Destruído o contexto, a informação não pode ser reconstituída por escavação futura nem por documento escrito, já que se trata de sociedades que não deixaram registros textuais. A destruição de um sítio é, portanto, irreversível.</p>
+      </section>
+
+      <div class="questao" data-questao="2">
+        <div class="enunciado"><span class="num-q">2</span> Explique o que é o contexto de deposição e por que a sua destruição significa uma perda irreversível de informação, mesmo quando os objetos são recolhidos.</div>
+        <textarea id="resp-2" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que o contexto de deposição é o conjunto formado pela camada em que o vestígio se encontrava, pelos objetos associados a ele e por sua posição no sítio — é dessa relação que vem o significado pleno do vestígio. Deve concluir que, destruído o contexto, a informação não pode ser reconstituída por escavação futura nem por documento escrito, pois se trata de sociedades que não deixaram registros textuais; recolher os objetos soltos não recupera as relações perdidas, e por isso a destruição é irreversível.
+        </div>
+      </div>
+
+      <!-- BLOCO 3 -->
+      <section class="texto-apoio selecionavel">
+        <h2>3. Caso recente: o geoglifo aterrado no Acre</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 3</span>
+        <p>O intenso processo de desmatamento ilegal na Floresta Amazônica, impulsionado pela expansão de atividades econômicas, tem impactado geoglifos milenares. Segundo especialistas, a presença dessas estruturas sugere que a região era densamente povoada há milhares de anos e que seus habitantes praticavam a remoção parcial de fragmentos da floresta para o desenvolvimento da agricultura — indício de conhecimento avançado sobre as dinâmicas florestais e o manejo sustentável da terra.</p>
+        <p>Muitos desses geoglifos já foram afetados pela construção de estradas, plantações e pastagens. Em 2024, o Ministério Público Federal abriu processo contra um pecuarista e proprietário rural pela destruição de um geoglifo localizado na Fazenda Crixá, no município de Capixaba (AC), causada pelo aterramento do sítio arqueológico para plantação de milho. O órgão solicitou à Justiça Federal a restauração da área afetada e o pagamento de indenização por danos morais coletivos, por ter sido danificado um patrimônio cultural brasileiro.</p>
+        <p class="ref">Elaborado com base na coleção Moderna Plus História e em: MPF processa pecuarista por destruição de geoglifo no Acre. Ministério Público Federal, 3 abr. 2024.</p>
+      </section>
+
+      <div class="questao" data-questao="3">
+        <div class="enunciado"><span class="num-q">3</span> Descreva o caso da Fazenda Crixá e as medidas solicitadas pelo Ministério Público Federal. Por que o pedido de indenização por danos morais coletivos faz sentido quando o bem destruído é um sítio arqueológico?</div>
+        <textarea id="resp-3" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante relate que, em 2024, o Ministério Público Federal abriu processo contra um pecuarista e proprietário rural pela destruição de um geoglifo na Fazenda Crixá, em Capixaba (AC), causada pelo aterramento do sítio para plantação de milho, e que o órgão pediu à Justiça Federal a restauração da área afetada e o pagamento de indenização por danos morais coletivos. Deve justificar o pedido pelo fato de o bem danificado ser um patrimônio cultural brasileiro: o prejuízo não é individual, atinge toda a coletividade, que perde definitivamente uma fonte de conhecimento sobre o passado.
+        </div>
+      </div>
+
+      <!-- BLOCO 4 -->
+      <section class="texto-apoio selecionavel">
+        <h2>4. Educação patrimonial: só se preserva o que se conhece</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 4</span>
+        <p>A educação patrimonial é o conjunto de práticas educativas que tomam o patrimônio cultural como fonte de conhecimento e como objeto de apropriação pela comunidade. Visitas guiadas, estudos do meio e inventários feitos pelos próprios estudantes estão entre suas metodologias.</p>
+        <div class="definicao">
+          <b>Premissa da educação patrimonial.</b> Só se preserva aquilo que se conhece e ao que se atribui valor. Evitar que informações se percam depende tanto de leis e fiscalização quanto de escolas e comunidades que reconheçam esses bens como seus.
+        </div>
+      </section>
+
+      <div class="questao" data-questao="4">
+        <div class="enunciado"><span class="num-q">4</span> A premissa da educação patrimonial é a de que só se preserva aquilo que se conhece e ao que se atribui valor. Explique por que leis e fiscalização, sozinhas, não bastam para proteger o patrimônio, e qual é o papel das escolas e das comunidades nesse processo.</div>
+        <textarea id="resp-4" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que a educação patrimonial reúne práticas educativas que tomam o patrimônio como fonte de conhecimento e como objeto de apropriação pela comunidade, tendo como premissa que só se preserva o que se conhece e ao que se atribui valor. Deve argumentar que a proteção depende tanto de leis e fiscalização quanto de escolas e comunidades que reconheçam esses bens como seus, pois um bem que a população não identifica como parte de sua história dificilmente será defendido no dia a dia. Pode citar visitas guiadas, estudos do meio e inventários feitos pelos estudantes como metodologias.
+        </div>
+      </div>
+
+      <!-- BLOCO 5 -->
+      <section class="texto-apoio selecionavel">
+        <h2>5. Conhecer o que está perto: os sítios de Goiás</h2>
+        <span class="fonte-tag">Leitura de apoio — Bloco 5</span>
+        <p>O Iphan mantém o Cadastro Nacional de Sítios Arqueológicos, que reúne informações sobre os sítios identificados em cada estado: onde ficam, de que período são e que tipo de vestígio preservam. Consultar esse cadastro é um exercício típico de educação patrimonial — aproxima o estudante de bens que existem em seu próprio território e que, muitas vezes, ele desconhece.</p>
+        <p>Essa aproximação importa porque as ameaças descritas nos blocos anteriores não acontecem apenas na Amazônia: obras, expansão agrícola e crescimento urbano pressionam sítios em todas as regiões do país, inclusive em Goiás.</p>
+      </section>
+
+      <div class="questao" data-questao="5">
+        <div class="enunciado"><span class="num-q">5</span> Imagine que a turma foi convidada a elaborar uma ação de educação patrimonial sobre um sítio ou bem cultural do município. Descreva a ação que você proporia, indique qual metodologia usaria e explique de que forma ela ajudaria a reduzir o risco de destruição desse bem.</div>
+        <textarea id="resp-5" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Resposta pessoal. Espera-se que o estudante proponha uma ação concreta e coerente com as metodologias da educação patrimonial — visita guiada, estudo do meio ou inventário feito pelos próprios estudantes, com possível consulta ao Cadastro Nacional de Sítios Arqueológicos do Iphan — e que relacione a proposta à premissa de que só se preserva o que se conhece e ao que se atribui valor. A justificativa deve mostrar que uma comunidade que reconhece o bem como seu tende a fiscalizá-lo, denunciar danos e cobrar das autoridades, reduzindo o risco de destruição irreversível.
+        </div>
+      </div>
+
+      <div class="alerta-incompleto" id="alerta-incompleto">
+        &#9888;&#65039; Ainda há questões incompletas (com menos do mínimo de 60 caracteres). Revise suas respostas antes de finalizar.
+      </div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="finalizarAtividade()">Finalizar e enviar</button>
+        <button class="btn btn-secundario" onclick="refazerAtividade()">Refazer</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar em PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <footer class="rodape">Colégio Estadual Rodolfo de Oliveira · CERO · 2026</footer>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <div class="emoji">&#127881;</div>
+    <h3>Atividade concluída!</h3>
+    <p>Suas respostas dissertativas foram registradas com sucesso. Os comentários do professor já estão disponíveis abaixo de cada questão para você analisar seu desempenho.</p>
+    <button class="btn btn-primario" onclick="fecharPopup()">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ===== GATE DE NOME ===== */
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  const turma = document.getElementById('turma-aluno').value.trim();
+  const aviso = document.getElementById('capa-aviso');
+  if(!nome){
+    aviso.style.display = 'block';
+    return;
+  }
+  aviso.style.display = 'none';
+  const hoje = new Date();
+  const dataFormatada = String(hoje.getDate()).padStart(2,'0') + '/' + String(hoje.getMonth()+1).padStart(2,'0') + '/' + hoje.getFullYear();
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-data').textContent = dataFormatada;
+  document.getElementById('ficha-turma').textContent = turma || '—';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+/* ===== CONTADOR DE CARACTERES E PROGRESSO ===== */
+const textareas = document.querySelectorAll('textarea.dissertativa');
+let corrigido = false;
+
+function atualizarProgresso(){
+  let respondidas = 0;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length >= min) respondidas++;
+  });
+  const total = textareas.length;
+  document.getElementById('contador-geral').textContent = 'Respondidas: ' + respondidas + '/' + total;
+  document.getElementById('barra-fill').style.width = (respondidas / total * 100) + '%';
+}
+
+textareas.forEach(function(t){
+  const contadorEl = t.parentElement.querySelector('.contador-chars');
+  const min = parseInt(t.dataset.min, 10);
+  t.addEventListener('input', function(){
+    contadorEl.textContent = t.value.length + ' caracteres (mínimo ' + min + ')';
+    atualizarProgresso();
+  });
+});
+
+/* ===== FINALIZAR ===== */
+function finalizarAtividade(){
+  let completo = true;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length < min) completo = false;
+  });
+
+  const alerta = document.getElementById('alerta-incompleto');
+  if(!completo){
+    alerta.classList.add('show');
+    alerta.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  alerta.classList.remove('show');
+
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.add('show');
+  });
+
+  corrigido = true;
+  document.getElementById('popup-overlay').classList.add('show');
+}
+
+function fecharPopup(){
+  document.getElementById('popup-overlay').classList.remove('show');
+}
+
+function refazerAtividade(){
+  textareas.forEach(function(t){
+    t.value = '';
+    t.parentElement.querySelector('.contador-chars').textContent = '0 caracteres (mínimo ' + t.dataset.min + ')';
+  });
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.remove('show');
+  });
+  corrigido = false;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+async function exportarPDF(){
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(81,30,13,.6);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(81,30,13,.3);font-family:Georgia,serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#511e0d;font-family:Georgia,serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#6a564a;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#f3e4d9;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#8c3b1e;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:monospace;font-size:.74rem;color:#6a564a;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff', scrollX:0, scrollY:0, windowWidth:860});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        const pxPerPdfPt = canvas.width / imgW;
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML, sliceH_pt = Math.min(availPt, avail);
+          const sliceH_px = Math.round(sliceH_pt * pxPerPdfPt), actualH_px = Math.min(sliceH_px, canvas.height - srcY);
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#8c3b1e,#511e0d);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b);
+      await sleep(20);
+      await addImg(b);
+      document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('header-nome').textContent || 'Aluno(a)';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    const now = new Date();
+    const dtStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    setP(10, 'Preparando capa…'); await sleep(40);
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;overflow:hidden;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="background:linear-gradient(135deg,#33130a 0%,#8c3b1e 60%,#b8552f 100%);padding:32px 48px 28px;color:white">' +
+        '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.7;font-weight:700;margin-bottom:6px">Ciências Humanas e Sociais Aplicadas · 1ª série do Ensino Médio · EM13CHS104</div>' +
+        '<div style="font-size:26px;font-weight:900;line-height:1.2;margin-bottom:5px">Tópico 7 — Ameaças ao Patrimônio e Educação Patrimonial</div>' +
+        '<div style="font-size:13px;opacity:.8;font-style:italic">Atividade do tópico · 5 questões dissertativas</div>' +
+      '</div>' +
+      '<div style="background:#fbf4ef;padding:22px 48px 26px;border-bottom:3px solid #1f6f78">' +
+        '<div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#8c3b1e;font-weight:700;margin-bottom:5px">Aluno(a)</div>' +
+        '<div style="font-size:20px;font-weight:700;color:#2b1f19;border-bottom:2.5px solid #8c3b1e;padding-bottom:6px;display:inline-block;margin-bottom:16px">' + esc(nome) + '</div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#8c3b1e">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#1f6f78">5</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Dissertativas</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#bbb;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    // QUESTÕES DISSERTATIVAS
+    setP(30, 'Preparando questões dissertativas…'); await sleep(20);
+    await band('DISSERTATIVAS', 'Questões Dissertativas — Respostas e Orientações');
+
+    const QUESTOES = [
+      { num:'1', enunc:'Quais são as principais ameaças ao patrimônio arqueológico brasileiro apontadas no texto? Explique por que o afrouxamento das leis de proteção representa um risco coletivo, e não apenas uma questão entre proprietários de terra e o Estado.', id:'resp-1',
+        coment:'Espera-se que o estudante identifique como ameaças o avanço do desmatamento, a abertura de estradas e a expansão de plantações e pastagens, que atingem diretamente sítios milenares como os geoglifos da Amazônia ocidental, somadas às propostas legislativas que afrouxam ou excluem leis de proteção ambiental e do patrimônio histórico. Deve argumentar que esse afrouxamento favorece interesses particulares em detrimento de um acervo que pertence a toda a sociedade — a perda atinge todos, inclusive as gerações futuras, e não apenas as partes diretamente envolvidas.' },
+      { num:'2', enunc:'Explique o que é o contexto de deposição e por que a sua destruição significa uma perda irreversível de informação, mesmo quando os objetos são recolhidos.', id:'resp-2',
+        coment:'Espera-se que o estudante explique que o contexto de deposição é o conjunto formado pela camada em que o vestígio se encontrava, pelos objetos associados a ele e por sua posição no sítio — é dessa relação que vem o significado pleno do vestígio. Deve concluir que, destruído o contexto, a informação não pode ser reconstituída por escavação futura nem por documento escrito, pois se trata de sociedades que não deixaram registros textuais; recolher os objetos soltos não recupera as relações perdidas, e por isso a destruição é irreversível.' },
+      { num:'3', enunc:'Descreva o caso da Fazenda Crixá e as medidas solicitadas pelo Ministério Público Federal. Por que o pedido de indenização por danos morais coletivos faz sentido quando o bem destruído é um sítio arqueológico?', id:'resp-3',
+        coment:'Espera-se que o estudante relate que, em 2024, o Ministério Público Federal abriu processo contra um pecuarista e proprietário rural pela destruição de um geoglifo na Fazenda Crixá, em Capixaba (AC), causada pelo aterramento do sítio para plantação de milho, e que o órgão pediu à Justiça Federal a restauração da área afetada e o pagamento de indenização por danos morais coletivos. Deve justificar o pedido pelo fato de o bem danificado ser um patrimônio cultural brasileiro: o prejuízo não é individual, atinge toda a coletividade, que perde definitivamente uma fonte de conhecimento sobre o passado.' },
+      { num:'4', enunc:'A premissa da educação patrimonial é a de que só se preserva aquilo que se conhece e ao que se atribui valor. Explique por que leis e fiscalização, sozinhas, não bastam para proteger o patrimônio, e qual é o papel das escolas e das comunidades nesse processo.', id:'resp-4',
+        coment:'Espera-se que o estudante explique que a educação patrimonial reúne práticas educativas que tomam o patrimônio como fonte de conhecimento e como objeto de apropriação pela comunidade, tendo como premissa que só se preserva o que se conhece e ao que se atribui valor. Deve argumentar que a proteção depende tanto de leis e fiscalização quanto de escolas e comunidades que reconheçam esses bens como seus, pois um bem que a população não identifica como parte de sua história dificilmente será defendido no dia a dia. Pode citar visitas guiadas, estudos do meio e inventários feitos pelos estudantes como metodologias.' },
+      { num:'5', enunc:'Imagine que a turma foi convidada a elaborar uma ação de educação patrimonial sobre um sítio ou bem cultural do município. Descreva a ação que você proporia, indique qual metodologia usaria e explique de que forma ela ajudaria a reduzir o risco de destruição desse bem.', id:'resp-5',
+        coment:'Resposta pessoal. Espera-se que o estudante proponha uma ação concreta e coerente com as metodologias da educação patrimonial — visita guiada, estudo do meio ou inventário feito pelos próprios estudantes, com possível consulta ao Cadastro Nacional de Sítios Arqueológicos do Iphan — e que relacione a proposta à premissa de que só se preserva o que se conhece e ao que se atribui valor. A justificativa deve mostrar que uma comunidade que reconhece o bem como seu tende a fiscalizá-lo, denunciar danos e cobrar das autoridades, reduzindo o risco de destruição irreversível.' }
+    ];
+
+    for(let i=0; i<QUESTOES.length; i++){
+      const q = QUESTOES[i];
+      setP(30 + Math.round(i/QUESTOES.length*60), 'Dissertativa ' + q.num + '/5…'); await sleep(10);
+
+      const valor = document.getElementById(q.id) ? document.getElementById(q.id).value : '';
+      const respostaHTML =
+        '<div style="background:#fbf4ef;border:1.5px solid #e8cbb8;border-radius:8px;padding:12px 15px;min-height:40px">' +
+          '<div style="font-size:12px;color:#2b1f19;line-height:1.75;white-space:pre-wrap">' + (esc(valor) || '<span style="color:#aaa">(sem resposta)</span>') + '</div>' +
+        '</div>';
+
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #e6d3c6;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:linear-gradient(90deg,#8c3b1e,#511e0d);padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + q.num + '</span>' +
+          '<span style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:11px;padding:3px 12px;border-radius:20px;font-weight:600">Dissertativa</span></div>' +
+        '<div style="padding:18px 24px 16px;background:#ffffff">' +
+          '<div style="font-size:13px;font-weight:700;color:#2b1f19;line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee">' + esc(q.enunc) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:4px;height:15px;background:#8c3b1e;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#8c3b1e;text-transform:uppercase;letter-spacing:1.5px">Resposta do Aluno(a)</div></div>' +
+          respostaHTML +
+          '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 7px">' +
+            '<div style="width:4px;height:15px;background:#1f6f78;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#14545c;text-transform:uppercase;letter-spacing:1.5px">Comentário do Professor</div></div>' +
+          '<div style="background:#fbf4ef;border:1.5px solid #f3e4d9;border-radius:8px;padding:13px 16px">' +
+            '<div style="font-size:12px;color:#511e0d;line-height:1.8">' + esc(q.coment) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+    }
+
+    // RODAPÉ EM TODAS AS PÁGINAS
+    setP(95, 'Finalizando PDF…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#fbf4ef;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Atividade — Tópico 7 · ' + esc(nome) + ' · 5 Questões Dissertativas</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#fbf4ef'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(251,244,239); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Atividade_Topico7_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+/* ===== PROTEÇÃO ANTI-COLA ===== */
+(function () {
+  const CAMPOS_PROTEGIDOS = document.querySelectorAll('textarea.dissertativa, .campo-resposta');
+  const LIMITE_BLOCO = 25;
+
+  function bloquear(e) {
+    e.preventDefault();
+    mostrarToast('Colar não permitido nesta atividade.');
+  }
+
+  CAMPOS_PROTEGIDOS.forEach(function (campo) {
+    ['paste', 'copy', 'cut', 'drop', 'dragover', 'contextmenu'].forEach(function (evt) {
+      campo.addEventListener(evt, bloquear);
+    });
+
+    campo.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
+        e.preventDefault();
+        mostrarToast('Colar não permitido nesta atividade.');
+      }
+    });
+
+    let valorAnterior = campo.value;
+    campo.addEventListener('input', function (e) {
+      const diferenca = campo.value.length - valorAnterior.length;
+      if (diferenca >= LIMITE_BLOCO && e.inputType !== 'insertReplacementText') {
+        campo.value = valorAnterior;
+        mostrarToast('Colar não permitido nesta atividade.');
+      } else {
+        valorAnterior = campo.value;
+      }
+    });
+  });
+
+  function mostrarToast(mensagem) {
+    let toast = document.getElementById('anti-cola-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'anti-cola-toast';
+      toast.style.cssText =
+        'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+        'background:#333;color:#fff;padding:10px 20px;border-radius:8px;' +
+        'font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () {
+      toast.style.opacity = '0';
+    }, 2500);
+  }
+})();
+</script>
+
+</body>
+</html>
