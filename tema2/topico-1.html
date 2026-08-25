@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=UB2ac2SIAhNzbWWUpnzLg3SKw46ooKifruFG8dUO24hp6Z2foqJVuhNPDaoDAPNpsQAiN15DT6zM6M8UjTD63Ab7910Ntip2s1algQVMg5O5SFfugQxwWo8aULIlcGKnEXeaE_hnx3H9J_nxAAo1p1U6RK7JMDQjPDAcRjdTEJeaaqwhUQlW17bG5yKM2TAAqPG-GOBvuqJlWtlDuTTpH7jAwUjyLRc3VAlZYJ_1TSjzyfpc1O47zq3wbVnKkMLGDbnRD94VdxaovOs8VrcA8YxBLl5I43raS709w4fw7VJj5z6Ithks9uvtl_yCilAk" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jaGF0Z3B0LmNvbS9iYWNrZW5kLWFwaS9lc3R1YXJ5L2NvbnRlbnQ_aWQ9ZmlsZV8wMDAwMDAwMDQ3ZjQ4MjBlYjM0ODc4ZmFmNjJkNWU4NSZmbj10b3BpY28tMSUyODElMjkuaHRtbCZjZD1hdHRhY2htZW50JnRzPTQ5NjUwMCZwPWZzJmNpZD0xJnNpZz1kNjA5ZDc5YjdmNDBiN2I2MjAzYjhjMTM1NTQxMTRhOWUzMzdmMjNmZjNlZjdjMWY5YzA2ZjcyZjYwMGYxYWU1JnY9MA"/><style>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=94NILntPa_WCiSeVW8UVQAt8cqKNU1rB-lrSx0wL_N4Wo9RZ28gz4_Jnpbqt8fnemjjZS-N7NMC6_f8_PD-DrwzToRZMsX3EDy2wAGdM1bEG9dPZiJ8ZloV7NE2myz-Va_GQiXmKdyIhqfbt8SJwhvp_yU6VhoJT-b7ghPPqwSQvIEBZbxmsZHs7uqJVTHlF2DUy5wtBkLtg5w14gaZgS_T2P59OGue1xp-CgyTVvckno2tvuFZNLIWlHAMqnfCMmMmKITLoQlcbjVj-8o12X39qFdEf5F_kdDTFI_rhYGAJj0-g7l7C2hGdYGyrWcPW91Z70XI3qMyoioRaWYxmyw" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jaGF0Z3B0LmNvbS9iYWNrZW5kLWFwaS9lc3R1YXJ5L2NvbnRlbnQ_aWQ9ZmlsZV8wMDAwMDAwMGY0NzQ4MjBlOGVjZGVjNTdjYjA3NDViYSZmbj10b3BpY28tMV9wb3B1cF9hbGluaGFkb19maW5hbF92My5odG1sJmNkPWF0dGFjaG1lbnQmdHM9NDk2NTc4JnA9ZnMmY2lkPTEmc2lnPWViOGNmNTIzZTk3ZDU3YjM5MmI5YTI3YzA3Y2JmNjcyNGI0MzdjNTQ0NzE0MzAxOGRhNTg5MTc3YThlZjRjMGMmdj0w"/><style>
 :root{
   /* PALETA — azul-tinta, âmbar e ardósia sobre papel-linho */
   --tinta:#1f3a5f;
@@ -49,6 +49,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 /* ---------- LAYOUT ---------- */
 main{max-width:var(--medida);margin:0 auto;padding:0 var(--gutter) 60px;}
 section{margin-top:44px;}
+/* Coluna de leitura: os fichamentos e os boxes de apoio compartilham exatamente a largura do texto. */
+section.conteudo{width:100%;max-width:1000px;margin-left:auto;margin-right:auto;}
 h2.secao{
   font-size:1.6rem;color:var(--tinta);margin:0 0 6px;
   border-bottom:2px solid var(--linho-escuro);padding-bottom:10px;
@@ -249,6 +251,91 @@ h2.secao,section[id],[id]{scroll-margin-top:calc(var(--topbar-h) + 18px);}
 .texto-apoio .ta-citacao{border-left:4px solid var(--tinta-claro);background:var(--linho);margin:20px 0;padding:14px 20px;font-style:italic;border-radius:0 var(--raio) var(--raio) 0;}
 .texto-apoio .ta-citacao .ta-autor{display:block;font-style:normal;font-size:.82rem;color:var(--cinza);margin-top:8px;text-align:right;}
 
+/* ---------- BOXES DE TEXTOS DE APOIO (abaixo do fichamento) ---------- */
+.lateral{
+  float:none;
+  width:100%;
+  max-width:100%;
+  margin:14px 0 28px;
+  margin-left:0;
+  margin-right:0;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  box-sizing:border-box;
+  clear:both;
+}
+.lateral .mini-card{
+  min-width:0;
+}
+
+/* Tópico 5: o box único de Texto de apoio ocupa toda a largura do texto. */
+.lateral-texto-unico{
+  grid-template-columns:1fr;
+}
+@media (max-width:700px){
+  .lateral{grid-template-columns:1fr;}
+}
+.mini-card{
+  width:100%;
+  box-sizing:border-box;
+  min-width:0;
+  text-align:left;cursor:pointer;font-family:inherit;
+  background:var(--branco);border:1px solid var(--borda);border-top:4px solid var(--ambar);
+  border-radius:var(--raio);padding:14px 16px;box-shadow:var(--sombra);
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+.mini-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(31,58,95,.14);}
+.mini-card .rotulo{
+  font-family:var(--serif-corpo);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ambar);display:block;margin-bottom:6px;font-weight:700;
+}
+.mini-card h4{font-size:.95rem;margin:0 0 6px;line-height:1.3;color:var(--tinta);overflow-wrap:anywhere;}
+.mini-card .chamada{font-size:.8rem;color:var(--cinza);line-height:1.5;display:block;text-align:left;}
+.mini-card .abrir{display:block;margin-top:9px;font-size:.76rem;font-weight:700;color:var(--ambar);}
+
+/* MODAL */
+.modal{
+  position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;
+  background:rgba(31,58,95,.55);padding:22px;
+}
+.modal.aberto{display:flex;}
+.modal-caixa{
+  background:var(--branco);border-radius:var(--raio);max-width:620px;width:100%;
+  max-height:86vh;overflow-y:auto;overscroll-behavior:contain;padding:26px 30px 24px;
+  box-shadow:0 18px 50px rgba(0,0,0,.3);border-top:5px solid var(--ambar);position:relative;
+}
+.modal-caixa .rotulo{
+  font-family:var(--serif-corpo);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ambar);display:block;margin-bottom:6px;font-weight:700;
+}
+.modal-caixa h3{font-size:1.2rem;margin:0 34px 12px 0;color:var(--tinta);}
+.modal-caixa p{font-size:.95rem;text-align:justify;}
+.modal-caixa table{font-size:.88rem;margin:10px 0;}
+.modal-caixa th,.modal-caixa td{border:1px solid var(--borda);padding:8px 10px;text-align:left;}
+.modal-caixa th{background:var(--tinta);color:var(--linho);}
+.modal-caixa .ref{
+  font-size:.78rem;color:var(--cinza);border-top:1px dashed var(--linho-escuro);
+  padding-top:9px;margin-top:6px;text-align:left;font-style:italic;
+}
+.fechar{
+  position:absolute;top:14px;right:16px;background:none;border:none;cursor:pointer;
+  font-family:var(--serif-corpo);font-size:1.35rem;line-height:1;color:var(--cinza);padding:4px 8px;
+}
+.fechar:hover{color:var(--ambar);}
+
+@media (max-width:820px){
+  .lateral{width:100%;max-width:100%;margin:14px 0 28px;}
+  .lateral::before{
+    content:"Textos de apoio";
+    font-family:var(--serif-titulo);font-size:1.05rem;color:var(--tinta);
+    border-bottom:3px solid var(--ambar);display:inline-block;
+    padding-bottom:6px;margin-bottom:2px;
+    grid-column:1 / -1;
+  }
+  .mini-card .chamada{font-size:.85rem;}
+}
+
 /* ---------- PIRÂMIDE DAS TRÊS ORDENS ---------- */
 .piramide{margin:22px 0;display:flex;flex-direction:column;gap:10px;align-items:center;}
 .piramide .ordem{width:100%;background:var(--branco);border:1px solid var(--borda);border-radius:var(--raio);padding:14px 20px;box-shadow:var(--sombra);}
@@ -314,6 +401,186 @@ tbody tr:nth-child(even){background:#faf8f2;}
 .navpag strong{font-family:var(--serif-titulo);font-size:1rem;line-height:1.3;}
 .navpag a.prox{text-align:right;align-items:flex-end;}
 
+/* ---------- FICHAMENTO (botão + modal) ---------- */
+.ficha-btn{
+  display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;
+  background:linear-gradient(135deg,#1f3a5f,#385b8a);color:var(--linho);
+  border:0;border-left:5px solid var(--ambar);border-radius:var(--raio);
+  padding:14px 18px;margin:18px 0;font-family:var(--serif-corpo);font-size:1rem;
+  box-shadow:var(--sombra);transition:transform .12s ease,filter .12s ease;
+  width:100%;
+  min-width:0;max-width:100%;
+  box-sizing:border-box;
+}
+.ficha-btn .txt{flex:1 1 auto;min-width:0;}
+.ficha-btn:hover{filter:brightness(1.12);transform:translateY(-1px);}
+.ficha-btn .ico{
+  flex:0 0 auto;width:34px;height:34px;border-radius:8px;background:var(--ambar);
+  display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;
+  font-family:var(--serif-titulo);
+}
+.ficha-btn .txt{flex:1;}
+.ficha-btn .txt strong{display:block;font-family:var(--serif-titulo);font-size:1.02rem;}
+.ficha-btn .txt em{font-style:normal;font-size:.85rem;opacity:.9;}
+.ficha-btn .seta{font-size:1.3rem;color:#f0d29a;}
+@media (hover:none){.ficha-btn:hover{transform:none;filter:none;}}
+@media (max-width:820px){.ficha-btn{padding:16px;min-height:58px;}}
+@media print{.ficha-btn,.modal-fundo{display:none !important;}}
+
+.modal-fundo{
+  display:none;position:fixed;inset:0;background:rgba(31,58,95,.72);
+  z-index:900;padding:24px 16px;overscroll-behavior:contain;
+}
+.modal-fundo.ativo{display:flex;align-items:flex-start;justify-content:center;}
+.modal-cx{
+  background:var(--branco);width:100%;max-width:880px;margin:0 auto;border-radius:14px;
+  box-shadow:0 18px 50px rgba(0,0,0,.35);overflow:hidden;animation:fichaSobe .18s ease-out;
+  display:flex;flex-direction:column;
+  max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);
+}
+@keyframes fichaSobe{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+.modal-topo{
+  background:var(--tinta);color:var(--linho);padding:18px 22px;
+  display:flex;align-items:flex-start;gap:14px;flex:0 0 auto;
+}
+.modal-topo .rot{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:#f0d29a;display:block;}
+.modal-topo h3{margin:2px 0 0;font-size:1.3rem;color:var(--linho);}
+.modal-fechar{
+  margin-left:auto;background:transparent;border:1px solid rgba(245,242,234,.45);
+  color:var(--linho);width:34px;height:34px;border-radius:8px;font-size:1.2rem;
+  cursor:pointer;line-height:1;flex:0 0 auto;
+}
+.modal-fechar:hover{background:rgba(245,242,234,.15);}
+.modal-corpo{
+  padding:20px 24px 26px;flex:1 1 auto;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+}
+.modal-corpo h4{
+  font-family:var(--serif-titulo);color:var(--ambar);font-size:.85rem;
+  letter-spacing:.1em;text-transform:uppercase;margin:20px 0 6px;
+  border-bottom:1px solid var(--linho-escuro);padding-bottom:5px;
+}
+.modal-corpo h4:first-child{margin-top:0;}
+.modal-corpo ul{margin:0;padding-left:20px;}
+.modal-corpo li{margin-bottom:7px;text-align:left;font-size:.97rem;}
+.modal-rodape{
+  border-top:1px solid var(--linho-escuro);padding:14px 24px;background:#faf8f2;
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  flex:0 0 auto;
+}
+.modal-rodape span{font-size:.82rem;color:var(--cinza);}
+.modal-rodape button{
+  background:var(--ardosia);color:#fff;border:0;border-radius:8px;padding:9px 16px;
+  font-family:var(--serif-corpo);font-size:.9rem;cursor:pointer;
+}
+.modal-rodape button:hover{filter:brightness(1.1);}
+@media (max-width:720px){
+  .modal-fundo{padding:0;}
+  .modal-cx{max-width:100%;border-radius:0;margin:0;height:100vh;height:100dvh;max-height:none;}
+  .modal-topo{padding:16px;}
+  .modal-topo h3{font-size:1.12rem;}
+  .modal-corpo{padding:18px 16px 24px;}
+  .modal-corpo li{font-size:.95rem;}
+  .modal-rodape{padding:12px 16px calc(12px + env(safe-area-inset-bottom));justify-content:center;}
+  .modal-rodape button{width:100%;min-height:46px;font-size:.95rem;}
+  .modal-fechar{width:40px;height:40px;font-size:1.35rem;}
+}
+
+/* ---------- BOX PRATIQUE COM ATIVIDADE ---------- */
+.box-pratique-inline {
+  max-width: 100%;
+  clear: both;
+  background: #fdf7e8;
+  border: 1px solid var(--ambar-claro);
+  border-left: 4px solid var(--ambar);
+  border-radius: var(--raio);
+  padding: 20px 24px;
+  margin: 28px 0 12px;
+  box-shadow: var(--sombra);
+}
+.box-pratique-inline .rotulo-pratique{
+  font-family:var(--serif-corpo);
+  font-size:.65rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ambar);
+  display:block;
+  margin-bottom:6px;
+  font-weight:600;
+}
+.box-pratique-inline h3{
+  font-size:1.05rem;
+  color:var(--tinta);
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.box-pratique-inline .desc-pratique{
+  font-size:.88rem;
+  color:var(--cinza);
+  margin-bottom:14px;
+  text-align:left;
+  line-height:1.4;
+}
+.card-inner-atividade{
+  background:var(--branco);
+  border:1px solid var(--borda);
+  border-radius:10px;
+  padding:14px 16px;
+  box-shadow:0 1px 4px rgba(31,58,95,.05);
+}
+.card-inner-atividade h4{
+  font-size:.93rem;
+  color:var(--tinta);
+  margin-bottom:6px;
+}
+.card-inner-atividade p{
+  font-size:.85rem;
+  color:var(--cinza);
+  margin-bottom:12px;
+  text-align:left;
+  line-height:1.35;
+}
+.botoes-grupo{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.btn-atv-solido{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--tinta);
+  color:#ffffff !important;
+  text-decoration:none;
+  border-radius:8px;
+  padding:8px 14px;
+  font-size:.82rem;
+  font-weight:600;
+  transition:background .15s ease;
+}
+.btn-atv-solido:hover{
+  background:var(--tinta-claro);
+}
+.btn-atv-contorno{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+  color:var(--ambar) !important;
+  border:1px solid var(--ambar);
+  text-decoration:none;
+  border-radius:8px;
+  padding:8px 14px;
+  font-size:.82rem;
+  font-weight:600;
+  transition:background .15s ease;
+}
+.btn-atv-contorno:hover{
+  background:#fdf7e8;
+}
+
 /* ---------- RODAPÉ ---------- */
 footer{
   background:var(--tinta);color:var(--linho);text-align:center;
@@ -377,7 +644,7 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
   footer{background:none;color:#000;border-top:1px solid #999;}
   footer strong,footer a{color:#000;}
 }
-@media (min-width:1200px){:root{--medida:960px;}}
+@media (min-width:1200px){:root{--medida:1140px;}}
 </style>
 </head>
 <body>
@@ -445,8 +712,43 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
     </ul>
   </section>
 
-  <section>
+  <section class="conteudo">
+
+
     <h2 class="secao" id="t1"><span class="num">1</span>O que é estratificação social</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="1">
+      <span class="ico">1</span>
+      <span class="txt"><strong>Fichamento do tópico 1</strong><em>Resumo em tópicos: estratificação social</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
+<aside class="lateral">
+  <a href="https://drive.google.com/file/d/1IpNNYMN0mJeDgXrGikVE022c-jgLflqF/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="mini-card" style="text-decoration:none;display:flex;flex-direction:column;gap:6px;background:var(--branco);border:1px solid var(--borda);border-top:4px solid var(--ambar);border-radius:var(--raio);padding:14px 16px;box-shadow:var(--sombra);transition:transform .15s ease,box-shadow .15s ease;">
+    <span class="rotulo">Slides da aula</span>
+    <h4 style="font-size:.95rem;margin:0 0 6px;line-height:1.3;color:var(--tinta);">Slides em PDF · Tópico 1</h4>
+    <span class="chamada" style="font-size:.8rem;color:var(--cinza);line-height:1.5;display:block;text-align:left;">Apresentação completa da aula sobre estratificação e desigualdade.</span>
+    <span class="abrir" style="display:block;margin-top:9px;font-size:.76rem;font-weight:700;color:var(--ambar);">Abrir no Google Drive &rarr;</span>
+  </a>
+  <button class="mini-card" type="button" data-modal="modal-scott">
+    <span class="rotulo">Texto de apoio &middot; Joan Scott</span>
+    <h4>Os limites da "experiência" como base da classe</h4>
+    <span class="chamada">Por que a noção de classe de Thompson pode apagar gênero, raça e sexualidade.</span>
+    <span class="abrir">Ler o texto &rarr;</span>
+  </button>
+  <button class="mini-card" type="button" data-modal="modal-classemedia">
+    <span class="rotulo">Texto de apoio</span>
+    <h4>O que é "classe média"?</h4>
+    <span class="chamada">Marx, Weber e pesquisadores brasileiros diante de um conceito sem consenso.</span>
+    <span class="abrir">Ler o texto &rarr;</span>
+  </button>
+  <button class="mini-card" type="button" data-modal="modal-castas">
+    <span class="rotulo">Texto de apoio</span>
+    <h4>As castas e a administração colonial britânica</h4>
+    <span class="chamada">Como o Raj Britânico converteu uma hierarquia religiosa em instrumento de governo.</span>
+    <span class="abrir">Ler o texto &rarr;</span>
+  </button>
+</aside>
+
 
     <p>Comece por uma observação simples: em qualquer sociedade que você conheça, as pessoas não têm as mesmas condições de vida. Umas moram melhor, estudam mais, ganham mais e são mais respeitadas do que outras. Isso não acontece por acaso, nem é resultado só do esforço de cada um. Acontece porque as sociedades <strong>organizam</strong> essa diferença — e é esse processo que recebe o nome de estratificação social.</p>
 
@@ -466,6 +768,12 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
 
     <h2 class="secao" id="t1-classe"><span class="num">2</span>Classe social: o critério das sociedades capitalistas</h2>
 
+    <button class="ficha-btn" type="button" data-ficha="2">
+      <span class="ico">2</span>
+      <span class="txt"><strong>Fichamento do tópico 2</strong><em>Resumo em tópicos: classe social</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
+
     <p>Nas sociedades capitalistas, o conceito central para entender a estratificação é o de <strong>classe social</strong>. Uma primeira resposta possível — e bastante comum — é dizer que a classe de uma pessoa depende daquilo que ela consegue consumir: os aparelhos que tem em casa, o carro, o celular, as viagens. Mas será que o consumo é mesmo o critério principal?</p>
 
     <p><strong>Karl Marx</strong> (1818-1883) e <strong>Friedrich Engels</strong> (1820-1895) responderam que não. Para eles, o que define a classe é a <em>posição na produção</em>, e não o que se compra. De um lado está a <strong>burguesia</strong>, formada pelos proprietários dos meios de produção — as fábricas, as instalações, as máquinas, as matérias-primas. De outro está o <strong>proletariado</strong>, formado pelos trabalhadores, que recebem um salário em troca da venda de sua força de trabalho.</p>
@@ -482,25 +790,13 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
 
     <p>Essa reflexão permite que os trabalhadores compreendam seu lugar nas relações históricas e sociais em que estão inseridos — individual e coletivamente. Reconhecer-se a partir desses laços de pertencimento e de conflito é o que Thompson chama de <strong>consciência de classe</strong>. Em outras palavras: não basta ocupar uma posição; é preciso perceber que se ocupa essa posição junto com outras pessoas.</p>
 
-    <div class="saiba-box">
-      <span class="rot">Saiba mais · uma crítica ao conceito</span>
-      <h4>Joan Scott e os limites da "experiência"</h4>
-      <p>A historiadora estadunidense Joan W. Scott analisou o uso que Thompson faz do termo <em>experiência</em>. Segundo ela, a experiência funciona ali como o início de um processo que culmina na articulação de uma consciência social — no caso, uma identidade comum de classe. Ela cumpre uma função integradora, unindo o individual e o estrutural e aproximando pessoas diversas em um todo coerente com sentido de classe.</p>
-      <p>A crítica de Scott vem em seguida: esse aspecto unificador acaba <strong>excluindo amplos domínios da atividade humana</strong>, que simplesmente não são considerados experiência. Quando a classe se torna uma identidade que desconsidera o resto, outras posições dos sujeitos — como gênero, raça, etnia e sexualidade — ficam subsumidas por ela, isto é, absorvidas e apagadas.</p>
-      <p><strong>Para pensar:</strong> é possível articular a noção de classe com essas "outras posições dos sujeitos", em vez de escolher entre uma e outras? Guarde a pergunta: ela reaparece no fim deste tópico.</p>
-      <span class="fonte">Elaborado a partir de SCOTT, Joan W. "A invisibilidade da experiência". <em>Projeto História</em> — Revista do Programa de Estudos Pós-Graduados de História, v. 16, p. 310, 2008. Disponível em: revistas.pucsp.br/revph. Texto reproduzido na seção "Reflexão" do capítulo 9 de <em>Sociologia</em> (volume único, PNLD 2026).</span>
-    </div>
-
-    <div class="saiba-box">
-      <span class="rot">Saiba mais · um caso difícil</span>
-      <h4>O que é "classe média"?</h4>
-      <p>Compreender a classe média é importante e, ao mesmo tempo, difícil: não há consenso sobre quais características a definem. Para <strong>Marx</strong>, a noção liga-se à posição ocupada na estrutura de produção, sendo formada por pequenos proprietários e profissionais autônomos, numa posição intermediária entre burgueses e proletários. <strong>Weber</strong>, por outro lado, a vê como um grupo variado, considerando em sua caracterização elementos como renda, educação e ocupação.</p>
-      <p>Pesquisadores brasileiros também se dedicaram ao tema. <strong>Ricardo Antunes</strong> (1953- ) reflete sobre os problemas da classe média ligados à insegurança no trabalho e à busca por estabilidade, num cenário de constantes transformações no mundo do trabalho. <strong>Jessé Souza</strong> (1960- ) destaca que a classe média mantém sua posição por meio de privilégios, usando o consumo e o estilo de vida para se diferenciar dos mais pobres.</p>
-      <p>Já os institutos de pesquisa adotam critérios estatísticos. A FGV e o IBGE classificam a classe média pela renda — a chamada classe C, com renda domiciliar per capita entre R$ 2.005 e R$ 8.640, segundo dados de 2021 —, e o IBGE considera ainda o acesso a educação, saúde e bens duráveis para traçar um perfil mais completo. De modo geral, pode-se defini-la como uma camada intermediária marcada por escolaridade em nível superior, ocupação de prestígio, casa própria e acesso a lazer.</p>
-      <span class="fonte">Elaborado com base no capítulo 9 de <em>Sociologia</em> (volume único, PNLD 2026), seção "O que é 'classe média'?", que cita RIBEIRO, Janaína. "Mais pobres migraram para classe média com retomada de empregos, diz estudo". <em>InvestNews</em>, 2 ago. 2023.</span>
-    </div>
-
     <h2 class="secao" id="t1-outras"><span class="num">3</span>Outras formas de estratificação</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="3">
+      <span class="ico">3</span>
+      <span class="txt"><strong>Fichamento do tópico 3</strong><em>Resumo em tópicos: gênero, raça e castas</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
 
     <p>Classe não é o único critério em jogo. Em nossa sociedade, a distribuição desigual de poder, prestígio e bens <strong>entre homens e mulheres</strong> e <strong>entre brancos e negros</strong> constitui, respectivamente, exemplos de estratificação de gênero e de estratificação étnico-racial. Essas desigualdades acrescentam novas camadas às disparidades de acesso à renda — elas não substituem a classe, somam-se a ela.</p>
 
@@ -511,15 +807,13 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
       <p><strong>Pária.</strong> Indivíduo que está à margem da sociedade, excluído. Ainda que o sistema de castas tenha sido oficialmente abolido, a desigualdade e a violência continuam a afetar os integrantes das camadas consideradas inferiores — prova de que uma hierarquia social não desaparece no dia em que a lei muda.</p>
     </div>
 
-    <div class="saiba-box">
-      <span class="rot">Saiba mais · como uma hierarquia sobrevive</span>
-      <h4>As castas e a administração colonial britânica</h4>
-      <p>Há um episódio histórico que ajuda a explicar por que o sistema de castas atravessou o século XX com tanta força. Depois da Revolta dos Cipaios (1857) e da instauração do Raj Britânico em 1858, a Coroa britânica passou a governar a Índia apoiando-se nas elites locais e aproximando-se dos grupos hindus. O sistema judicial então implantado <strong>incorporou valores hindus, inclusive a estratificação social do sistema de castas</strong>, enquanto jovens das classes altas recebiam educação ocidental e assumiam cargos na administração.</p>
-      <p>Uma hierarquia religiosa antiga foi, assim, convertida em instrumento de administração colonial. Segundo a ONU, mais de 260 milhões de pessoas ainda sofrem discriminações decorrentes desse sistema em países como Índia, Nepal e Paquistão.</p>
-      <span class="fonte">Elaborado com base na coleção <em>Interação — Ciências Humanas e Sociais Aplicadas</em>, capítulo sobre a colonização britânica na Índia, e no capítulo 9 de <em>Sociologia</em> (volume único, PNLD 2026).</span>
-    </div>
-
     <h2 class="secao" id="t1-brasil"><span class="num">4</span>A desigualdade brasileira não caiu do céu</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="4">
+      <span class="ico">4</span>
+      <span class="txt"><strong>Fichamento do tópico 4</strong><em>Resumo em tópicos: desigualdade no Brasil</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
 
     <p>O Brasil é um exemplo claro da coexistência de grupos sociais com condições de vida profundamente desiguais. A distribuição de renda é extremamente concentrada, com uma pequena parcela da população detendo a maior parte da riqueza — e isso se reflete no acesso a bens e serviços essenciais como educação, saúde, moradia e segurança. Enquanto uma parte da população desfruta de altos padrões de vida, outra vive sem acesso a direitos básicos garantidos pela Constituição.</p>
 
@@ -548,7 +842,23 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
       <p>Reconhecer as desigualdades e assumi-las como reais é a condição para enfrentá-las. E, junto com isso, é fundamental conhecer as <em>condições históricas</em> que mantêm determinados grupos em situação de desvantagem social e econômica. Negar o problema — ou tratá-lo como falha pessoal de quem está embaixo — é a forma mais eficiente de conservá-lo.</p>
     </div>
 
+
     <h2 class="secao" id="t1-racial"><span class="num">5</span>Como a desigualdade racial foi justificada</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="5">
+      <span class="ico">5</span>
+      <span class="txt"><strong>Fichamento do tópico 5</strong><em>Resumo em tópicos: teorias raciais</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
+<aside class="lateral lateral-texto-unico">
+  <button class="mini-card" type="button" data-modal="modal-congresso">
+    <span class="rotulo">Texto de apoio</span>
+    <h4>O Congresso Universal de Raças e a tese do branqueamento</h4>
+    <span class="chamada">Como uma política de imigração e uma tese sobre a população foram apresentadas como ciência.</span>
+    <span class="abrir">Ler o texto &rarr;</span>
+  </button>
+</aside>
+
 
     <p>Se a desigualdade racial brasileira é histórica, vale perguntar: <em>como</em> ela foi explicada e defendida em seu tempo? A resposta passa por um conjunto de ideias que se apresentaram como ciência no século XIX — as chamadas <strong>teorias raciais</strong>.</p>
 
@@ -580,29 +890,16 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
     <p>A construção dessa ideia passou por intelectuais como <strong>Sílvio Romero</strong> (1851-1914), que procurou retratar uma nação única, formada e miscigenada pelas três raças, e ganhou peso sobretudo na década de 1930. <strong>Sérgio Buarque de Holanda</strong> (1902-1982), em <em>Raízes do Brasil</em> (1936), analisou a colonização portuguesa e o patriarcalismo rural — orientado, segundo ele, por um sistema de profunda limitação entre as raças, no qual cada uma tinha seu papel e seu lugar. Do mesmo livro vêm as noções de <em>homem cordial</em> e de <em>patrimonialismo</em>, esta última explicando como interesses particulares dos patriarcas se misturam ao aparato estatal.</p>
 
     <p>Compreender por que esse mito foi construído — e por que ele foi útil a quem o construiu — é parte da tarefa. Uma sociedade que se acredita sem racismo não precisa criar políticas para combatê-lo.</p>
-<div class="acc">
-  <button class="acc-head" type="button">&#128214; Texto de apoio · O Congresso Universal de Raças e a tese do branqueamento</button>
-  <div class="acc-body">
-    <div class="texto-apoio">
-
-      <span class="ta-fonte">Texto de apoio reproduzido, em síntese fiel, do capítulo 11 de <em>Sociologia</em> (volume único, PNLD 2026), seção "Reflexão", com as fontes originais indicadas ao final.</span>
-      <p>Em 1911 realizou-se em Londres o <strong>Primeiro Congresso Universal de Raças</strong>. O Brasil enviou como representantes os médicos e cientistas Edgard Roquette-Pinto (1884-1954) e João Baptista de Lacerda (1846-1915). Ao publicar o texto do congresso, Lacerda incluiu nele a pintura <em>A Redenção de Cam</em>, de Modesto Brocos (1895), a fim de retratar o branqueamento ao longo de três gerações: avó, filha e neta.</p>
-      <p>O argumento de Lacerda, reconstituído pelos pesquisadores Vanderlei Sebastião de Souza e Ricardo Ventura Santos, era o seguinte: os africanos, capturados e brutalmente escravizados no Brasil, não teriam sido segregados pelos colonizadores portugueses, que desde cedo fizeram de suas escravizadas concubinas — o que tornaria "natural" no país a relação entre brancos e negros e faria crescer rapidamente a população mestiça. Embora descritos por ele como pouco afeitos ao trabalho braçal, os mestiços brasileiros seriam "intensamente inteligentes", com disposição para as letras, a ciência e a política.</p>
-      <div class="ta-nota">
-        <span class="ta-rot">A previsão que ele apresentou como ciência</span>
-        <p>Lacerda concluía que o cruzamento racial faria negros e mestiços <em>desaparecerem</em> do território brasileiro em menos de um século — antes mesmo do fim do século XX —, produzindo o branqueamento da população. Ele apontava três causas: a "seleção sexual", pela qual os mulatos buscariam parceiros que devolvessem seus descendentes ao "tipo branco puro"; a crescente entrada de imigrantes europeus; e o abandono a que os negros foram submetidos desde a abolição. Em tom comemorativo, afirmava que o Brasil caminhava para tornar-se um dos principais centros da civilização do mundo.</p>
-      </div>
-      <p>O escritor e ativista <strong>Abdias do Nascimento</strong>, em <em>O genocídio do negro brasileiro</em> (1978), analisou o outro lado dessa política: a orientação racista da imigração foi, segundo ele, instrumento básico do processo de embranquecer o país, sustentada pela suposição — inspirada em Gobineau — de que a população brasileira seria geneticamente inferior por causa da presença africana e precisaria "fortalecer-se" com valores europeus.</p>
-      <p>Note, para o que interessa neste tópico: uma política de Estado (a imigração) e uma tese sobre a população foram construídas <strong>como se fossem ciência</strong>, e produziram desigualdades cujos efeitos são medidos, hoje, pelos indicadores que estudaremos no tópico 7.</p>
-      <p><em>Bibliografia:</em> SOUZA, Vanderlei Sebastião de; SANTOS, Ricardo Ventura. "O Congresso Universal de Raças, Londres, 1911: contextos, temas e debates". <em>Boletim do Museu Paraense Emílio Goeldi. Ciências Humanas</em>, v. 7, n. 3, p. 753-754, set. 2012. · NASCIMENTO, Abdias do. <em>O genocídio do negro brasileiro: processo de um racismo mascarado</em>. Rio de Janeiro: Paz e Terra, 1978, p. 70. · BROCOS, Modesto. <em>A Redenção de Cam</em>, 1895, óleo sobre tela, Museu Nacional de Belas Artes, Rio de Janeiro. Ambos os textos reproduzidos no capítulo 11 de <em>Sociologia</em> (volume único, PNLD 2026).</p>
-
-    </div>
-  </div>
-</div>
   </section>
 
   <section>
     <h2 class="secao" id="t1-habilidade"><span class="num">6</span>Por que isso importa para a habilidade</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="6">
+      <span class="ico">6</span>
+      <span class="txt"><strong>Fichamento do tópico 6</strong><em>Resumo em tópicos: EM13CHS402</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
 
     <p>A habilidade EM13CHS402 pede a comparação de indicadores de emprego, trabalho e renda <em>em diferentes espaços, escalas e tempos</em>. Este tópico é a base dessa comparação, por três motivos.</p>
 
@@ -689,7 +986,92 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
    <a class="prox" href="topico-2.html"><span class="dir">Próximo &#8250;</span><strong>Tópico 2 · O mundo feudal</strong></a>
  </nav>
 
+  <!-- BOX PRATIQUE -->
+  <div class="box-pratique-inline">
+    <span class="rotulo-pratique">PRATIQUE</span>
+    <h3>📝 Atividade de fixação</h3>
+    <p class="desc-pratique">Reforce o conteúdo estudado com os textos de apoio e responda às questões dissertativas.</p>
+
+    <div class="card-inner-atividade">
+      <h4>📄 Atividade 1 — Estratificação e desigualdade</h4>
+      <p>Leituras intercaladas com questões dissertativas e comentários do professor.</p>
+
+      <div class="botoes-grupo">
+        <a class="btn-atv-solido" href="atv/atv2.html">Abrir atividade ↗</a>
+      </div>
+    </div>
+  </div>
+
 </main>
+
+<div class="modal" id="modal-scott" role="dialog" aria-modal="true" aria-labelledby="t-scott">
+  <div class="modal-caixa">
+    <button class="fechar" type="button" aria-label="Fechar">&times;</button>
+    <span class="rotulo">Texto de apoio &middot; Joan Scott</span>
+    <h3 id="t-scott">Os limites da "experiência" como base da classe</h3>
+    <p>A historiadora estadunidense Joan W. Scott analisou o uso que Thompson faz do termo <em>experiência</em>. Segundo ela, a experiência funciona ali como o início de um processo que culmina na articulação de uma consciência social — no caso, uma identidade comum de classe. Ela cumpre uma função integradora, unindo o individual e o estrutural e aproximando pessoas diversas em um todo coerente com sentido de classe.</p>
+    <p>A crítica de Scott vem em seguida: esse aspecto unificador acaba <strong>excluindo amplos domínios da atividade humana</strong>, que simplesmente não são considerados experiência. Quando a classe se torna uma identidade que desconsidera o resto, outras posições dos sujeitos — como gênero, raça, etnia e sexualidade — ficam subsumidas por ela, isto é, absorvidas e apagadas.</p>
+    <p><strong>Para pensar:</strong> é possível articular a noção de classe com essas "outras posições dos sujeitos", em vez de escolher entre uma e outras? Guarde a pergunta: ela reaparece no fim deste tópico.</p>
+    <p class="ref">SCOTT, Joan W. "A invisibilidade da experiência". <em>Projeto História</em> — Revista do Programa de Estudos Pós-Graduados de História, v. 16, p. 310, 2008. Disponível em: revistas.pucsp.br/revph. Texto reproduzido na seção "Reflexão" do capítulo 9 de <em>Sociologia</em> (volume único, PNLD 2026).</p>
+  </div>
+</div>
+
+<div class="modal" id="modal-classemedia" role="dialog" aria-modal="true" aria-labelledby="t-classemedia">
+  <div class="modal-caixa">
+    <button class="fechar" type="button" aria-label="Fechar">&times;</button>
+    <span class="rotulo">Texto de apoio</span>
+    <h3 id="t-classemedia">O que é "classe média"?</h3>
+    <p>Compreender a classe média é importante e, ao mesmo tempo, difícil: não há consenso sobre quais características a definem. Para <strong>Marx</strong>, a noção liga-se à posição ocupada na estrutura de produção, sendo formada por pequenos proprietários e profissionais autônomos, numa posição intermediária entre burgueses e proletários. <strong>Weber</strong>, por outro lado, a vê como um grupo variado, considerando em sua caracterização elementos como renda, educação e ocupação.</p>
+    <p>Pesquisadores brasileiros também se dedicaram ao tema. <strong>Ricardo Antunes</strong> (1953- ) reflete sobre os problemas da classe média ligados à insegurança no trabalho e à busca por estabilidade, num cenário de constantes transformações no mundo do trabalho. <strong>Jessé Souza</strong> (1960- ) destaca que a classe média mantém sua posição por meio de privilégios, usando o consumo e o estilo de vida para se diferenciar dos mais pobres.</p>
+    <p>Já os institutos de pesquisa adotam critérios estatísticos. A FGV e o IBGE classificam a classe média pela renda — a chamada classe C, com renda domiciliar per capita entre R$ 2.005 e R$ 8.640, segundo dados de 2021 —, e o IBGE considera ainda o acesso a educação, saúde e bens duráveis para traçar um perfil mais completo. De modo geral, pode-se defini-la como uma camada intermediária marcada por escolaridade em nível superior, ocupação de prestígio, casa própria e acesso a lazer.</p>
+    <p class="ref">Elaborado com base no capítulo 9 de <em>Sociologia</em> (volume único, PNLD 2026), seção "O que é 'classe média'?", que cita RIBEIRO, Janaína. "Mais pobres migraram para classe média com retomada de empregos, diz estudo". <em>InvestNews</em>, 2 ago. 2023.</p>
+  </div>
+</div>
+
+<div class="modal" id="modal-castas" role="dialog" aria-modal="true" aria-labelledby="t-castas">
+  <div class="modal-caixa">
+    <button class="fechar" type="button" aria-label="Fechar">&times;</button>
+    <span class="rotulo">Texto de apoio</span>
+    <h3 id="t-castas">As castas e a administração colonial britânica</h3>
+    <p>Há um episódio histórico que ajuda a explicar por que o sistema de castas atravessou o século XX com tanta força. Depois da Revolta dos Cipaios (1857) e da instauração do Raj Britânico em 1858, a Coroa britânica passou a governar a Índia apoiando-se nas elites locais e aproximando-se dos grupos hindus. O sistema judicial então implantado <strong>incorporou valores hindus, inclusive a estratificação social do sistema de castas</strong>, enquanto jovens das classes altas recebiam educação ocidental e assumiam cargos na administração.</p>
+    <p>Uma hierarquia religiosa antiga foi, assim, convertida em instrumento de administração colonial. Segundo a ONU, mais de 260 milhões de pessoas ainda sofrem discriminações decorrentes desse sistema em países como Índia, Nepal e Paquistão.</p>
+    <p class="ref">Elaborado com base na coleção <em>Interação — Ciências Humanas e Sociais Aplicadas</em>, capítulo sobre a colonização britânica na Índia, e no capítulo 9 de <em>Sociologia</em> (volume único, PNLD 2026).</p>
+  </div>
+</div>
+
+<div class="modal" id="modal-congresso" role="dialog" aria-modal="true" aria-labelledby="t-congresso">
+  <div class="modal-caixa">
+    <button class="fechar" type="button" aria-label="Fechar">&times;</button>
+    <span class="rotulo">Texto de apoio</span>
+    <h3 id="t-congresso">O Congresso Universal de Raças e a tese do branqueamento</h3>
+    <p>Em 1911 realizou-se em Londres o <strong>Primeiro Congresso Universal de Raças</strong>. O Brasil enviou como representantes os médicos e cientistas Edgard Roquette-Pinto (1884-1954) e João Baptista de Lacerda (1846-1915). Ao publicar o texto do congresso, Lacerda incluiu nele a pintura <em>A Redenção de Cam</em>, de Modesto Brocos (1895), a fim de retratar o branqueamento ao longo de três gerações: avó, filha e neta.</p>
+    <p>O argumento de Lacerda, reconstituído pelos pesquisadores Vanderlei Sebastião de Souza e Ricardo Ventura Santos, era o seguinte: os africanos, capturados e brutalmente escravizados no Brasil, não teriam sido segregados pelos colonizadores portugueses, que desde cedo fizeram de suas escravizadas concubinas — o que tornaria "natural" no país a relação entre brancos e negros e faria crescer rapidamente a população mestiça. Embora descritos por ele como pouco afeitos ao trabalho braçal, os mestiços brasileiros seriam "intensamente inteligentes", com disposição para as letras, a ciência e a política.</p>
+    <div style="background:#eef3f4;border:1px dashed var(--ardosia);border-radius:var(--raio);padding:14px 18px;margin:18px 0;">
+      <span style="display:block;color:var(--ardosia);font-weight:600;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">A previsão que ele apresentou como ciência</span>
+      <p style="margin:0;">Lacerda concluía que o cruzamento racial faria negros e mestiços <em>desaparecerem</em> do território brasileiro em menos de um século — antes mesmo do fim do século XX —, produzindo o branqueamento da população. Ele apontava três causas: a "seleção sexual", pela qual os mulatos buscariam parceiros que devolvessem seus descendentes ao "tipo branco puro"; a crescente entrada de imigrantes europeus; e o abandono a que os negros foram submetidos desde a abolição. Em tom comemorativo, afirmava que o Brasil caminhava para tornar-se um dos principais centros da civilização do mundo.</p>
+    </div>
+    <p>O escritor e ativista <strong>Abdias do Nascimento</strong>, em <em>O genocídio do negro brasileiro</em> (1978), analisou o outro lado dessa política: a orientação racista da imigração foi, segundo ele, instrumento básico do processo de embranquecer o país, sustentada pela suposição — inspirada em Gobineau — de que a população brasileira seria geneticamente inferior por causa da presença africana e precisaria "fortalecer-se" com valores europeus.</p>
+    <p>Note, para o que interessa neste tópico: uma política de Estado (a imigração) e uma tese sobre a população foram construídas <strong>como se fossem ciência</strong>, e produziram desigualdades cujos efeitos são medidos, hoje, pelos indicadores que estudaremos no tópico 7.</p>
+    <p class="ref">SOUZA, Vanderlei Sebastião de; SANTOS, Ricardo Ventura. "O Congresso Universal de Raças, Londres, 1911: contextos, temas e debates". <em>Boletim do Museu Paraense Emílio Goeldi. Ciências Humanas</em>, v. 7, n. 3, p. 753-754, set. 2012. · NASCIMENTO, Abdias do. <em>O genocídio do negro brasileiro: processo de um racismo mascarado</em>. Rio de Janeiro: Paz e Terra, 1978, p. 70. · BROCOS, Modesto. <em>A Redenção de Cam</em>, 1895, óleo sobre tela, Museu Nacional de Belas Artes, Rio de Janeiro. Ambos os textos reproduzidos no capítulo 11 de <em>Sociologia</em> (volume único, PNLD 2026).</p>
+  </div>
+</div>
+
+<div class="modal-fundo" id="modalFicha" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo" aria-hidden="true">
+  <div class="modal-cx">
+    <div class="modal-topo">
+      <div>
+        <span class="rot" id="fichaRot">Fichamento</span>
+        <h3 id="fichaTitulo"></h3>
+      </div>
+      <button class="modal-fechar" id="fecharFicha" type="button" aria-label="Fechar">&times;</button>
+    </div>
+    <div class="modal-corpo" id="fichaCorpo" tabindex="-1"></div>
+    <div class="modal-rodape">
+      <span>Colégio Estadual Rodolfo de Oliveira · CERO · 2026</span>
+      <button id="fecharFicha2" type="button">Voltar ao material</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <p>Ciências Humanas e Sociais Aplicadas · História · 1ª série do Ensino Médio · Habilidade EM13CHS402</p>
@@ -742,6 +1124,34 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
     d.addEventListener('keydown',function(e){ if(e.key==='Escape'||e.key==='Esc') fecharTrilha(); });
   }
 
+  /* textos de apoio (coluna lateral -> modal), mesmo padrão usado nos demais tópicos da trilha */
+  var modalAberto=null;
+  function abrirModal(id){
+    var m=d.getElementById(id);
+    if(!m) return;
+    m.classList.add('aberto');
+    d.body.style.overflow='hidden';
+    modalAberto=m;
+    var b=m.querySelector('.fechar');
+    if(b) b.focus();
+  }
+  function fecharModal(){
+    if(!modalAberto) return;
+    modalAberto.classList.remove('aberto');
+    d.body.style.overflow='';
+    modalAberto=null;
+  }
+  d.querySelectorAll('button.mini-card').forEach(function(c){
+    c.addEventListener('click', function(){ abrirModal(c.getAttribute('data-modal')); });
+  });
+  d.querySelectorAll('.fechar').forEach(function(b){
+    b.addEventListener('click', fecharModal);
+  });
+  d.querySelectorAll('.modal').forEach(function(m){
+    m.addEventListener('click', function(e){ if(e.target===m) fecharModal(); });
+  });
+  d.addEventListener('keydown', function(e){ if(e.key==='Escape') fecharModal(); });
+
   /* aviso de rolagem nas tabelas */
   function medirTabelas(){
     d.querySelectorAll('.tabela-wrap').forEach(function(w){
@@ -768,6 +1178,90 @@ p,li,dd,dt,td,th{overflow-wrap:break-word;}
     window.addEventListener('load',agendar);
     atualizar();
   }
+})();
+</script>
+<script>
+const FICHAS = {"1": {"titulo": "O que é estratificação social", "blocos": [["Conceito-chave", ["Estratificação social é o processo pelo qual uma sociedade separa seus membros em grupos (estratos ou camadas) com base em critérios como riqueza, poder, prestígio, educação e status.", "É uma característica universal: existe em todas as sociedades conhecidas, mas de formas e em graus muito diferentes ao longo da história.", "A palavra vem da geologia (camadas de rocha sobrepostas), mas, na sociedade, essas camadas não são naturais: são produto da cultura e mudam com o tempo."]], ["Estratificar é hierarquizar", ["Estratificação é uma distribuição desigual (assimétrica) de prestígio e de bens entre pessoas em posições diferentes.", "Onde há hierarquia, há disputa: tanto tentativas de dominar quanto esforços de resistir e transformar."]], ["Diferença não é a mesma coisa que desigualdade", ["Diferença: as pessoas são diferentes entre si de mil maneiras, e isso não é um problema.", "Desigualdade: aparece quando a diferença passa a gerar disparidade — menos acesso a estudo, saúde, moradia, renda ou segurança."]]]}, "2": {"titulo": "Classe social: o critério das sociedades capitalistas", "blocos": [["Marx e Engels: classe pela posição na produção", ["Classe não é definida pelo que a pessoa consome, mas pela posição que ocupa na produção.", "Burguesia: proprietária dos meios de produção (fábricas, máquinas, matérias-primas).", "Proletariado: trabalhadores que vendem sua força de trabalho em troca de salário.", "Mais-valia (ou mais-valor): diferença entre o valor gerado pelo trabalho e o salário pago — fica com o proprietário."]], ["Thompson: classe como experiência", ["Para E. P. Thompson, classe não é uma estrutura pronta: é uma relação, construída na experiência de quem vive as relações de exploração.", "Consciência de classe: perceber que se ocupa uma posição junto com outras pessoas, não apenas ocupá-la."]], ["Crítica de Joan Scott", ["A ideia de \"experiência\" de classe pode funcionar como identidade única e acabar excluindo outras posições dos sujeitos — gênero, raça, etnia e sexualidade ficam subsumidas (absorvidas e apagadas)."]], ["O caso difícil da \"classe média\"", ["Marx: posição intermediária — pequenos proprietários e profissionais autônomos.", "Weber: grupo variado, definido por renda, educação e ocupação.", "IBGE/FGV: critério estatístico de renda (classe C)."]]]}, "3": {"titulo": "Outras formas de estratificação", "blocos": [["Gênero e raça se somam à classe", ["A distribuição desigual de poder, prestígio e bens entre homens e mulheres é a estratificação de gênero.", "Entre brancos e negros, é a estratificação étnico-racial.", "Essas desigualdades não substituem a classe: somam-se a ela, criando novas camadas de disparidade."]], ["O sistema de castas (Índia)", ["Hierarquia hereditária que também organiza casamento e divisão do trabalho: sacerdotes, guerreiros, comerciantes e criados, nessa ordem.", "Fora do sistema: os \"intocáveis\" (dálits), considerados párias — à margem da sociedade.", "Mesmo oficialmente abolido, a desigualdade e a violência contra as camadas inferiores continuam."]], ["Como uma hierarquia sobrevive", ["A administração colonial britânica (Raj Britânico, a partir de 1858) incorporou o sistema de castas ao aparato judicial e administrativo, prolongando sua força até hoje."]]]}, "4": {"titulo": "A desigualdade brasileira não caiu do céu", "blocos": [["Os números (PNUD 2024 e Ipea 2023)", ["Mulheres negras: maior parte da população (28,5%), mas ficam com apenas 16% dos rendimentos.", "Homens negros: 24,1% · Mulheres brancas: 24,7% · Homens brancos: 35,1% (a maior fatia).", "O 1% mais rico do país concentra 28,3% de toda a renda — um dos países mais desiguais do mundo."]], ["De onde vem essa desigualdade", ["Escravização de milhares de africanos e concentração de terras e privilégios nas mãos de poucos.", "Após a abolição: não houve políticas de reparação aos libertos, nem reforma agrária abrangente.", "Sem terra, a população alforriada ocupou moradias precárias — desigualdade perpetuada por políticas públicas insuficientes."]], ["O primeiro passo", ["Reconhecer as desigualdades como reais — e não como falha pessoal de quem está embaixo — é a condição para enfrentá-las."]]]}, "5": {"titulo": "Como a desigualdade racial foi justificada", "blocos": [["Teorias raciais do século XIX", ["Apresentaram-se como ciência para categorizar raças e justificar o imperialismo europeu (a chamada Missão Civilizadora).", "Lombroso: ligava criminalidade à hereditariedade (\"delinquentes natos\").", "Nina Rodrigues: defendia parâmetros morais diferentes para negros e indígenas.", "Gobineau: a mistura entre \"raças puras\" degeneraria ambas.", "Oliveira Vianna: defendia o \"embranquecimento\" da população."]], ["O Congresso Universal de Raças (1911) e a tese do branqueamento", ["João Baptista de Lacerda previu o desaparecimento de negros e mestiços do Brasil em menos de um século, pela mistura racial e pela imigração europeia.", "A previsão foi apresentada como ciência — e usada para justificar uma política de Estado (a imigração europeia)."]], ["Uma política \"sanitária\" que era remoção", ["No Rio, a reforma urbana de Pereira Passos demoliu cortiços para \"melhorar a circulação do ar\", forçando a população pobre e majoritariamente negra a deixar o centro."]], ["O mito da democracia racial", ["Ideia de que não existe racismo no Brasil por causa da miscigenação — hoje reconhecida como um mito, uma narrativa que não corresponde à realidade.", "Construída por intelectuais como Sílvio Romero e discutida por Sérgio Buarque de Holanda em Raízes do Brasil."]]]}, "6": {"titulo": "Por que isso importa para a habilidade (EM13CHS402)", "blocos": [["Cada sociedade pede um indicador diferente", ["Um índice de desigualdade de renda faz sentido numa sociedade de classes; faz pouco sentido num feudo medieval, em que quase não circulava moeda."]], ["Um número nacional esconde estratificações internas", ["A renda média do Brasil não revela que mulheres negras, sendo a maior parte da população, ficam com apenas 16% dos rendimentos.", "Desagregar por classe, gênero, cor e região é parte do trabalho de análise."]], ["Indicador descreve, história explica", ["Nenhum número diz por si só por que ele é o que é — a resposta está nas políticas que existiram (ou não existiram), como a reparação e a reforma agrária."]], ["Retomando Joan Scott", ["Classe, gênero e raça não competem entre si: somam-se na vida das mesmas pessoas, e por isso precisam ser lidos juntos."]]]}};
+(function(){
+  var d=document, raiz=d.documentElement;
+  var fundo = d.getElementById('modalFicha');
+  var corpo = d.getElementById('fichaCorpo');
+  var tit   = d.getElementById('fichaTitulo');
+  var rot   = d.getElementById('fichaRot');
+  var focoAnterior = null, travado = false, posSalva = 0;
+
+  function escapar(t){
+    return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function travarScroll(){
+    if(travado) return;
+    posSalva = window.pageYOffset || raiz.scrollTop || 0;
+    d.body.style.position='fixed'; d.body.style.top=(-posSalva)+'px';
+    d.body.style.left='0'; d.body.style.right='0'; d.body.style.width='100%';
+    travado = true;
+  }
+  function liberarScroll(){
+    if(!travado) return;
+    var antes = raiz.style.scrollBehavior;
+    raiz.style.scrollBehavior = 'auto';
+    d.body.style.position=''; d.body.style.top=''; d.body.style.left=''; d.body.style.right=''; d.body.style.width='';
+    window.scrollTo(0, posSalva);
+    raiz.style.scrollBehavior = antes;
+    travado = false;
+  }
+  function modalAberto(){ return fundo.classList.contains('ativo'); }
+  function abrirFicha(f, num, gatilho){
+    focoAnterior = gatilho || d.activeElement;
+    var html = f.blocos.map(function(bl){
+      return '<h4>' + escapar(bl[0]) + '</h4><ul>' +
+             bl[1].map(function(i){ return '<li>' + i + '</li>'; }).join('') + '</ul>';
+    }).join('');
+    rot.textContent = 'Fichamento \u00b7 T\u00f3pico ' + num;
+    tit.textContent = f.titulo;
+    corpo.innerHTML = html;
+    fundo.classList.add('ativo');
+    fundo.setAttribute('aria-hidden','false');
+    travarScroll();
+    corpo.scrollTop = 0;
+    corpo.focus({preventScroll:true});
+  }
+  function fecharFicha(){
+    if(!modalAberto()) return;
+    fundo.classList.remove('ativo');
+    fundo.setAttribute('aria-hidden','true');
+    liberarScroll();
+    corpo.innerHTML = '';
+    if(focoAnterior && d.contains(focoAnterior)) focoAnterior.focus({preventScroll:true});
+    focoAnterior = null;
+  }
+
+  d.querySelectorAll('.ficha-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var f = FICHAS[b.dataset.ficha];
+      if(!f) return;
+      abrirFicha(f, b.dataset.ficha, b);
+    });
+  });
+  d.getElementById('fecharFicha').addEventListener('click', fecharFicha);
+  d.getElementById('fecharFicha2').addEventListener('click', fecharFicha);
+  fundo.addEventListener('click', function(e){ if(e.target === fundo) fecharFicha(); });
+  d.addEventListener('keydown', function(e){ if((e.key==='Escape'||e.key==='Esc') && modalAberto()) fecharFicha(); });
+
+  /* foco preso dentro do modal enquanto ele estiver aberto */
+  fundo.addEventListener('keydown', function(e){
+    if(e.key !== 'Tab') return;
+    var itens = Array.prototype.filter.call(
+      fundo.querySelectorAll('a[href], button:not([disabled])'),
+      function(el){ return el.offsetParent !== null; }
+    );
+    if(!itens.length) return;
+    var primeiro = itens[0], ultimo = itens[itens.length - 1];
+    if(e.shiftKey && (d.activeElement === primeiro || d.activeElement === corpo)){
+      e.preventDefault(); ultimo.focus();
+    } else if(!e.shiftKey && d.activeElement === ultimo){
+      e.preventDefault(); primeiro.focus();
+    }
+  });
 })();
 </script>
 </body>
