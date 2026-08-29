@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-<style>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=14QziWLdfdFCSPZESsUuGYHwy_49O_6Z7pr1kJJq-uL2okUgEVKHXpAOZ9P194TCLFVKrla7TTUFZEcv9mrWSyb0hHmqv9TmO2iJ74P5qXkvt63N9Zv1Xx1stNSncj_Xr861VymbCkOEjS5aP0Tmgvvcj4S2b5-TCjaAMlY8J9bwKzEHFjbdlaX64L76ls_affxDUt9Bg6D3eNxGDdipE9RI77-Do-pEczECOQg91xIaoz4xxZ4GiEGy17QNYl1VJZptDfXNVWHQUDoWeG2GsfTs4xjfCa2Ebba5HFb39Nh_XsBpGynzkWlc6cUjrKKcjcf77TSwKJYY0jPCTDExlw" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jaGF0Z3B0LmNvbS9iYWNrZW5kLWFwaS9lc3R1YXJ5L2NvbnRlbnQ_aWQ9ZmlsZV8wMDAwMDAwMDg1MTg4MjBlYWRmYTdiMDQwZDMwNDIzYiZmbj10b3BpY28tMi1jb20tY2hlYXRzaGVldC1lbS1jYWl4YS5odG1sJmNkPWF0dGFjaG1lbnQmdHM9NDk2Njc2JnA9ZnMmY2lkPTEmc2lnPTM0NzhkYzk3ZDU1MzY4ODUwNTk0ZjQwODA0YjExYmIxMTMwYTk1OTFjOTJkOTdmOWU2YjYyMGQ2ZjZlN2I3ZDcmdj0w"/><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=vLUlFEqtc_hs2FXagO1gajZdpvS6b_W3UZijmOzHgaVrOER__451RH_B5r-SDv7caG7ifnXgGdy-bLGet2VNTmwaFEqWWAgFfYmIyKR_c6hHeT1tucmAHJz0l8xu8T9AcdFTtVhHmS07QGq1fsdNr06WT3LqFbPDtLuYS18VMYce-wmusgRyVyxy9eF13tfyzMzDBfKrc_w0VrvLmJKeVfRM8jISGJEuHI25PkxXk0STYABeJnUuxZvtNvd9hZeuagT8Mq1ywcrckNAWYlsHpiyQCEsgZWBweMdgn0ERZHuUIFFexR6aZ7le1cJiEwQNtqZO8O3gqHPCt2UahdHbjg" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jaGF0Z3B0LmNvbS9iYWNrZW5kLWFwaS9lc3R1YXJ5L2NvbnRlbnQ_aWQ9ZmlsZV8wMDAwMDAwMDJjNzA4MjBlYTg5NTcwOTJlNDg0YjQ3MyZmbj10b3BpY28tMl9jb21fdG9waWNvMl96b29tLmh0bWwmY2Q9YXR0YWNobWVudCZ0cz00OTY2NzUmcD1mcyZjaWQ9MSZzaWc9YjNiY2RmMzVmMmU3ZTRiNzJlOWQxZGI1ZjQ2YzFjNTk5YzU0ZWFhM2M5ZGRjNjMzMTkzYjNkNDYzYTlhNTJhOCZ2PTA"/><style>
 :root{
   --azul:#1d3c47;
   --azul-claro:#2f5c6b;
@@ -192,6 +192,37 @@ a.mini-card{display:block;text-decoration:none;color:var(--tinta)}
 .atividade-card a.link-btn.pdf{background:transparent;color:var(--bronze);border:1px solid var(--bronze)}
 .atividade-card a.link-btn:hover{filter:brightness(1.15)}
 
+
+/* CAIXA DO CHEATSHEET — abaixo do box Pratique */
+.cheatsheet-box{
+  background:var(--branco);
+  border:1px solid var(--linha);
+  border-left:5px solid var(--bronze);
+  border-radius:0 14px 14px 0;
+  padding:22px 24px 24px;
+  margin:28px 0 0;
+  box-shadow:var(--sombra);
+  clear:both;
+}
+.cheatsheet-box .cheatsheet-titulo{
+  margin:0 0 14px;
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:1.15rem;
+  color:var(--azul);
+  text-align:left;
+}
+.cheatsheet-box .cheatsheet-imagem{
+  display:block;
+  width:100%;
+  max-width:900px;
+  height:auto;
+  margin:0 auto;
+  border:1px solid var(--linha);
+  border-radius:10px;
+  box-shadow:var(--sombra);
+  cursor:pointer;
+}
+
 @media (max-width:760px){
   /* no celular a coluna deixa de flutuar e vai para o fim do texto */
   main section{display:flex;flex-direction:column}
@@ -208,6 +239,50 @@ a.mini-card{display:block;text-decoration:none;color:var(--tinta)}
   .passo{padding:16px 16px 16px 56px}
   .nav-topicos .prox{text-align:left}
 }
+
+
+
+
+/* ---------- LIGHTBOX COM ZOOM (visualizador) ---------- */
+.lb-fundo{
+  display:none;position:fixed;inset:0;background:rgba(20,30,24,.92);z-index:1200;
+  flex-direction:column;overscroll-behavior:contain;touch-action:none;
+}
+.lb-fundo.ativo{display:flex;}
+.lb-topo{
+  display:flex;align-items:center;gap:10px;flex:0 0 auto;
+  padding:10px 14px;background:var(--petroleo);color:var(--areia);flex-wrap:wrap;
+}
+.lb-topo .lb-tit{font-family:var(--serif-titulo);font-size:1rem;flex:1;min-width:140px;line-height:1.3;}
+.lb-ctrl{display:flex;gap:6px;align-items:center;}
+.lb-ctrl button,.lb-fechar{
+  background:transparent;border:1px solid rgba(247,244,237,.45);color:var(--areia);
+  min-width:38px;height:38px;border-radius:8px;font-size:1.05rem;line-height:1;
+  cursor:pointer;font-family:var(--serif-corpo);padding:0 10px;
+}
+.lb-ctrl button:hover,.lb-fechar:hover{background:rgba(247,244,237,.16);}
+.lb-zoom{font-size:.8rem;color:#f0c9a8;min-width:46px;text-align:center;}
+.lb-palco{
+  flex:1 1 auto;overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;cursor:grab;
+}
+.lb-palco.arrastando{cursor:grabbing;}
+.lb-palco img{
+  max-width:100%;max-height:100%;transform-origin:center center;
+  transition:transform .12s ease-out;user-select:none;-webkit-user-drag:none;
+  box-shadow:0 10px 40px rgba(0,0,0,.5);background:#fff;
+}
+.lb-rodape{
+  flex:0 0 auto;padding:10px 14px;background:rgba(0,0,0,.35);color:#e8e0d0;
+  font-size:.8rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+}
+.lb-rodape .lb-fonte{flex:1;min-width:160px;line-height:1.4;}
+.lb-rodape button{
+  background:var(--musgo);color:#fff;border:0;border-radius:8px;padding:8px 14px;
+  font-family:var(--serif-corpo);font-size:.85rem;cursor:pointer;
+}
+.lb-rodape button:hover{filter:brightness(1.1);}
+@media print{.lb-fundo{display:none !important;}}
 
 </style>
 </head>
@@ -282,7 +357,6 @@ a.mini-card{display:block;text-decoration:none;color:var(--tinta)}
 <p>A necessidade de garantir o controle sobre a terra, somada ao caráter belicoso da época, fez com que os senhores feudais estabelecessem acordos entre si, desenvolvendo as relações de suserania e vassalagem — um sistema de interdependência entre nobres. Em troca de "proteção" e de um pequeno lote de terra, o camponês passava a servir a um proprietário, ficando permanentemente preso à terra.</p>
 
 <p>Ser "guerreiro" tornava-se uma questão de honra para o nobre, que era treinado desde cedo. Toda essa belicosidade garantia à elite vastos domínios territoriais e o poder político — visto como descentralizado. E só foi possível explicar a sociedade feudal pela exploração do trabalho servil.</p>
-
 <div class="atividades-box">
   <span class="eyebrow">Pratique</span>
   <h4>&#128221; Atividades de aprendizagem</h4>
@@ -299,6 +373,15 @@ a.mini-card{display:block;text-decoration:none;color:var(--tinta)}
   </div>
 </div>
 
+<div class="cheatsheet-box">
+  <h3 class="cheatsheet-titulo">Revisando com cheatsheet</h3>
+  <img class="cheatsheet-imagem"
+       src="topico-2/topico2.webp"
+       alt="Cheatsheet sobre o mundo feudal, suserania, vassalagem e servidão"
+       title="Clique para ampliar com zoom"
+       onclick="window.abrirVisualizador(GALERIA_TOPICO2, 0);">
+</div>
+
   </section>
   <div class="nav-topicos">
   <a href="topico-1.html"><span class="rotulo-nav">&larr; Anterior</span>1. Estratificação e desigualdade</a>
@@ -306,6 +389,29 @@ a.mini-card{display:block;text-decoration:none;color:var(--tinta)}
 </div>
 
 </main>
+
+<div class="lb-fundo" id="lbFundo" role="dialog" aria-modal="true" aria-labelledby="lbTitulo" aria-hidden="true">
+  <div class="lb-topo">
+    <span class="lb-tit" id="lbTitulo"></span>
+    <span class="lb-ctrl">
+      <button type="button" id="lbMenos" aria-label="Reduzir zoom">&minus;</button>
+      <span class="lb-zoom" id="lbNivel">100%</span>
+      <button type="button" id="lbMais" aria-label="Ampliar zoom">+</button>
+      <button type="button" id="lbReset" aria-label="Tamanho original">100%</button>
+      <button class="lb-fechar" type="button" id="lbFechar" aria-label="Fechar">&times;</button>
+    </span>
+  </div>
+  <div class="lb-palco" id="lbPalco">
+    <img id="lbImg" src="" alt="">
+  </div>
+  <div class="lb-rodape">
+    <span class="lb-fonte" id="lbFonte"></span>
+    <span class="lb-ctrl">
+      <button type="button" id="lbAnt">&#8249; Anterior</button>
+      <button type="button" id="lbProx">Pr&oacute;xima &#8250;</button>
+    </span>
+  </div>
+</div>
 
 <div class="modal" id="modal-piramide" role="dialog" aria-modal="true" aria-labelledby="t-piramide">
   <div class="modal-caixa">
@@ -380,6 +486,142 @@ a.mini-card{display:block;text-decoration:none;color:var(--tinta)}
     m.addEventListener('click', function(e){ if(e.target === m) fechar(); });
   });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') fechar(); });
+})();
+</script>
+<script>
+var GALERIA_TOPICO2 = [
+  {
+    src:'topico-2/topico2.webp',
+    titulo:'Cheatsheet — O Mundo Feudal',
+    alt:'Cheatsheet sobre o mundo feudal, estrutura social e produtiva',
+    fonte:'Colégio Estadual Rodolfo de Oliveira · Ciências Humanas e Sociais Aplicadas · Prof. Claudio'
+  }
+];
+</script>
+<script>
+(function(){
+  var d=document;
+  var galeria=[];
+  var fundo=d.getElementById('lbFundo'), palco=d.getElementById('lbPalco'), img=d.getElementById('lbImg');
+  if(!fundo||!palco||!img) return;
+  var tit=d.getElementById('lbTitulo'), fonte=d.getElementById('lbFonte'), nivel=d.getElementById('lbNivel');
+  var atual=0, escala=1, x=0, y=0, ultimoFoco=null;
+  var MIN=1, MAX=6;
+
+  function aplicar(){
+    img.style.transform='translate('+x+'px,'+y+'px) scale('+escala+')';
+    nivel.textContent=Math.round(escala*100)+'%';
+    palco.style.cursor = escala>1 ? 'grab' : 'default';
+  }
+  function zerar(){ escala=1; x=0; y=0; aplicar(); }
+  function zoom(fator, cx, cy){
+    var nova=Math.min(MAX,Math.max(MIN,escala*fator));
+    if(nova===escala) return;
+    if(typeof cx==='number'){
+      var r=palco.getBoundingClientRect();
+      var dx=cx-(r.left+r.width/2), dy=cy-(r.top+r.height/2);
+      x=dx-(dx-x)*(nova/escala);
+      y=dy-(dy-y)*(nova/escala);
+    }
+    escala=nova;
+    if(escala===1){ x=0; y=0; }
+    aplicar();
+  }
+  function mostrar(i){
+    if(!galeria.length) return;
+    atual=(i+galeria.length)%galeria.length;
+    var it=galeria[atual];
+    img.src=it.src; img.alt=it.alt;
+    tit.textContent=it.titulo; fonte.textContent=it.fonte;
+    zerar();
+  }
+  function abrir(i){
+    ultimoFoco=d.activeElement;
+    mostrar(i);
+    fundo.classList.add('ativo');
+    fundo.setAttribute('aria-hidden','false');
+    d.body.style.overflow='hidden';
+    d.getElementById('lbFechar').focus();
+  }
+  function fechar(){
+    fundo.classList.remove('ativo');
+    fundo.setAttribute('aria-hidden','true');
+    d.body.style.overflow='';
+    if(ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+  function aberto(){ return fundo.classList.contains('ativo'); }
+
+  window.abrirVisualizador=function(lista, i){
+    if(!lista || !lista.length) return;
+    galeria=lista; abrir(i||0);
+  };
+  d.getElementById('lbFechar').addEventListener('click', fechar);
+  d.getElementById('lbMais').addEventListener('click', function(){ zoom(1.35); });
+  d.getElementById('lbMenos').addEventListener('click', function(){ zoom(1/1.35); });
+  d.getElementById('lbReset').addEventListener('click', zerar);
+  d.getElementById('lbAnt').addEventListener('click', function(){ mostrar(atual-1); });
+  d.getElementById('lbProx').addEventListener('click', function(){ mostrar(atual+1); });
+  fundo.addEventListener('click', function(e){ if(e.target===fundo || e.target===palco) fechar(); });
+
+  palco.addEventListener('wheel', function(e){
+    e.preventDefault();
+    zoom(e.deltaY<0?1.15:1/1.15, e.clientX, e.clientY);
+  }, {passive:false});
+
+  img.addEventListener('dblclick', function(e){
+    if(escala>1) zerar(); else zoom(2.2, e.clientX, e.clientY);
+  });
+
+  var arr=false, px=0, py=0;
+  palco.addEventListener('mousedown', function(e){
+    if(escala<=1) return;
+    arr=true; px=e.clientX-x; py=e.clientY-y;
+    palco.classList.add('arrastando'); e.preventDefault();
+  });
+  d.addEventListener('mousemove', function(e){
+    if(!arr) return;
+    x=e.clientX-px; y=e.clientY-py; aplicar();
+  });
+  d.addEventListener('mouseup', function(){ arr=false; palco.classList.remove('arrastando'); });
+
+  var tx=0, ty=0, dist0=0, esc0=1, ultimoToque=0;
+  function distancia(t){
+    var a=t[0], b=t[1];
+    return Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY);
+  }
+  palco.addEventListener('touchstart', function(e){
+    if(e.touches.length===2){
+      dist0=distancia(e.touches); esc0=escala;
+    }else if(e.touches.length===1){
+      var agora=Date.now();
+      if(agora-ultimoToque<300){
+        if(escala>1) zerar(); else zoom(2.2, e.touches[0].clientX, e.touches[0].clientY);
+      }
+      ultimoToque=agora;
+      tx=e.touches[0].clientX-x; ty=e.touches[0].clientY-y;
+    }
+  }, {passive:true});
+  palco.addEventListener('touchmove', function(e){
+    if(e.touches.length===2){
+      e.preventDefault();
+      var nova=Math.min(MAX,Math.max(MIN, esc0*(distancia(e.touches)/dist0)));
+      escala=nova; if(escala===1){ x=0; y=0; }
+      aplicar();
+    }else if(e.touches.length===1 && escala>1){
+      e.preventDefault();
+      x=e.touches[0].clientX-tx; y=e.touches[0].clientY-ty; aplicar();
+    }
+  }, {passive:false});
+
+  d.addEventListener('keydown', function(e){
+    if(!aberto()) return;
+    if(e.key==='Escape'||e.key==='Esc'){ e.stopPropagation(); fechar(); }
+    else if(e.key==='+'||e.key==='='){ zoom(1.35); }
+    else if(e.key==='-'||e.key==='_'){ zoom(1/1.35); }
+    else if(e.key==='0'){ zerar(); }
+    else if(e.key==='ArrowRight'){ mostrar(atual+1); }
+    else if(e.key==='ArrowLeft'){ mostrar(atual-1); }
+  }, true);
 })();
 </script>
 </body>
