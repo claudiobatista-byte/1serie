@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade — Nobreza medieval: poder, honra e estilo de vida | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f0ede4;
+    --bg-alt:#e2dccb;
+    --paper:#ffffff;
+    --ink:#282722;
+    --ink-soft:#615c4e;
+    --tinta:#1f4d3a;
+    --tinta-dark:#123024;
+    --tinta-2:#3c7a5c;
+    --ambar:#9c6b1f;
+    --ambar-light:#f1e2c2;
+    --vinho:#7a1f3d;
+    --vinho-dark:#4f1027;
+    --vinho-light:#f0d9e0;
+    --line:#d6cdb4;
+    --shadow:0 10px 30px rgba(18,48,36,.14);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+  .campo-resposta{user-select:text;}
+
+  /* ===== CAPA / GATE ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(to bottom, #123024, #1f4d3a, #3c7a5c);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute;
+    top:0; bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:896px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative;
+    z-index:1;
+    background:var(--paper);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    max-width:480px;
+    width:100%;
+    padding:36px 32px;
+    text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--tinta-dark);
+    background:rgba(31,77,58,.10); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.6rem; margin:0 0 10px; color:var(--tinta-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--tinta); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.12);}
+  .capa-aviso{font-size:.78rem; color:#a33; margin-top:8px; display:none;}
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--tinta-dark); color:#eef5f0;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px;
+    font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2); border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--ambar); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:28px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--tinta-dark);
+    background:rgba(31,77,58,.10); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--tinta-dark);}
+
+  /* ===== TEXTO DE APOIO — temas com cores diferentes ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:24px 28px; margin-bottom:20px;
+    border-top:5px solid var(--tinta);
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.2rem; color:var(--tinta-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:12px; display:block;}
+  .texto-apoio p{margin:0 0 12px; color:var(--ink);}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+
+  /* Tema 1 — tons de verde (modo de vida e vocação guerreira) */
+  .texto-apoio.tema-1{border-top-color:var(--tinta);}
+  .texto-apoio.tema-1 h2{color:var(--tinta-dark);}
+  .texto-apoio.tema-1 .fonte-tag{color:var(--tinta-2);}
+
+  /* Tema 2 — tons de vinho (hereditariedade, distintivos e guerra como negócio) */
+  .texto-apoio.tema-2{border-top-color:var(--vinho);}
+  .texto-apoio.tema-2 h2{color:var(--vinho-dark);}
+  .texto-apoio.tema-2 .fonte-tag{color:var(--vinho);}
+
+  .destaque{
+    background:var(--ambar-light); border-left:4px solid var(--ambar);
+    border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:.93rem;
+  }
+  .destaque b{color:#5f3f0d;}
+
+  .citacao-fonte{
+    background:#eaf2ec; border-left:4px solid var(--tinta); font-style:italic;
+    border-radius:0 8px 8px 0; padding:16px 18px; margin:14px 0; font-size:.95rem; color:var(--tinta-dark);
+  }
+
+  .destaque-vinho{
+    background:var(--vinho-light); border-left:4px solid var(--vinho);
+    border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:.93rem;
+  }
+  .destaque-vinho b{color:var(--vinho-dark);}
+
+  .fonte-ref{display:block; font-size:.78rem; color:var(--ink-soft); font-style:italic; margin-top:10px;}
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.2rem; color:var(--tinta-dark);
+    margin:0 0 18px; display:flex; align-items:center; gap:10px;
+  }
+  .bloco-titulo{
+    font-family:var(--font-mono); font-size:.76rem; letter-spacing:.08em; text-transform:uppercase;
+    padding:4px 12px; border-radius:999px; display:inline-block; margin:26px 0 10px;
+  }
+  .bloco-titulo.tema-1{background:rgba(31,77,58,.10); color:var(--tinta-dark);}
+  .bloco-titulo.tema-2{background:rgba(122,31,61,.12); color:var(--vinho-dark);}
+
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:32px;
+    border-left:5px solid var(--line);
+  }
+  .questao.tema-1{border-left-color:var(--tinta);}
+  .questao.tema-2{border-left-color:var(--vinho);}
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--tinta);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao.tema-2 .num-q{background:var(--vinho);}
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:12px; display:flex; align-items:flex-start;}
+  .questao textarea{
+    width:100%; min-height:100px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:.96rem; resize:vertical; color:var(--ink);
+  }
+  .questao textarea:focus{outline:2px solid var(--ambar); outline-offset:1px;}
+  .contador-chars{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+
+  .comentario-prof{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#eaf2ec; border:1px solid #c6dbc9; border-radius:8px; font-size:.9rem; color:var(--tinta-dark);
+  }
+  .comentario-prof.show{display:block;}
+  .comentario-prof b{display:block; margin-bottom:4px; font-family:var(--font-title); font-size:.92rem;}
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#f7e6ea; border:1px solid #e0aebb; color:#7a1f3d;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.1);}
+  .btn-primario{background:var(--tinta); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--ambar); color:#fff;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  /* ===== POPUP ===== */
+  .popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(18,48,36,.6);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .popup-overlay.show{display:flex;}
+  .popup-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:420px; width:100%; padding:32px 28px; text-align:center;
+  }
+  .popup-card .emoji{font-size:2.4rem; margin-bottom:10px;}
+  .popup-card h3{font-family:var(--font-title); margin:0 0 8px; color:var(--tinta-dark);}
+  .popup-card p{color:var(--ink-soft); font-size:.94rem; margin:0 0 20px;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">História · 1ª série EM · CERO</span>
+    <h1>Nobreza medieval: poder, honra e estilo de vida</h1>
+    <p class="desc">Leitura de dois textos de apoio sobre a nobreza medieval — o modo de vida guerreiro e a origem hereditária dos títulos — com 5 questões dissertativas. Preencha os dados para começar.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 1ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Por favor, digite seu nome para continuar.</div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Respondidas: 0/5</span>
+  </div>
+
+  <div class="wrap">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Ciências Humanas e Sociais Aplicadas / 1ª série EM &nbsp;|&nbsp; EM13CHS402 — Nobreza medieval</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Atividade · História Medieval</span>
+      <h1>Nobreza medieval: poder, honra e estilo de vida</h1>
+      <p class="sub">Leia cada texto de apoio e responda às questões dissertativas correspondentes logo em seguida.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+      <h2 class="questoes-titulo">&#9997;&#65039; Leituras e Questões Dissertativas</h2>
+
+      <span class="bloco-titulo tema-1">Texto 1 · Um modo de viver</span>
+
+      <!-- TEXTO 1 -->
+      <section class="texto-apoio selecionavel tema-1">
+        <h2>1. A nobreza como estilo de vida</h2>
+        <span class="fonte-tag">Material de estudo — Tópico 3 · Nobreza medieval</span>
+        <p>A nobreza medieval não era definida por lei escrita, mas por um <strong>modo de viver específico</strong>. Foi entre os séculos XI e XII que, mesmo sem definição jurídica precisa, a nobreza passou a designar um grupo social caracterizado pela fortuna, pelo poder exercido sobre indivíduos dependentes e por um estilo de vida fundamentado na guerra, na caça e nos torneios.</p>
+        <p>O nobre combatia a cavalo e com equipamento próprio, enquanto os soldados de infantaria combatiam a pé. Com o tempo, "cavaleiro" tornou-se sinônimo de nobre e "infante", de condição inferior. A guerra não era apenas um dever: era origem de honra e razão de viver. O trabalho manual era visto pelos nobres como algo indigno, e as principais ocupações da nobreza eram a guerra, as caçadas e os torneios.</p>
+        <div class="destaque">
+          <b>Vilania:</b> conduta considerada desonrosa, imprópria de um nobre. Podia-se perder a nobreza por vilania, mas era muito difícil adquiri-la sem ter nascido nela. A porta de saída existia; a de entrada, quase não.
+        </div>
+        <div class="citacao-fonte">
+          "Cavaleiro" designa uma função militar: aquele que combate a cavalo, com equipamento próprio. "Nobre" designa uma condição social e hereditária, com privilégios reconhecidos pelo costume e pela lei. "Senhor" designa uma posição de poder sobre uma terra e sobre as pessoas que nela vivem. Um mesmo indivíduo podia ocupar os três — e é justamente essa acumulação que caracteriza o poder feudal.
+        </div>
+        <span class="fonte-ref">Material de estudo, Tópico 3 — Nobreza medieval, CERO.</span>
+      </section>
+
+      <div class="questao tema-1" data-questao="1">
+        <div class="enunciado"><span class="num-q">1</span> O que caracterizava a nobreza medieval como grupo social entre os séculos XI e XII, e por que a guerra era considerada mais do que um simples dever para o nobre?</div>
+        <textarea id="resp-1" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          A nobreza era caracterizada pela fortuna, pelo poder sobre indivíduos dependentes e por um estilo de vida fundamentado na guerra, na caça e nos torneios — não por uma definição jurídica precisa. A guerra era origem de honra e razão de viver para o nobre, e não apenas uma obrigação, o que explica por que o trabalho manual era visto como indigno e as ocupações nobres giravam em torno do combate.
+        </div>
+      </div>
+
+      <div class="questao tema-1" data-questao="2">
+        <div class="enunciado"><span class="num-q">2</span> O que era a "vilania" no contexto da nobreza medieval, e o que essa noção revela sobre a assimetria entre perder e adquirir a condição de nobre?</div>
+        <textarea id="resp-2" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Vilania era uma conduta considerada desonrosa, imprópria de um nobre. A noção revela uma assimetria: era possível perder a nobreza por um comportamento vil, mas praticamente impossível adquiri-la sem ter nascido nela — ou seja, a "porta de saída" da condição nobre existia, mas a "porta de entrada" estava quase sempre fechada para quem não nascesse nobre.
+        </div>
+      </div>
+
+      <div class="questao tema-1" data-questao="3">
+        <div class="enunciado"><span class="num-q">3</span> Distinga os conceitos de cavaleiro, nobre e senhor segundo o texto. Por que a possibilidade de um mesmo indivíduo acumular os três é importante para entender o poder feudal?</div>
+        <textarea id="resp-3" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Cavaleiro designa uma função militar (combater a cavalo, com equipamento próprio); nobre designa uma condição social e hereditária, com privilégios reconhecidos pelo costume e pela lei; senhor designa uma posição de poder sobre uma terra e sobre as pessoas que nela vivem. A acumulação dessas três posições em um mesmo indivíduo é o que caracteriza o poder feudal, concentrando força militar, status social e autoridade territorial nas mesmas mãos.
+        </div>
+      </div>
+
+      <span class="bloco-titulo tema-2">Texto 2 · Origem, distintivos e negócio da guerra</span>
+
+      <!-- TEXTO 2 -->
+      <section class="texto-apoio selecionavel tema-2">
+        <h2>2. Origem versus riqueza: hereditariedade e distintivos</h2>
+        <span class="fonte-tag">Material de estudo — Tópico 3 · Nobreza medieval</span>
+        <p>A nobreza tornou-se hereditária. A origem — ter nascido de pais nobres — era o critério principal, e não a riqueza, a competência militar ou o cargo ocupado. Um cavaleiro empobrecido continuava nobre; um comerciante enriquecido continuava plebeu. Esse detalhe distingue com clareza a estratificação <strong>estamental</strong> da estratificação de <strong>classe</strong>: na primeira, a posição é reconhecida em lei e no costume, com direitos e deveres próprios; na segunda, que aparecerá com o capitalismo, a posição é econômica sem estatuto jurídico distinto.</p>
+        <p>O nobre usava armas que os camponeses não podiam portar, caçava em terras às quais outros não tinham acesso e participava de torneios vetados aos plebeus. Em várias regiões da Europa, <strong>leis suntuárias</strong> chegaram a proibir expressamente que pessoas comuns usassem determinados tecidos, cores ou adornos — sinal de que a fronteira social estava sendo ameaçada por quem tinha dinheiro mas não tinha nascimento.</p>
+        <div class="destaque-vinho">
+          <b>Nobreza de sangue × nobreza de bolsa:</b> as leis suntuárias revelam a tensão entre a nobreza de sangue e comerciantes e burgueses enriquecidos ("nobreza de bolsa") que não tinham o prestígio do nascimento. O distintivo visual afirmava que nem todo rico era nobre, e que nem todo nobre era rico.
+        </div>
+        <p>A guerra medieval era também um <strong>negócio</strong>: fornecia terras conquistadas, resgates de prisioneiros, saques e recompensas do suserano. Um nobre sem guerra era um nobre sem renda nova — o que ajuda a explicar a frequência dos conflitos e a importância dos torneios, que funcionavam ao mesmo tempo como treinamento, espetáculo e mercado de reputação.</p>
+        <span class="fonte-ref">Elaborado com base em WEBER, Max. <em>Ensaios de sociologia</em>; Material de estudo, Tópico 3 — Nobreza medieval, CERO.</span>
+      </section>
+
+      <div class="questao tema-2" data-questao="4">
+        <div class="enunciado"><span class="num-q">4</span> Por que a origem (o nascimento) prevalecia sobre a riqueza na definição da condição nobre? Diferencie estratificação estamental de estratificação de classe.</div>
+        <textarea id="resp-4" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          A nobreza era hereditária: nascer de pais nobres era o critério principal, e não a riqueza, a competência militar ou o cargo — um cavaleiro empobrecido continuava nobre e um comerciante enriquecido continuava plebeu. Na estratificação estamental, a posição é reconhecida em lei e costume, com direitos e deveres próprios; na estratificação de classe, típica do capitalismo, a posição é econômica, sem estatuto jurídico distinto entre os indivíduos.
+        </div>
+      </div>
+
+      <div class="questao tema-2" data-questao="5">
+        <div class="enunciado"><span class="num-q">5</span> O que eram as leis suntuárias e o que revelam sobre a tensão entre "nobreza de sangue" e "nobreza de bolsa"? Explique também por que a guerra funcionava como um negócio para o nobre medieval.</div>
+        <textarea id="resp-5" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          As leis suntuárias proibiam que pessoas comuns usassem certos tecidos, cores ou adornos, revelando que a fronteira social estava ameaçada por comerciantes e burgueses enriquecidos ("nobreza de bolsa") sem o prestígio do nascimento nobre — o distintivo visual reafirmava que riqueza e nobreza não eram a mesma coisa. Quanto à guerra, ela fornecia terras conquistadas, resgates de prisioneiros, saques e recompensas do suserano; por isso, um nobre sem guerra era um nobre sem renda nova, o que explica a frequência dos conflitos e a importância dos torneios como treinamento, espetáculo e mercado de reputação.
+        </div>
+      </div>
+
+      <div class="alerta-incompleto" id="alerta-incompleto">
+        &#9888;&#65039; Ainda há questões incompletas (com menos do mínimo de 60 caracteres). Revise suas respostas antes de finalizar.
+      </div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="finalizarAtividade()">Finalizar e enviar</button>
+        <button class="btn btn-secundario" onclick="refazerAtividade()">Refazer</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar em PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <footer class="rodape">Colégio Estadual Rodolfo de Oliveira · CERO · 2026</footer>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <div class="emoji">&#127881;</div>
+    <h3>Atividade concluída!</h3>
+    <p>Suas respostas dissertativas foram registradas com sucesso. Os comentários do professor já estão disponíveis abaixo de cada questão para você analisar seu desempenho.</p>
+    <button class="btn btn-primario" onclick="fecharPopup()">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ===== GATE DE NOME ===== */
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  const turma = document.getElementById('turma-aluno').value.trim();
+  const aviso = document.getElementById('capa-aviso');
+  if(!nome){
+    aviso.style.display = 'block';
+    return;
+  }
+  aviso.style.display = 'none';
+  const hoje = new Date();
+  const dataFormatada = String(hoje.getDate()).padStart(2,'0') + '/' + String(hoje.getMonth()+1).padStart(2,'0') + '/' + hoje.getFullYear();
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-data').textContent = dataFormatada;
+  document.getElementById('ficha-turma').textContent = turma || '—';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+/* ===== CONTADOR DE CARACTERES E PROGRESSO ===== */
+const textareas = document.querySelectorAll('textarea.dissertativa');
+let corrigido = false;
+
+function atualizarProgresso(){
+  let respondidas = 0;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length >= min) respondidas++;
+  });
+  const total = textareas.length;
+  document.getElementById('contador-geral').textContent = 'Respondidas: ' + respondidas + '/' + total;
+  document.getElementById('barra-fill').style.width = (respondidas / total * 100) + '%';
+}
+
+textareas.forEach(function(t){
+  const contadorEl = t.parentElement.querySelector('.contador-chars');
+  const min = parseInt(t.dataset.min, 10);
+  t.addEventListener('input', function(){
+    contadorEl.textContent = t.value.length + ' caracteres (mínimo ' + min + ')';
+    atualizarProgresso();
+  });
+});
+
+/* ===== FINALIZAR ===== */
+function finalizarAtividade(){
+  let completo = true;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length < min) completo = false;
+  });
+
+  const alerta = document.getElementById('alerta-incompleto');
+  if(!completo){
+    alerta.classList.add('show');
+    alerta.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  alerta.classList.remove('show');
+
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.add('show');
+  });
+
+  corrigido = true;
+  document.getElementById('popup-overlay').classList.add('show');
+}
+
+function fecharPopup(){
+  document.getElementById('popup-overlay').classList.remove('show');
+}
+
+function refazerAtividade(){
+  textareas.forEach(function(t){
+    t.value = '';
+    t.parentElement.querySelector('.contador-chars').textContent = '0 caracteres (mínimo ' + t.dataset.min + ')';
+  });
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.remove('show');
+  });
+  corrigido = false;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+async function exportarPDF(){
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(18,48,36,.6);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(18,48,36,.3);font-family:Georgia,serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#123024;font-family:Georgia,serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#615c4e;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#e2dccb;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#1f4d3a;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:monospace;font-size:.74rem;color:#615c4e;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff', scrollX:0, scrollY:0, windowWidth:860});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        const pxPerPdfPt = canvas.width / imgW;
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML, sliceH_pt = Math.min(availPt, avail);
+          const sliceH_px = Math.round(sliceH_pt * pxPerPdfPt), actualH_px = Math.min(sliceH_px, canvas.height - srcY);
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#1f4d3a,#123024);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b); await sleep(20); await addImg(b); document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('ficha-nome').textContent || 'Aluno';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    const dtStr = document.getElementById('ficha-data').textContent || '';
+
+    // CAPA
+    setP(10, 'Montando capa…');
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:linear-gradient(135deg,#123024,#1f4d3a);padding:44px 40px;border-radius:12px;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="text-align:center">' +
+        '<div style="font-size:11px;letter-spacing:3px;color:#c8ddce;text-transform:uppercase;margin-bottom:10px">Colégio Estadual Rodolfo de Oliveira</div>' +
+        '<div style="font-size:26px;font-weight:700;color:#fff;margin-bottom:6px">Atividade — Nobreza Medieval</div>' +
+        '<div style="font-size:15px;color:#c8ddce;margin-bottom:26px">Poder, honra e estilo de vida na sociedade feudal</div>' +
+        '<div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:200px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + esc(nome) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Estudante</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:120px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#b3ccbb;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    // QUESTÕES DISSERTATIVAS
+    setP(25, 'Preparando questões dissertativas…'); await sleep(20);
+    await band('DISSERTATIVAS', 'Questões Dissertativas — Respostas e Orientações');
+
+    const QUESTOES = [
+      { num:'1', enunc:'O que caracterizava a nobreza medieval como grupo social entre os séculos XI e XII, e por que a guerra era considerada mais do que um simples dever para o nobre?', id:'resp-1',
+        coment:'A nobreza era caracterizada pela fortuna, pelo poder sobre indivíduos dependentes e por um estilo de vida fundamentado na guerra, na caça e nos torneios. A guerra era origem de honra e razão de viver para o nobre, não apenas uma obrigação, o que explica por que o trabalho manual era visto como indigno.' },
+      { num:'2', enunc:'O que era a "vilania" e o que essa noção revela sobre a assimetria entre perder e adquirir a condição de nobre?', id:'resp-2',
+        coment:'Vilania era uma conduta desonrosa, imprópria de um nobre. Era possível perder a nobreza por um comportamento vil, mas praticamente impossível adquiri-la sem ter nascido nela — a "porta de saída" existia, mas a "porta de entrada" estava quase sempre fechada.' },
+      { num:'3', enunc:'Distinga os conceitos de cavaleiro, nobre e senhor. Por que a possibilidade de um mesmo indivíduo acumular os três é importante para o poder feudal?', id:'resp-3',
+        coment:'Cavaleiro é uma função militar; nobre é uma condição social e hereditária; senhor é uma posição de poder sobre terra e pessoas. A acumulação dos três em um mesmo indivíduo é o que caracteriza o poder feudal, concentrando força militar, status social e autoridade territorial.' },
+      { num:'4', enunc:'Por que a origem prevalecia sobre a riqueza na definição da condição nobre? Diferencie estratificação estamental de estratificação de classe.', id:'resp-4',
+        coment:'A nobreza era hereditária: nascer de pais nobres era o critério principal, não a riqueza ou o mérito militar. Na estratificação estamental, a posição é reconhecida em lei e costume; na estratificação de classe, típica do capitalismo, a posição é econômica, sem estatuto jurídico distinto.' },
+      { num:'5', enunc:'O que eram as leis suntuárias e o que revelam sobre a tensão entre "nobreza de sangue" e "nobreza de bolsa"? Por que a guerra era um negócio para o nobre?', id:'resp-5',
+        coment:'As leis suntuárias proibiam que pessoas comuns usassem certos tecidos e adornos, revelando a ameaça de comerciantes enriquecidos ("nobreza de bolsa") sem o prestígio do nascimento. A guerra fornecia terras, resgates e saques — um nobre sem guerra era um nobre sem renda nova.' }
+    ];
+
+    for(let i=0; i<QUESTOES.length; i++){
+      const q = QUESTOES[i];
+      setP(25 + Math.round(i/QUESTOES.length*65), 'Dissertativa ' + q.num + '/5…'); await sleep(10);
+
+      const valor = document.getElementById(q.id) ? document.getElementById(q.id).value : '';
+      const respostaHTML =
+        '<div style="background:#f0ede4;border:1.5px solid #d6cdb4;border-radius:8px;padding:12px 15px;min-height:40px">' +
+          '<div style="font-size:12px;color:#282722;line-height:1.75;white-space:pre-wrap">' + (esc(valor) || '<span style="color:#aaa">(sem resposta)</span>') + '</div>' +
+        '</div>';
+
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #d6cdb4;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:linear-gradient(90deg,#1f4d3a,#123024);padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + q.num + '</span>' +
+          '<span style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:11px;padding:3px 12px;border-radius:20px;font-weight:600">Dissertativa</span></div>' +
+        '<div style="padding:18px 24px 16px;background:#ffffff">' +
+          '<div style="font-size:13px;font-weight:700;color:#282722;line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee">' + esc(q.enunc) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:4px;height:15px;background:#1f4d3a;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#1f4d3a;text-transform:uppercase;letter-spacing:1.5px">Resposta do Aluno(a)</div></div>' +
+          respostaHTML +
+          '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 7px">' +
+            '<div style="width:4px;height:15px;background:#9c6b1f;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#5f3f0d;text-transform:uppercase;letter-spacing:1.5px">Comentário do Professor</div></div>' +
+          '<div style="background:#f1e2c2;border:1.5px solid #e3cb9a;border-radius:8px;padding:13px 16px">' +
+            '<div style="font-size:12px;color:#5c3c07;line-height:1.8">' + esc(q.coment) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+    }
+
+    // RODAPÉ EM TODAS AS PÁGINAS
+    setP(95, 'Finalizando PDF…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#f0ede4;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Atividade — Nobreza Medieval · ' + esc(nome) + ' · 5 Questões Dissertativas</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#f0ede4'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(240,237,228); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Atividade_Nobreza_Medieval_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+/* ===== PROTEÇÃO ANTI-COLA ===== */
+(function () {
+  const CAMPOS_PROTEGIDOS = document.querySelectorAll('textarea.dissertativa, .campo-resposta');
+  const LIMITE_BLOCO = 25;
+
+  function bloquear(e) {
+    e.preventDefault();
+    mostrarToast('Colar não permitido nesta atividade.');
+  }
+
+  CAMPOS_PROTEGIDOS.forEach(function (campo) {
+    ['paste', 'copy', 'cut', 'drop', 'dragover', 'contextmenu'].forEach(function (evt) {
+      campo.addEventListener(evt, bloquear);
+    });
+
+    campo.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
+        e.preventDefault();
+        mostrarToast('Colar não permitido nesta atividade.');
+      }
+    });
+
+    let valorAnterior = campo.value;
+    campo.addEventListener('input', function (e) {
+      const diferenca = campo.value.length - valorAnterior.length;
+      if (diferenca >= LIMITE_BLOCO && e.inputType !== 'insertReplacementText') {
+        campo.value = valorAnterior;
+        mostrarToast('Colar não permitido nesta atividade.');
+      } else {
+        valorAnterior = campo.value;
+      }
+    });
+  });
+
+  function mostrarToast(mensagem) {
+    let toast = document.getElementById('anti-cola-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'anti-cola-toast';
+      toast.style.cssText =
+        'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+        'background:#333;color:#fff;padding:10px 20px;border-radius:8px;' +
+        'font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () {
+      toast.style.opacity = '0';
+    }, 2500);
+  }
+})();
+</script>
+
+</body>
+</html>
