@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade — A sociedade feudal: as três Ordens e a organização social medieval | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f4efe6;
+    --bg-alt:#e5ddc9;
+    --paper:#ffffff;
+    --ink:#2b2b26;
+    --ink-soft:#5f5a4d;
+    --tinta:#14424b;
+    --tinta-dark:#0a2a30;
+    --tinta-2:#2e6b74;
+    --ambar:#b5651d;
+    --ambar-light:#f3e0c9;
+    --verde:#3f6b35;
+    --verde-dark:#294a22;
+    --verde-light:#e3ecd9;
+    --line:#d9cdb0;
+    --shadow:0 10px 30px rgba(20,66,75,.12);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+  .campo-resposta{user-select:text;}
+
+  /* ===== CAPA / GATE ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(to bottom, #0a2a30, #14424b, #2e6b74);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute;
+    top:0; bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:896px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative;
+    z-index:1;
+    background:var(--paper);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    max-width:480px;
+    width:100%;
+    padding:36px 32px;
+    text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--tinta-dark);
+    background:rgba(20,66,75,.10); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.6rem; margin:0 0 10px; color:var(--tinta-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--tinta); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.12);}
+  .capa-aviso{font-size:.78rem; color:#a33; margin-top:8px; display:none;}
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--tinta-dark); color:#f0f2f0;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px;
+    font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2); border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--ambar); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:28px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--tinta-dark);
+    background:rgba(20,66,75,.10); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--tinta-dark);}
+
+  /* ===== TEXTO DE APOIO — temas com cores diferentes ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:24px 28px; margin-bottom:20px;
+    border-top:5px solid var(--tinta);
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.2rem; color:var(--tinta-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:12px; display:block;}
+  .texto-apoio p{margin:0 0 12px; color:var(--ink);}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+
+  /* Tema 1 — tons de tinta/azul-petróleo (texto da fonte primária) */
+  .texto-apoio.tema-1{border-top-color:var(--tinta);}
+  .texto-apoio.tema-1 h2{color:var(--tinta-dark);}
+  .texto-apoio.tema-1 .fonte-tag{color:var(--tinta-2);}
+
+  /* Tema 2 — tons de verde (texto explicativo) */
+  .texto-apoio.tema-2{border-top-color:var(--verde);}
+  .texto-apoio.tema-2 h2{color:var(--verde-dark);}
+  .texto-apoio.tema-2 .fonte-tag{color:var(--verde);}
+
+  .destaque{
+    background:var(--ambar-light); border-left:4px solid var(--ambar);
+    border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:.93rem;
+  }
+  .destaque b{color:#7a4110;}
+
+  .citacao-fonte{
+    background:#eaf1ef; border-left:4px solid var(--tinta); font-style:italic;
+    border-radius:0 8px 8px 0; padding:16px 18px; margin:14px 0; font-size:.95rem; color:var(--tinta-dark);
+  }
+
+  .destaque-verde{
+    background:var(--verde-light); border-left:4px solid var(--verde);
+    border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:.93rem;
+  }
+  .destaque-verde b{color:var(--verde-dark);}
+
+  .fonte-ref{display:block; font-size:.78rem; color:var(--ink-soft); font-style:italic; margin-top:10px;}
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.2rem; color:var(--tinta-dark);
+    margin:0 0 18px; display:flex; align-items:center; gap:10px;
+  }
+  .bloco-titulo{
+    font-family:var(--font-mono); font-size:.76rem; letter-spacing:.08em; text-transform:uppercase;
+    padding:4px 12px; border-radius:999px; display:inline-block; margin:26px 0 10px;
+  }
+  .bloco-titulo.tema-1{background:rgba(20,66,75,.10); color:var(--tinta-dark);}
+  .bloco-titulo.tema-2{background:rgba(63,107,53,.12); color:var(--verde-dark);}
+
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:32px;
+    border-left:5px solid var(--line);
+  }
+  .questao.tema-1{border-left-color:var(--tinta);}
+  .questao.tema-2{border-left-color:var(--verde);}
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--tinta);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao.tema-2 .num-q{background:var(--verde);}
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:12px; display:flex; align-items:flex-start;}
+  .questao textarea{
+    width:100%; min-height:100px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:.96rem; resize:vertical; color:var(--ink);
+  }
+  .questao textarea:focus{outline:2px solid var(--ambar); outline-offset:1px;}
+  .contador-chars{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+
+  .comentario-prof{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#eaf1ef; border:1px solid #d3c9ab; border-radius:8px; font-size:.9rem; color:var(--tinta-dark);
+  }
+  .comentario-prof.show{display:block;}
+  .comentario-prof b{display:block; margin-bottom:4px; font-family:var(--font-title); font-size:.92rem;}
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#fbf0df; border:1px solid #eccf9d; color:#8a5510;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.1);}
+  .btn-primario{background:var(--tinta); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--ambar); color:#fff;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  /* ===== POPUP ===== */
+  .popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(10,42,48,.6);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .popup-overlay.show{display:flex;}
+  .popup-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:420px; width:100%; padding:32px 28px; text-align:center;
+  }
+  .popup-card .emoji{font-size:2.4rem; margin-bottom:10px;}
+  .popup-card h3{font-family:var(--font-title); margin:0 0 8px; color:var(--tinta-dark);}
+  .popup-card p{color:var(--ink-soft); font-size:.94rem; margin:0 0 20px;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">História · Ensino Médio · CERO</span>
+    <h1>A sociedade feudal: as três Ordens e a organização social medieval</h1>
+    <p class="desc">Leitura de uma fonte histórica (Adalberto de Laon) e de um texto explicativo sobre a sociedade medieval, com 5 questões dissertativas. Preencha os dados para começar.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 1ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Por favor, digite seu nome para continuar.</div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Respondidas: 0/5</span>
+  </div>
+
+  <div class="wrap">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Ciências Humanas e Sociais Aplicadas / Ensino Médio &nbsp;|&nbsp; Feudalismo — as três Ordens e a organização da sociedade medieval</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Atividade · História Medieval</span>
+      <h1>A sociedade feudal: as três Ordens e a organização social medieval</h1>
+      <p class="sub">Leia cada texto de apoio e responda às questões dissertativas correspondentes logo em seguida.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+      <h2 class="questoes-titulo">&#9997;&#65039; Leituras e Questões Dissertativas</h2>
+
+      <span class="bloco-titulo tema-1">Texto 1 · Fonte histórica</span>
+
+      <!-- TEXTO 1 -->
+      <section class="texto-apoio selecionavel tema-1">
+        <h2>1. As três Ordens: os que rezam, os que combatem, os que trabalham</h2>
+        <span class="fonte-tag">Fonte primária — Adalberto, Bispo de Laon</span>
+        <div class="citacao-fonte">
+          "A ordem eclesiástica forma um só corpo, mas a divisão da sociedade compreende três Ordens. A lei humana distingue duas condições. O nobre e o não livre não são governados por uma lei idêntica.<br><br>
+          Os nobres são os guerreiros, os protetores das igrejas. Defendem a todos os homens do povo, grandes ou modestos, e também a si mesmos. A outra classe é a dos não livres. Esta desgraçada raça nada possui sem sofrimento. Provisões, vestimentas são providas para todos pelos não livres, pois nenhum homem livre é capaz de viver sem eles.<br><br>
+          Portanto, a cidade de Deus, que se crê única, está dividida em três Ordens: alguns rezam, outros combatem e outros trabalham. Estas três Ordens vivem juntas e não suportariam uma separação. Os serviços de uma delas permitem os trabalhos das outras duas. Cada um, alternadamente, presta seu apoio a todos."
+        </div>
+        <span class="fonte-ref">Adalberto, Bispo de Laon. Citado por BOUTRUCHE, R. <em>Senhorio e Feudalismo</em>. Século Vinteunio Editores, p. 307.</span>
+      </section>
+
+      <div class="questao tema-1" data-questao="1">
+        <div class="enunciado"><span class="num-q">1</span> Segundo Adalberto de Laon, quais são as três Ordens que compõem a sociedade medieval e qual a função atribuída a cada uma delas no texto?</div>
+        <textarea id="resp-1" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          O texto descreve três Ordens: o clero, que reza e cuida da vida espiritual; a nobreza, formada pelos guerreiros que defendem a Igreja e o povo; e os "não livres" (servos), responsáveis pelo trabalho que sustenta materialmente as outras duas Ordens, produzindo alimentos e vestimentas.
+        </div>
+      </div>
+
+      <div class="questao tema-1" data-questao="2">
+        <div class="enunciado"><span class="num-q">2</span> O bispo Adalberto afirma que "estas três Ordens vivem juntas e não suportariam uma separação". Explique o que ele quer dizer com essa ideia de interdependência entre quem reza, quem combate e quem trabalha.</div>
+        <textarea id="resp-2" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Para o autor, cada Ordem depende das outras duas para existir: o clero precisa da proteção dos guerreiros e do sustento produzido pelos trabalhadores; os nobres precisam do trabalho dos servos para se manter e da legitimação religiosa do clero; e os servos dependem da proteção militar e da orientação espiritual. Por isso o texto afirma que "cada um, alternadamente, presta seu apoio a todos" — a sociedade feudal é apresentada como um sistema em que nenhuma Ordem sobrevive sozinha.
+        </div>
+      </div>
+
+      <div class="questao tema-1" data-questao="3">
+        <div class="enunciado"><span class="num-q">3</span> O texto diz que "a lei humana distingue duas condições" e que "o nobre e o não livre não são governados por uma lei idêntica". O que essa afirmação revela sobre a desigualdade jurídica e social entre as Ordens na sociedade feudal?</div>
+        <textarea id="resp-3" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          A frase evidencia que a sociedade feudal não era apenas dividida por funções, mas também por direitos desiguais perante a lei: nobres e servos ("não livres") estavam sujeitos a normas diferentes, o que formalizava e legitimava a desigualdade social. Enquanto os nobres gozavam de privilégios e liberdade, os servos, descritos como "esta desgraçada raça", viviam submetidos a obrigações e sofrimento, sem os mesmos direitos — mostrando que a hierarquia medieval era sustentada tanto pelo costume quanto pela própria lei.
+        </div>
+      </div>
+
+      <span class="bloco-titulo tema-2">Texto 2 · Texto explicativo</span>
+
+      <!-- TEXTO 2 -->
+      <section class="texto-apoio selecionavel tema-2">
+        <h2>2. A organização da sociedade medieval</h2>
+        <span class="fonte-tag">Texto de apoio — Folha de S.Paulo (Educação)</span>
+        <p>A formação da sociedade medieval foi um processo longo e complexo, que reuniu durante séculos características de origem romana e bárbaro-germânica.</p>
+        <p>Na Alta Idade Média, ocorreu um acentuado processo de ruralização, fruto da desagregação do Império Romano, da sedentarização de diversos povos "bárbaros" e da continuidade das invasões, o que fortaleceu o processo de isolamento, a economia voltada para a subsistência e o militarismo.</p>
+        <p>A crise, marcada por invasões e guerras, reforçou o militarismo, porém com outras características, estabelecendo novas relações sociais e influenciando a reordenação das relações de produção. Em troca de "proteção" e de um pequeno lote de terra, o camponês passava a servir a um proprietário, o senhor da terra, o dono do feudo. Essa servidão era permanente, e o camponês e seus descendentes estavam presos à terra.</p>
+        <p>A necessidade de garantir o controle sobre a terra, somada às características da cultura secular dos povos bárbaros, fez com que os senhores feudais tivessem grande preocupação com a guerra e, dessa maneira, estabelecessem acordos entre si, desenvolvendo as relações de suserania e vassalagem, num sistema de interdependência, ao mesmo tempo que toda sua formação cultural se voltava para o militarismo.</p>
+        <p>Ser "guerreiro" tornava-se uma questão de honra para o nobre, que era treinado desde cedo. A dimensão das guerras obrigou a Igreja Católica a interferir algumas vezes e a decretar leis para garantir a ordem socioeconômica.</p>
+        <p>No decorrer dessas lutas, ocorreu a decomposição do poder real, mediante usurpações ou concessões, como as imunidades, que ampliavam a autonomia política dos feudos.</p>
+        <div class="destaque-verde"><b>Contexto:</b> No século 9º, o Império Carolíngeo se esfacelou, e o poder passou para as mãos de marqueses, duques e barões, representando o fortalecimento do poder local. Na península Ibérica, o domínio muçulmano serviu de pretexto para o início de uma "guerra santa", a Reconquista, que possibilitou a lenta expansão dos domínios senhoriais.</div>
+        <p>Toda essa belicosidade garantia à elite vastos domínios territoriais e o poder político — visto como descentralizado. E só foi possível explicar a sociedade feudal pela exploração do trabalho servil, o que justifica o uso da expressão "uns combatem, alguns rezam, outros trabalham".</p>
+        <span class="fonte-ref">Fonte: https://www1.folha.uol.com.br/folha/educacao/ult305u13194.shtml</span>
+      </section>
+
+      <div class="questao tema-2" data-questao="4">
+        <div class="enunciado"><span class="num-q">4</span> De acordo com o texto, quais fatores da Alta Idade Média (queda do Império Romano, sedentarização de povos "bárbaros", invasões) contribuíram para o processo de ruralização e para o fortalecimento do militarismo na sociedade medieval?</div>
+        <textarea id="resp-4" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          O texto explica que a desagregação do Império Romano, a sedentarização de povos "bárbaros" e a continuidade das invasões geraram isolamento, uma economia voltada para a subsistência e a valorização do militarismo. Esse contexto de insegurança fez da guerra e da proteção armada elementos centrais da vida social, base sobre a qual se organizariam depois as relações de servidão e de vassalagem.
+        </div>
+      </div>
+
+      <div class="questao tema-2" data-questao="5">
+        <div class="enunciado"><span class="num-q">5</span> Explique, com base no texto, a relação entre servidão (camponês e senhor da terra) e as relações de suserania e vassalagem (entre os próprios senhores feudais). Como essas duas relações se conectam à expressão "uns combatem, alguns rezam, outros trabalham"?</div>
+        <textarea id="resp-5" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Na servidão, o camponês trocava trabalho e submissão por proteção e um lote de terra, ficando permanentemente preso a ela junto com seus descendentes. Já entre os próprios senhores, a necessidade de proteger seus domínios levou ao desenvolvimento da suserania e da vassalagem, um sistema de acordos e interdependência entre nobres. Juntas, essas relações organizam a sociedade em funções complementares — o clero reza, os nobres combatem e defendem, e os servos trabalham e sustentam materialmente todo o sistema —, o que explica a expressão "uns combatem, alguns rezam, outros trabalham".
+        </div>
+      </div>
+
+      <div class="alerta-incompleto" id="alerta-incompleto">
+        &#9888;&#65039; Ainda há questões incompletas (com menos do mínimo de 60 caracteres). Revise suas respostas antes de finalizar.
+      </div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="finalizarAtividade()">Finalizar e enviar</button>
+        <button class="btn btn-secundario" onclick="refazerAtividade()">Refazer</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar em PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <footer class="rodape">Colégio Estadual Rodolfo de Oliveira · CERO · 2026</footer>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <div class="emoji">&#127881;</div>
+    <h3>Atividade concluída!</h3>
+    <p>Suas respostas dissertativas foram registradas com sucesso. Os comentários do professor já estão disponíveis abaixo de cada questão para você analisar seu desempenho.</p>
+    <button class="btn btn-primario" onclick="fecharPopup()">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ===== GATE DE NOME ===== */
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  const turma = document.getElementById('turma-aluno').value.trim();
+  const aviso = document.getElementById('capa-aviso');
+  if(!nome){
+    aviso.style.display = 'block';
+    return;
+  }
+  aviso.style.display = 'none';
+  const hoje = new Date();
+  const dataFormatada = String(hoje.getDate()).padStart(2,'0') + '/' + String(hoje.getMonth()+1).padStart(2,'0') + '/' + hoje.getFullYear();
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-data').textContent = dataFormatada;
+  document.getElementById('ficha-turma').textContent = turma || '—';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+/* ===== CONTADOR DE CARACTERES E PROGRESSO ===== */
+const textareas = document.querySelectorAll('textarea.dissertativa');
+let corrigido = false;
+
+function atualizarProgresso(){
+  let respondidas = 0;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length >= min) respondidas++;
+  });
+  const total = textareas.length;
+  document.getElementById('contador-geral').textContent = 'Respondidas: ' + respondidas + '/' + total;
+  document.getElementById('barra-fill').style.width = (respondidas / total * 100) + '%';
+}
+
+textareas.forEach(function(t){
+  const contadorEl = t.parentElement.querySelector('.contador-chars');
+  const min = parseInt(t.dataset.min, 10);
+  t.addEventListener('input', function(){
+    contadorEl.textContent = t.value.length + ' caracteres (mínimo ' + min + ')';
+    atualizarProgresso();
+  });
+});
+
+/* ===== FINALIZAR ===== */
+function finalizarAtividade(){
+  let completo = true;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length < min) completo = false;
+  });
+
+  const alerta = document.getElementById('alerta-incompleto');
+  if(!completo){
+    alerta.classList.add('show');
+    alerta.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  alerta.classList.remove('show');
+
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.add('show');
+  });
+
+  corrigido = true;
+  document.getElementById('popup-overlay').classList.add('show');
+}
+
+function fecharPopup(){
+  document.getElementById('popup-overlay').classList.remove('show');
+}
+
+function refazerAtividade(){
+  textareas.forEach(function(t){
+    t.value = '';
+    t.parentElement.querySelector('.contador-chars').textContent = '0 caracteres (mínimo ' + t.dataset.min + ')';
+  });
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.remove('show');
+  });
+  corrigido = false;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+async function exportarPDF(){
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,42,48,.6);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(10,42,48,.3);font-family:Georgia,serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#0a2a30;font-family:Georgia,serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#5f5a4d;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#e5ddc9;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#14424b;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:monospace;font-size:.74rem;color:#5f5a4d;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff', scrollX:0, scrollY:0, windowWidth:860});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        const pxPerPdfPt = canvas.width / imgW;
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML, sliceH_pt = Math.min(availPt, avail);
+          const sliceH_px = Math.round(sliceH_pt * pxPerPdfPt), actualH_px = Math.min(sliceH_px, canvas.height - srcY);
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#14424b,#0a2a30);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b); await sleep(20); await addImg(b); document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('ficha-nome').textContent || 'Aluno';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    const dtStr = document.getElementById('ficha-data').textContent || '';
+
+    // CAPA
+    setP(10, 'Montando capa…');
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:linear-gradient(135deg,#0a2a30,#14424b);padding:44px 40px;border-radius:12px;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="text-align:center">' +
+        '<div style="font-size:11px;letter-spacing:3px;color:#c9dbd9;text-transform:uppercase;margin-bottom:10px">Colégio Estadual Rodolfo de Oliveira</div>' +
+        '<div style="font-size:26px;font-weight:700;color:#fff;margin-bottom:6px">Atividade — Feudalismo</div>' +
+        '<div style="font-size:15px;color:#c9dbd9;margin-bottom:26px">A sociedade feudal: as três Ordens e a organização social medieval</div>' +
+        '<div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:200px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + esc(nome) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Estudante</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:120px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#b9d0cd;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    // QUESTÕES DISSERTATIVAS
+    setP(25, 'Preparando questões dissertativas…'); await sleep(20);
+    await band('DISSERTATIVAS', 'Questões Dissertativas — Respostas e Orientações');
+
+    const QUESTOES = [
+      { num:'1', enunc:'Segundo Adalberto de Laon, quais são as três Ordens que compõem a sociedade medieval e qual a função atribuída a cada uma delas no texto?', id:'resp-1',
+        coment:'O texto descreve três Ordens: o clero, que reza e cuida da vida espiritual; a nobreza, formada pelos guerreiros que defendem a Igreja e o povo; e os "não livres" (servos), responsáveis pelo trabalho que sustenta materialmente as outras duas Ordens.' },
+      { num:'2', enunc:'O bispo Adalberto afirma que "estas três Ordens vivem juntas e não suportariam uma separação". Explique essa ideia de interdependência entre quem reza, quem combate e quem trabalha.', id:'resp-2',
+        coment:'Cada Ordem depende das outras duas: o clero precisa da proteção dos guerreiros e do sustento dos trabalhadores; os nobres precisam do trabalho dos servos e da legitimação religiosa; os servos dependem da proteção militar e da orientação espiritual. Por isso "cada um, alternadamente, presta seu apoio a todos".' },
+      { num:'3', enunc:'O texto diz que "a lei humana distingue duas condições" entre nobres e não livres. O que essa afirmação revela sobre a desigualdade jurídica e social entre as Ordens?', id:'resp-3',
+        coment:'A frase mostra que a sociedade feudal era dividida não só por funções, mas por direitos desiguais perante a lei: nobres e servos estavam sujeitos a normas diferentes, o que formalizava e legitimava a desigualdade social e a submissão dos "não livres".' },
+      { num:'4', enunc:'Quais fatores da Alta Idade Média contribuíram para o processo de ruralização e para o fortalecimento do militarismo na sociedade medieval?', id:'resp-4',
+        coment:'A desagregação do Império Romano, a sedentarização de povos "bárbaros" e a continuidade das invasões geraram isolamento, economia de subsistência e valorização do militarismo, base sobre a qual se organizariam as relações de servidão e vassalagem.' },
+      { num:'5', enunc:'Explique a relação entre servidão e as relações de suserania e vassalagem, e como isso se conecta à expressão "uns combatem, alguns rezam, outros trabalham".', id:'resp-5',
+        coment:'Na servidão, o camponês trocava trabalho por proteção e terra, ficando preso a ela. Entre os senhores, desenvolveu-se a suserania e a vassalagem, um sistema de interdependência. Juntas, essas relações organizam a sociedade em funções complementares, explicando a expressão "uns combatem, alguns rezam, outros trabalham".' }
+    ];
+
+    for(let i=0; i<QUESTOES.length; i++){
+      const q = QUESTOES[i];
+      setP(25 + Math.round(i/QUESTOES.length*65), 'Dissertativa ' + q.num + '/5…'); await sleep(10);
+
+      const valor = document.getElementById(q.id) ? document.getElementById(q.id).value : '';
+      const respostaHTML =
+        '<div style="background:#f4efe6;border:1.5px solid #d9cdb0;border-radius:8px;padding:12px 15px;min-height:40px">' +
+          '<div style="font-size:12px;color:#2b2b26;line-height:1.75;white-space:pre-wrap">' + (esc(valor) || '<span style="color:#aaa">(sem resposta)</span>') + '</div>' +
+        '</div>';
+
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #d9cdb0;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:linear-gradient(90deg,#14424b,#0a2a30);padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + q.num + '</span>' +
+          '<span style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:11px;padding:3px 12px;border-radius:20px;font-weight:600">Dissertativa</span></div>' +
+        '<div style="padding:18px 24px 16px;background:#ffffff">' +
+          '<div style="font-size:13px;font-weight:700;color:#2b2b26;line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee">' + esc(q.enunc) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:4px;height:15px;background:#14424b;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#14424b;text-transform:uppercase;letter-spacing:1.5px">Resposta do Aluno(a)</div></div>' +
+          respostaHTML +
+          '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 7px">' +
+            '<div style="width:4px;height:15px;background:#b5651d;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#7a4110;text-transform:uppercase;letter-spacing:1.5px">Comentário do Professor</div></div>' +
+          '<div style="background:#f3e0c9;border:1.5px solid #e8cba0;border-radius:8px;padding:13px 16px">' +
+            '<div style="font-size:12px;color:#6b3f09;line-height:1.8">' + esc(q.coment) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+    }
+
+    // RODAPÉ EM TODAS AS PÁGINAS
+    setP(95, 'Finalizando PDF…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#f4efe6;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Atividade — Feudalismo · ' + esc(nome) + ' · 5 Questões Dissertativas</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#f4efe6'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(244,239,230); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Atividade_Feudalismo_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+/* ===== PROTEÇÃO ANTI-COLA ===== */
+(function () {
+  const CAMPOS_PROTEGIDOS = document.querySelectorAll('textarea.dissertativa, .campo-resposta');
+  const LIMITE_BLOCO = 25;
+
+  function bloquear(e) {
+    e.preventDefault();
+    mostrarToast('Colar não permitido nesta atividade.');
+  }
+
+  CAMPOS_PROTEGIDOS.forEach(function (campo) {
+    ['paste', 'copy', 'cut', 'drop', 'dragover', 'contextmenu'].forEach(function (evt) {
+      campo.addEventListener(evt, bloquear);
+    });
+
+    campo.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
+        e.preventDefault();
+        mostrarToast('Colar não permitido nesta atividade.');
+      }
+    });
+
+    let valorAnterior = campo.value;
+    campo.addEventListener('input', function (e) {
+      const diferenca = campo.value.length - valorAnterior.length;
+      if (diferenca >= LIMITE_BLOCO && e.inputType !== 'insertReplacementText') {
+        campo.value = valorAnterior;
+        mostrarToast('Colar não permitido nesta atividade.');
+      } else {
+        valorAnterior = campo.value;
+      }
+    });
+  });
+
+  function mostrarToast(mensagem) {
+    let toast = document.getElementById('anti-cola-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'anti-cola-toast';
+      toast.style.cssText =
+        'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+        'background:#333;color:#fff;padding:10px 20px;border-radius:8px;' +
+        'font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () {
+      toast.style.opacity = '0';
+    }, 2500);
+  }
+})();
+</script>
+
+</body>
+</html>
